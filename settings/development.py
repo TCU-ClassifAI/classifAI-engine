@@ -1,1 +1,1 @@
-meow = True
+MODEL_TYPE = "tiny.en"
