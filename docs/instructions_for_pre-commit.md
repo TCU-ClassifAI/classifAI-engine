@@ -15,5 +15,10 @@ pre-commit install
 
 Just commit as usual. The pre-commit hook will run automatically.
 
+REMINDER: You have to re-run `git add` after the pre-commit hook runs. 
 
+## Adding a new hook
+To add a new hook, add a new entry to `.pre-commit-config.yaml`.
+
+Then run `pre-commit install` to install the hook.
 
