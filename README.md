@@ -10,7 +10,7 @@
 <h2 align="center">ClassifAI Engine</h2>
 
   <p align="center">
-    ClassifAI engine provides the heavy lifting for <a href="https://github.com/TCU-Instructional-AI/classifAI">classifAI</a><br>
+    ClassifAI engine is a RESTful API that provides the heavy lifting for <a href="https://github.com/TCU-Instructional-AI/classifAI">classifAI</a> through audio transcription, question categorization, and insights.<br>
     <br />
     <a href="https://github.com/TCU-Instructional-AI/classifAI"><strong>Explore the docs »</strong></a>
     <br /> 
