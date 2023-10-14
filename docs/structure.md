@@ -19,6 +19,8 @@ C: ClassifAI-engine
     └───tests # Test suite
 ```
 
+## Other Files
+
 There are also a few other files that are not included in the above tree. These are:
 
 * .pre-commit-config.yaml - Configuration for pre-commit hooks
@@ -27,6 +29,8 @@ There are also a few other files that are not included in the above tree. These 
 * requirements-dev.txt - Python dependencies for development
 * Dockerfile - Dockerfile for building the engine # TODO: Add Dockerfile
 * .gitignore - Files to ignore in git
+
+## Engine Architecture
 
 The engine is built using Flask, Celery, and Redis. The engine is deployed using Docker and Docker Compose.
 
