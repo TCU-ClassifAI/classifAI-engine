@@ -12,7 +12,7 @@
   <p align="center">
     ClassifAI engine is a RESTful API that provides the heavy lifting for <a href="https://github.com/TCU-Instructional-AI/classifAI">classifAI</a> through audio transcription, question categorization, and insights.<br>
     <br />
-    <a href="https://github.com/TCU-Instructional-AI/classifAI"><strong>Explore the docs »</strong></a>
+    <a href="https://tcu-instructional-ai.github.io/classifAI-engine/"><strong>Explore the docs »</strong></a>
     <br /> 
     <br />
     <a href="https://github.com/TCU-Instructional-AI/classifAI">Visit Portal</a>
