@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/TCU-Instructional-AI/classifAI-engine">
-    <img src="docs/logo.jpg" alt="Logo" width="128" height="128">
+    <img src="docs/assets/logo.jpg" alt="Logo" width="128" height="128">
   </a>
 
 <h2 align="center">ClassifAI Engine</h2>
