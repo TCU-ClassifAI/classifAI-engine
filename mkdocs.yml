@@ -11,8 +11,6 @@ nav:
   - 'Project Structure': structure.md
   - 'Changelog': changelog.md
   - 'Transcription Model Information': transcription.md
-  
-  
 theme:
   name: material
   palette:
@@ -26,8 +24,8 @@ theme:
         name: Switch to dark mode
   font:
     code: Roboto Mono
-  logo: logo.jpg
-  favicon: logo.jpg
+  logo: assets/gears.png
+  favicon: assets/gears.png
 extra:
   generator: false
   social:
