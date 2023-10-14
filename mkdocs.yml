@@ -1,0 +1,39 @@
+site_name: ClassifAI Engine Documentation
+site_url: https://classifai.github.io/classifai-engine/
+nav:
+  - Home: index.md
+  - 'Contribution':
+    - Edit the Docs: editing_docs.md
+    - Contribute Code: contributing.md
+    - 'Style Guide': style_guide.md
+    - 'Pre-Commit Hooks': instructions_for_pre-commit.md
+  - 'API Reference': api_reference.md
+  - 'Project Structure': structure.md
+  - 'Changelog': changelog.md
+  - 'Transcription Model Information': transcription.md
+  
+  
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+  font:
+    code: Roboto Mono
+  logo: logo.jpg
+  favicon: logo.jpg
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/TCU-Instructional-AI/classifAI-engine
+copyright: Copyright &copy; 2023 ClassifAI
+repo_url: https://github.com/TCU-Instructional-AI/classifAI-engine
+repo_name: ClassifAI-engine
+
