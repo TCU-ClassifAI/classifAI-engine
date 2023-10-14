@@ -3,10 +3,10 @@ site_url: https://classifai.github.io/classifai-engine/
 nav:
   - Home: index.md
   - 'Contribution':
-    - Edit the Docs: editing_docs.md
-    - Contribute Code: contributing.md
-    - 'Style Guide': style_guide.md
-    - 'Pre-Commit Hooks': instructions_for_pre-commit.md
+    - Edit the Docs: contribution/editing_docs.md
+    - Contribute Code: contribution/contributing.md
+    - 'Style Guide': contribution/style_guide.md
+    - 'Pre-Commit Hooks': contribution/instructions_for_pre-commit.md
   - 'API Reference': api_reference.md
   - 'Project Structure': structure.md
   - 'Changelog': changelog.md
