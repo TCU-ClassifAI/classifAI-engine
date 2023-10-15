@@ -25,13 +25,21 @@
 </div>
 
 
+<h4 align="center">
+  <a href="https://tcu-instructional-ai.github.io/classifai-docs/">Looking for main classifAI documentation?</a>
+</h4>
+
 ## List of Pages of Documentation
 
-<!-- * [Home](index.md)
-* [About](about.md)
-* [Editing Documentation](editing_docs.md)
-* [Contributing to the Project](contributing.md)
-* [Contact](contact.md)
-* [Acknowledgments](acknowledgments.md)
-* [Structure of Project](structure.md)
-* [Debugging and Test Information](debugging.md) -->
+- [Home](index.md)
+- [About](about.md)
+- Contribution > 
+    - [Contribution Overview](contribution/contributing.md)
+    - [Add Documentation](contribution/editing_docs.md)
+    - [Style Guide](contribution/style_guide.md)
+    - [Pre-Commit Hooks](contribution/instructions_for_pre-commit.md)
+- [API Reference](api.md)
+- [Project Structure](structure.md)
+- [Change Log](changelog.md)
+- [Transcription Model Information](transcription.md)
+- Question Categorization Model Information (TBD)
