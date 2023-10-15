@@ -21,5 +21,13 @@ def transcribe(path: str) -> str:
     """
 
     model = whisper.load_model("tiny.en")
-    audio = whisper.load_audio(path)
-    print(whisper.transcribe_timestamped(model, audio))
+
+    try:
+        audio = whisper.load_audio(path)
+    except Exception as e:
+        return f"Error loading audio: {e}"
+
+    try:
+        return whisper.transcribe_timestamped(model, audio)
+    except Exception as e:
+        return str(e)
