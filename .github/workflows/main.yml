@@ -4,13 +4,14 @@ on: [push, pull_request]
 
 jobs:
   black-lint:
+    name: Black Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: psf/black@stable
   flake8-lint:
       runs-on: ubuntu-latest
-      name: Lint
+      name: flake8 Lint
       steps:
       - name: Check out source repository
         uses: actions/checkout@v3
