@@ -38,4 +38,5 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Run tests
         run: |
+          cd src/
           python -m pytest tests/
