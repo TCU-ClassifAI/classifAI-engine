@@ -18,14 +18,21 @@ def validate_query_for_transcription(query_string: str):
         ValidationResponse: Validation response object.
     """
     # Check if the query string is empty
-    if query_string is None:
+    if not query_string:
         return ValidationResponse(False, "Query string is empty.")
 
     # Split the query string into key-value pairs
     query_params = query_string.split("&")
-    if len(query_params) < 1:
+
+    if not query_params:
         return ValidationResponse(
             False, "Query string is invalid: no key-value pairs found."
+        )
+
+    parameter_names = [param.split("=")[0] for param in query_params]
+    if "path" not in parameter_names:
+        return ValidationResponse(
+            False, "Query string is invalid: parameter path is required."
         )
 
     # Check if the query string has the required parameters (path is required)
@@ -33,5 +40,7 @@ def validate_query_for_transcription(query_string: str):
         return ValidationResponse(
             False, "Query string is invalid: parameter path is required."
         )
+
+    return ValidationResponse(True)
 
     # Check to ensure path is in the database
