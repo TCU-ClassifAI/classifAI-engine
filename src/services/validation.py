@@ -29,7 +29,10 @@ def validate_query_for_transcription(query_string: str):
             False, "Query string is invalid: no key-value pairs found."
         )
 
-    parameter_names = [param.split("=")[0] for param in query_params]
+    try:
+        parameter_names = [param.split("=")[0] for param in query_params]
+    except Exception as e:
+        return ValidationResponse(False, f"Query string is invalid: {e}")
     if "path" not in parameter_names:
         return ValidationResponse(
             False, "Query string is invalid: parameter path is required."
