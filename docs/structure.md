@@ -9,13 +9,15 @@
 C: ClassifAI-engine
 ├───.github
 │   └───workflows # Github Actions for CI/CD. Includes automated testing and deployment.
-├───docs
+├───docs # Folder for documentation. Uses mkdocs.
 │   ├───assets
-│   └───contribution
+│   ├───contribution
+│   └─── # Documentation files. See docs/contribution/editing_docs.md for more information.
 └───src
     ├───app.py # main file
     ├───services # services that the engine provides. 
     ├───settings # settings for the engine (development, production, etc.)
+    ├───requirements.txt and requirements-dev.txt # Python dependencies
     └───tests # Test suite
 ```
 
@@ -25,8 +27,6 @@ There are also a few other files that are not included in the above tree. These 
 
 * .pre-commit-config.yaml - Configuration for pre-commit hooks
 * mkdocs.yml - Configuration for mkdocs (documentation)
-* requirements.txt - Python dependencies
-* requirements-dev.txt - Python dependencies for development
 * Dockerfile - Dockerfile for building the engine # TODO: Add Dockerfile
 * .gitignore - Files to ignore in git
 
@@ -46,3 +46,5 @@ The API and the worker are connected using Redis. Redis is a key-value store tha
 The engine functions as a RESTful API. The API is the main entry point for the engine. The API is responsible for handling requests and sending them to the worker. The worker is responsible for processing the requests. The worker is also responsible for sending the results back to the API.
 
 * Both the client and engine share a database. This is so we are not passing over entire audio files to the engine. Instead, we pass over the file path to the audio file. The engine then reads the file from the database. This is more efficient than passing over the entire audio file.
+
+For expectations of the API, check out the [API Documentation](api.md).

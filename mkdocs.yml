@@ -35,4 +35,8 @@ extra:
 copyright: Copyright &copy; 2023 ClassifAI
 repo_url: https://github.com/TCU-Instructional-AI/classifAI-engine
 repo_name: ClassifAI-engine
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
 
