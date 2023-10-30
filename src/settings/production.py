@@ -1,2 +1,1 @@
-meow = False
-MODEL_TYPE = "medium.en"
+MODEL_TYPE = "large"
