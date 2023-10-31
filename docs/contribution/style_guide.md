@@ -11,7 +11,9 @@ Please see [the pre-commit setup instructions](instructions_for_pre-commit.md) f
 Docstrings are reccomended for most functions and classes. You are not required to do them for the smallest classes, etc. but please do them for anything that is not obvious.
 - We use [Google Style Docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)
 
-```"""
+```py
+def hello_world(param1, param2):
+"""
 This is an example of Google style.
 
 Args:
@@ -24,6 +26,7 @@ Returns:
 Raises:
     KeyError: Raises an exception.
 """ 
+return "Hello, World!"
 ```
 
 ## Testing

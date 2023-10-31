@@ -4,7 +4,7 @@
 ## Installation
 In the root directory of the project, run the following commands:
 ```bash
-pip install -r backend/requirements.txt -r backend/requirements-dev.txt 
+pip install -r src/requirements.txt -r src/requirements-dev.txt 
 
 pre-commit install
 ```

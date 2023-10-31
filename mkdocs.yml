@@ -4,8 +4,8 @@ nav:
   - Home: index.md
   - About: about.md
   - 'Contribution':
+    - Contribute: contribution/contributing.md
     - Edit the Docs: contribution/editing_docs.md
-    - Contribute Code: contribution/contributing.md
     - 'Style Guide': contribution/style_guide.md
     - 'Pre-Commit Hooks': contribution/instructions_for_pre-commit.md
   - 'API Reference': api.md
