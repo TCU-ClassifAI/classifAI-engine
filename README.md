@@ -72,9 +72,11 @@ ClassifAI engine provides the heavy lifting for classifAI. It is a RESTful API t
 
 ### Built With
 
-* Flask
-* Celery 
-* Redis
+* [Flask](https://flask.palletsprojects.com/)
+* [Torch](https://pytorch.org/)
+* [WhisperX](https://github.com/m-bain/whisperX), a fork of Whisper that offers faster-whisper, word-level alignments, batching, diarization, and more.
+* [Celery](https://docs.celeryproject.org/en/stable/index.html)
+* [Redis](https://redis.io/)
 * Firebase (Storage, Firestore, Authentication)
   
 
@@ -87,34 +89,74 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-* Python 3.8
-
+* Python 3.10 (will probably work with 3.11+)
+* ffmpeg
 
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
    ```sh
    git clone https://github.com/TCU-Instructional-AI/classifAI-engine.git
+   cd classifAI-engine
    ```
-3. Install Python packages
+2. Install Python packages
    ```sh
     pip install -r requirements.txt -r requirements-dev.txt
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+3. Install ffmpeg
+   ```sh
+    sudo apt install ffmpeg # Ubuntu
+    brew install ffmpeg # MacOS
+   ```
+4. Launch the API 
+   ```sh
+    python src/app.py
    ```
 
+
+`curl http://localhost:5000/` should return `{"message": "Hello, World!"}`
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+### Transcription
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+#### start_transcription
+
+* **URL:** `/start_transcription`
+* **Method:** `POST`
+* **Data Params:** (Request with file)
+
+#### get_transcription
+
+* **URL:** `/get_transcription`
+* **Method:** `GET`
+* **Data Params:** 
+  - `job_id` (string)
+* **Success Response:** 200 OK
+  - **Content:**
+    ```json
+    {
+      "status": "completed",
+      "transcription_link": "https://example.com/transcription-file"
+    }
+    ```
+* **Error Response:** 404 Not Found
+  - **Content:**
+    ```json
+    {
+      "status": "error",
+      "message": "Transcription job not found"
+    }
+    ```
+
+
+
+<!-- Get request to /get_transcription with job_id should return a status and a link to the transcription file (if relevant) -->
+
+_For more examples, please refer to the [Documentation](https://tcu-instructional-ai.github.io/classifAI-engine/)_
 
 
 
@@ -122,10 +164,17 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
+- [x] Add Transcription Service
+    - [x] Use Whisper for transcription
+    - [ ] Integrate WhisperX for faster transcription and diarization
+    - [ ] Use Celery for better asynchronous processing
+    - [ ] Use Redis for better asynchronous processing
+    - [ ] Ensemble different models for better transcription
+- [ ] Add Question Categorization Service
+- [ ] Add Question Categorization Service
+- [ ] Add Engagement Insights Service
+
+
 
 See the [open issues](https://github.com/TCU-Instructional-AI/classifAI/issues) for a full list of proposed features (and known issues).
 
@@ -140,20 +189,9 @@ Contributions are what make the open source community such an amazing place to l
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+### __[Instructions for Contribution](https://tcu-instructional-ai.github.io/classifAI-engine/contribution/contributing/)__
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the GNU Affero General Public License v3.0. See `LICENSE.txt` for more information.
 
 
 
@@ -166,12 +204,12 @@ Project Link: [https://github.com/TCU-Instructional-AI/classifAI](https://github
 
 
 
-<!-- ACKNOWLEDGMENTS -->
+<!-- ACKNOWLEDGMENTS
 ## Acknowledgments
 
 * []()
 * []()
-* []()
+* []() -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
