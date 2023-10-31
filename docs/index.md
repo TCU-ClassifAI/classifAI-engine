@@ -29,16 +29,23 @@
   <a href="https://tcu-instructional-ai.github.io/classifai-docs/">Looking for main classifAI documentation?</a>
 </h4>
 
+## Getting Started
+
+Please read the [installation](installation.md) guide for instructions on how to install the engine.
+
+For usage instructions, check out the [API Documentation](api.md).
+
 ## List of Pages of Documentation
 
 - [Home](index.md)
 - [About](about.md)
+- [API Reference](api.md)
+- [Installation](installation.md)
 - Contribution > 
     - [Contribution Overview](contribution/contributing.md)
     - [Add Documentation](contribution/editing_docs.md)
     - [Style Guide](contribution/style_guide.md)
     - [Pre-Commit Hooks](contribution/instructions_for_pre-commit.md)
-- [API Reference](api.md)
 - [Project Structure](structure.md)
 - [Change Log](changelog.md)
 - [Transcription Model Information](transcription.md)
