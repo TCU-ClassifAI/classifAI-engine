@@ -18,7 +18,7 @@ This endpoint kicks off a transcription job. It returns a job ID that can be use
 
 Name | Type | Description | Required?
 ---- | ---- | ----------- | ---------
-file | file | This is the audio file. It can be in mp3, wav, etc. FFMpeg supports many file types | Required
+file | file | This is the audio file. It can be in mp3, wav, etc. [FFMpeg supports many file types](https://ffmpeg.org/ffmpeg-formats.html) | Required
 user_id | string | This is the user ID. It is used to identify the user that made the reqeust | Optional
 model_type| string| Model Type. Can be "large", "medium", "medium.en", "tiny.en", [more here](https://github.com/openai/whisper/blob/main/model-card.md) | Optional
 
