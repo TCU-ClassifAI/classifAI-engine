@@ -102,7 +102,7 @@ To get a local copy up and running follow these simple example steps.
    ```
 2. Install Python packages
    ```sh
-    pip install -r requirements.txt -r requirements-dev.txt
+    pip install -r src/requirements.txt -r src/requirements-dev.txt
    ```
 3. Install ffmpeg
    ```sh
