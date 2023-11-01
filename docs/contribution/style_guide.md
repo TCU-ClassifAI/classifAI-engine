@@ -12,21 +12,17 @@ Docstrings are reccomended for most functions and classes. You are not required 
 - We use [Google Style Docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html)
 
 ```py
-def hello_world(param1, param2):
-"""
-This is an example of Google style.
-
-Args:
-    param1: This is the first param.
-    param2: This is a second param.
-
-Returns:
-    This is a description of what is returned.
-
-Raises:
-    KeyError: Raises an exception.
-""" 
-return "Hello, World!"
+def start_transcription(file: File, model_type: str, user_id: Optional[str] = None):
+    """
+    Start transcription of an audio file using Whisper.
+    Use ThreadPoolExecutor to run in the background.
+    Args:
+        file (File): Audio file to be transcribed.
+        model_type (str): Model type to use for transcription (e.g. 'large', 'tiny.en')
+        user_id (str, optional): ID of the user who uploaded the audio file (default=None).
+    Returns:
+        str: JSON string representation of a TranscriptionJob object.
+    """
 ```
 
 ## Testing

@@ -4,6 +4,7 @@ import time
 import uuid
 import json
 from dataclasses import dataclass, asdict
+from typing import Optional
 
 
 # Dictionary to store job status
@@ -117,18 +118,16 @@ def check_transcription(job_id):
         return {"status": "not found"}
 
 
-def start_transcription(file, model_type, user_id=None):
+def start_transcription(file, model_type: str, user_id: Optional[str] = None):
     """
     Start transcription of an audio file using Whisper.
     Use ThreadPoolExecutor to run in the background.
-
     Args:
         file (File): Audio file to be transcribed.
         model_type (str): Model type to use for transcription (e.g. 'large', 'tiny.en')
         user_id (str, optional): ID of the user who uploaded the audio file (default=None).
     Returns:
-        str: The job ID for the transcription task.
-        dict: A dictionary containing the status and start time of the transcription task.
+        str: JSON string representation of a TranscriptionJob object.
     """
     job_id = str(uuid.uuid4())  # Generate a job ID using uuid
 
