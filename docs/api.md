@@ -110,7 +110,7 @@ state | string | This is the state of the transcription job. It can be "loading 
 start_time | float | This is the start time of the transcription job. It is a Unix timestamp.
 duration | float | This is the duration of the transcription job. It is a Unix timestamp.
 end_time | float | This is the end time of the transcription job (if it is completed). It is a Unix timestamp.
-transcription_link | string | This is the link to the transcription file (if it is completed). It can be used to download the transcription file.
+transcription_link | string | This is the link to the transcription file (if it is completed). It can be used to download the transcription file. [Looking for the transcription format?](transcription.md)
 
 #### Error and Status Codes
 
