@@ -23,6 +23,8 @@ pip install mkdocs mkdocs-material
 * `mkdocs -h` - Print help message and exit.
 * `mkdocs gh-deploy` - Deploy to GitHub Pages 
 
+mkdocs are automatically built and deployed to [GitHub Pages](https://tcu-instructional-ai.github.io/classifAI-engine/) using GitHub Actions. The configuration for this can be found in `.github/workflows/deploy_docs.yml`.
+
 ## Deploying to GitHub Pages
 
 To deploy the documentation to GitHub Pages, run the following command:
