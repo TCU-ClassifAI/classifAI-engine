@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-
+permissions: write-all
 jobs:
   build:
     name: Deploy docs
