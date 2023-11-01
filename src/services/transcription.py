@@ -18,11 +18,12 @@ class TranscriptionJob:
 
     job_id: str
     user_id: str = None
-    model_type: str = "large"
-    status: str = "in progress"
-    state: str = "loading model"
+    model_type: str = "tiny.en"
+    status: str = "in progress"  # "in progress", "completed", "failed"
+    state: str = "loading model"  # "loading model", "loading audio", "transcribing", "completed", "failed"
     start_time: float = time.time()
     end_time: float = None
+    duration: float = 0  # in seconds
     result: str = None
     error_message: str = None
 
@@ -41,24 +42,38 @@ class TranscriptionJob:
         }
         return json.dumps(filtered_dict)
 
+    def get_duration(self) -> float:
+        """
+        Get the duration of the transcription job.
 
-def transcribe(file, user_id, job_id, model_type):
+        Args:
+            None (self)
+        Returns:
+            float: Duration of the transcription job in seconds.
+        """
+        if self.start_time is None:
+            return None
+        elif self.end_time is None:
+            return time.time() - self.start_time
+        else:
+            return self.end_time - self.start_time
+
+
+def transcribe(file, job: TranscriptionJob):
     """
     Transcription of an audio file using Whisper.
     Use Celery to run in the background.
 
     Args:
         file (File): Audio file to be transcribed.
-        user_id (str): ID of the user who uploaded the audio file.
-        job_id (str): ID of the job.
-        model_type (str): Model type to use for transcription (e.g. 'large', 'tiny.en')
+        job (TranscriptionJob): Transcription job object.
     Returns:
         str: Path to transcription file (in JSON format).
         - Full specifications of JSON format can be found
         in docs/transcription.md
     """
 
-    model = whisper.load_model(model_type)
+    model = whisper.load_model(job.model_type)
 
     try:
         audio = whisper.load_audio(file)
@@ -69,23 +84,19 @@ def transcribe(file, user_id, job_id, model_type):
         result = whisper.transcribe_timestamped(
             model, audio, refine_whisper_precision=0.1
         )
-        # Store the result in job_status using the job_id as a key
-        job_status[job_id] = {
-            "status": "completed",
-            "result": result,
-            "start_time": job_status[job_id]["start_time"],
-            "end_time": time.time(),
-        }
-        return result
+        job.result = result
+        job.status = job.state = "completed"
+        job.end_time = time.time()
+
+        job_status[job.job_id] = job
+        return job.to_json_string()
     except Exception as e:
-        # Update job status with an error message
-        job_status[job_id] = {
-            "status": "failed",
-            "error_message": str(e),
-            "start_time": job_status[job_id]["start_time"],
-            "end_time": time.time(),
-        }
-        return str(e)
+        job.state = job.status = "failed"
+        job.error_message = str(e)
+        job.end_time = time.time()
+
+        job_status[job.job_id] = job
+        return job.to_json_string()
 
 
 def check_transcription(job_id):
@@ -99,19 +110,9 @@ def check_transcription(job_id):
     """
     if job_id in job_status:
         job_info = job_status[job_id]
-        status = job_info["status"]
-        result_info = {"status": status}
-        if status == "completed" or status == "failed":
-            result_info["result"] = (
-                job_info["result"]
-                if status == "completed"
-                else job_info["error_message"]
-            )
-            result_info["duration"] = job_info["end_time"] - job_info["start_time"]
+        job_info.duration = job_info.get_duration()
 
-        if status == "in progress":
-            result_info["duration"] = time.time() - job_info["start_time"]
-        return result_info
+        return job_info.to_json_string()
     else:
         return {"status": "not found"}
 
@@ -130,13 +131,13 @@ def start_transcription(file, model_type, user_id=None):
         dict: A dictionary containing the status and start time of the transcription task.
     """
     job_id = str(uuid.uuid4())  # Generate a job ID using uuid
+
+    job_status[job_id] = TranscriptionJob(job_id, user_id, model_type)
+
     executor = ThreadPoolExecutor(max_workers=1)
     executor.submit(transcribe, file, user_id, job_id, model_type)
 
-    # Create a job status entry with "in progress" status
-    job_status[job_id] = {"status": "in progress", "start_time": time.time()}
-
-    return job_id, job_status[job_id]
+    return job_status[job_id].to_json_string()
 
 
 # Example usage:
