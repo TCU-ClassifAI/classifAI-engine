@@ -40,9 +40,10 @@ We encourage type hints for all functions and classes. Please see [PEP 484](http
 ## Other
 
 Please be sure to use good code practices. Some things to especially keep in mind:
-- Use descriptive variable names
-- DRY (Don't Repeat Yourself)
-- Use comments when necessary
-- Break up long functions into smaller functions
+
+* Use descriptive variable names
+* DRY (Don't Repeat Yourself)
+* Use comments when necessary
+* Break up long functions into smaller functions
 
 We do not strictly adhere to the google styleguide, but we encourage you to follow it:  [https://google.github.io/styleguide/pyguide.html](https://google.github.io/styleguide/pyguide.html)
