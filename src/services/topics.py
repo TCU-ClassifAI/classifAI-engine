@@ -2,7 +2,12 @@ import os
 import openai
 from datetime import datetime
 
-# Fill in your OpenAI API key
+# Load .env file if it exists
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
 openai.api_key = os.environ["OPENAI_API_KEY"]  # From .env file
 
 
@@ -32,7 +37,9 @@ gpt_instructions = """You will be provided with texts of an interview.
     Use as few words as necessary without sacrificing quality.
     Explain why do you identify these words. """
 
-prompt = gpt_instructions + "Here are the texts:" + file_content
+prompt = (
+    gpt_instructions + "Here are the texts:" + "interviewer: 'hewwo'\n interviewee:'hi'"
+)  # file_content
 
 response = openai.ChatCompletion.create(
     model="gpt-4",

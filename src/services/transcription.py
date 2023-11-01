@@ -2,9 +2,44 @@ import whisper_timestamped as whisper
 from concurrent.futures import ThreadPoolExecutor
 import time
 import uuid
+import json
+from dataclasses import dataclass, asdict
+
 
 # Dictionary to store job status
 job_status = {}
+
+
+@dataclass
+class TranscriptionJob:
+    """
+    Dataclass to store information about a transcription job.
+    """
+
+    job_id: str
+    user_id: str = None
+    model_type: str = "large"
+    status: str = "in progress"
+    state: str = "loading model"
+    start_time: float = time.time()
+    end_time: float = None
+    result: str = None
+    error_message: str = None
+
+    def to_json_string(self) -> str:
+        """
+        Convert the dataclass to a JSON string. Remove any fields with None values.
+
+        Args:
+            None (self)
+        Returns:
+            str: JSON string representation of the dataclass.
+        """
+        data_dict = asdict(self)
+        filtered_dict = {
+            key: value for key, value in data_dict.items() if value is not None
+        }
+        return json.dumps(filtered_dict)
 
 
 def transcribe(file, user_id, job_id, model_type):
@@ -92,6 +127,7 @@ def start_transcription(file, model_type, user_id=None):
         user_id (str, optional): ID of the user who uploaded the audio file (default=None).
     Returns:
         str: The job ID for the transcription task.
+        dict: A dictionary containing the status and start time of the transcription task.
     """
     job_id = str(uuid.uuid4())  # Generate a job ID using uuid
     executor = ThreadPoolExecutor(max_workers=1)
@@ -100,7 +136,7 @@ def start_transcription(file, model_type, user_id=None):
     # Create a job status entry with "in progress" status
     job_status[job_id] = {"status": "in progress", "start_time": time.time()}
 
-    return job_id  # Return the job ID immediately
+    return job_id, job_status[job_id]
 
 
 # Example usage:
