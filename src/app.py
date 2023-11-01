@@ -11,12 +11,6 @@ else:
     from settings import development as config
 
 
-# Define routes
-@app.route("/")
-def index():
-    return make_response("Hello, world!", 200)
-
-
 @app.route("/start_transcription", methods=["POST"])
 def start_transcription_endpoint():
     # Check if the file was uploaded
@@ -63,6 +57,11 @@ def get_transcription():
         return make_response(result, 200)
     except Exception as e:
         return make_response(str(e), 500)
+
+
+@app.route("/healthcheck", methods=["GET"])
+def healthcheck():
+    return make_response("OK", 200)
 
 
 if __name__ == "__main__":

@@ -35,3 +35,9 @@
      python src/app.py
      ```
 
+
+### Test: 
+`curl http://localhost:5000/healthcheck` should return `OK`
+
+
+More usage can be found in the [API Documentation](api.md).

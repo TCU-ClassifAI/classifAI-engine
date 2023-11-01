@@ -115,7 +115,7 @@ To get a local copy up and running follow these simple example steps.
    ```
 
 
-`curl http://localhost:5000/` should return `{"message": "Hello, World!"}`
+`curl http://localhost:5000/healthcheck` should return `OK`
 
 
 <!-- USAGE EXAMPLES -->
