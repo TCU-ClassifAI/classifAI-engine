@@ -29,22 +29,34 @@ def summarize_content(content, max_tokens):
     return [chunk.split(".")[0] for chunk in content]
 
 
-def summarize_content_long(transcript: str, max_tokens: int = 8000) -> str:
+def summarize_content_long(
+    transcript: str, OPENAI_API_KEY: str, max_tokens: int = 8000, **kwargs
+) -> str:
     """Summarize the transcript into a short summary. Uses Chunking and GPT-4 for long transcripts.
 
     Args:
         transcript (str): The transcript to summarize.
+        OPENAI_API_KEY (str): The OpenAI API key.
         max_tokens (int, optional): The maximum number of tokens to use for the summary. Defaults to 8000.
+        **kwargs: Additional keyword arguments.
+            - text_model (str): The text model to use for summarization. Defaults to "gpt-4-1106-preview",
+            - temperature (float): The temperature to use for summarization. Defaults to 0.7.
 
     Returns:
         str: The summary of the transcript.
+
+    Raises:
+        ValueError: If the transcript is empty.
+
     """
 
     chunks = split_text_into_chunks(transcript, max_tokens=MAX_TOKENS)
 
     if len(chunks) == 1:
         # If there is only one chunk, use its summary directly
-        return summarize_content(chunks[0], MAX_TOKENS)
+        return summarize_content(
+            chunks[0], OPENAI_API_KEY, max_tokens=MAX_TOKENS, **kwargs
+        )
     else:
         # Summarize each chunk
         chunk_summaries = [summarize_content(chunk, MAX_TOKENS) for chunk in chunks]
