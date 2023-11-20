@@ -10,14 +10,29 @@ from concurrent.futures import ThreadPoolExecutor
 transcription = Blueprint("transcription", __name__)
 
 
-@transcription.route("/<username>")
-def get_profile(username):
-    return make_response(f"Hello {username}", 200)
+# @transcription.route("/<username>")
+# def get_profile(username):
+#     return make_response(f"Hello {username}", 200)
 
 
 @transcription.route("/healthcheck")
 def healthcheck():
     return make_response("OK", 200)
+
+
+@transcription.route("/help")
+def help():
+    content = """
+    <h1>WhisperX API</h1>
+    <h2>Endpoints</h2>
+    <ul>
+        <li><code>/healthcheck</code> - Healthcheck endpoint</li>
+        <li><code>/help</code> - Help page</li>
+        <li><code>/start_transcription</code> - Start a transcription job</li>
+        <li><code>/check_transcription</code> - Check the status of a transcription job</li>
+    </ul>
+    """
+    return make_response(content, 200)
 
 
 # Dictionary to store job status
