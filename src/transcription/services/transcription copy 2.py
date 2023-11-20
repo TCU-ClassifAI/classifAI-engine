@@ -62,8 +62,7 @@ class TranscriptionJob:
 
 def transcribe(file, job: TranscriptionJob):
     """
-    Transcription of an audio file using Whisper.
-    Use Celery to run in the background.
+    Transcription of an audio file using WhisperX.
 
     Args:
         file (File): Audio file to be transcribed.
@@ -137,23 +136,3 @@ def start_transcription(file, model_type: str, user_id: Optional[str] = None):
     executor.submit(transcribe, file, user_id, job_id, model_type)
 
     return job_status[job_id].to_json_string()
-
-
-# Example usage:
-if __name__ == "__main__":
-    job_id = start_transcription("court_audio.mp3", "tiny.en", user_id=123)
-    print(f"Started transcription job with ID: {job_id}")
-
-    # Check the progress every 5 seconds until the job is completed
-    while True:
-        result = check_transcription(job_id)
-        print(result)
-        print(f"Job Status: {result['status']}")
-        if result["status"] == "completed":
-            print(f"Result: {result['result']}")
-        # if duration is available, print it
-        if "duration" in result:
-            print(f"Duration: {result['duration']} seconds")
-        if result["status"] == "completed" or result["status"] == "failed":
-            break
-        time.sleep(5)
