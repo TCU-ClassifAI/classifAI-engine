@@ -12,7 +12,7 @@
 1. Clone the repo
 
    ```sh
-   git clone https://github.com/TCU-Instructional-AI/classifAI-engine.git
+   git clone https://github.com/TCU-ClassifAI/classifAI-engine.git
     cd classifAI-engine
     ```
 

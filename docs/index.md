@@ -3,7 +3,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/TCU-Instructional-AI/classifAI">
+  <a href="https://github.com/TCU-ClassifAI/classifAI">
     <img src="assets/logo.jpg" alt="Logo" width="128" height="128">
   </a>
 
@@ -12,21 +12,21 @@
   <p align="center">
     ClassifAI engine is a RESTful API that provides the heavy lifting for classifAI through audio transcription, question categorization, and insights.<br>
     <br />
-    <a href="https://github.com/TCU-Instructional-AI/classifAI"><strong>Visit The Portal »</strong></a>
+    <a href="https://github.com/TCU-ClassifAI/classifAI"><strong>Visit The Portal »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/TCU-Instructional-AI/classifAI-engine/issues">Report Bug</a>
+    <a href="https://github.com/TCU-ClassifAI/classifAI-engine/issues">Report Bug</a>
     ·
-    <a href="https://github.com/TCU-Instructional-AI/classifAI-engine/issues">Request Feature</a>
+    <a href="https://github.com/TCU-ClassifAI/classifAI-engine/issues">Request Feature</a>
     ·
-    <a href="https://github.com/TCU-Instructional-AI/classifAI-engine/issues">About the Project</a>
+    <a href="https://github.com/TCU-ClassifAI/classifAI-engine/issues">About the Project</a>
     
   </p>
 </div>
 
 
 <h4 align="center">
-  <a href="https://tcu-instructional-ai.github.io/classifai-docs/">Looking for main classifAI documentation?</a>
+  <a href="https://tcu-classifai.github.io/classifai-docs/">Looking for main classifAI documentation?</a>
 </h4>
 
 ## Getting Started
