@@ -2,8 +2,8 @@ from flask import Flask, make_response
 
 # from services.transcription import transcribe, start_transcription, check_transcription
 
-from transcription.profile import profile
-from transcription.views import transcription
+from services.transcription.profile import profile
+from services.transcription.views import transcription
 
 
 app = Flask(__name__)
