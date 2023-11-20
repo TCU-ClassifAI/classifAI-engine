@@ -3,25 +3,25 @@
 
 <br />
 <div align="center">
-  <a href="https://github.com/TCU-Instructional-AI/classifAI-engine">
+  <a href="https://github.com/TCU-ClassifAI/classifAI-engine">
     <img src="docs/assets/logo.jpg" alt="Logo" width="128" height="128">
   </a>
 
 <h2 align="center">ClassifAI Engine</h2>
 
   <p align="center">
-    ClassifAI engine is a RESTful API that provides the heavy lifting for <a href="https://github.com/TCU-Instructional-AI/classifAI">classifAI</a> through audio transcription, question categorization, and insights.<br>
+    ClassifAI engine is a RESTful API that provides the heavy lifting for <a href="https://github.com/TCU-ClassifAI/classifAI">classifAI</a> through audio transcription, question categorization, and insights.<br>
     <br />
-    <a href="https://tcu-instructional-ai.github.io/classifAI-engine/"><strong>Explore the docs »</strong></a>
+    <a href="https://tcu-classifai.github.io/classifAI-engine/"><strong>Explore the docs »</strong></a>
     <br /> 
     <br />
-    <a href="https://github.com/TCU-Instructional-AI/classifAI">Visit Portal</a>
+    <a href="https://github.com/TCU-ClassifAI/classifAI">Visit Portal</a>
     ·
-    <a href="https://github.com/TCU-Instructional-AI/classifAI-engine/issues">Report Bug</a>
+    <a href="https://github.com/TCU-ClassifAI/classifAI-engine/issues">Report Bug</a>
     ·
-    <a href="https://github.com/TCU-Instructional-AI/classifAI-engine/issues">Request Feature</a>
+    <a href="https://github.com/TCU-ClassifAI/classifAI-engine/issues">Request Feature</a>
     ·
-    <a href="https://github.com/TCU-Instructional-AI/classifAI/">Project Information</a>
+    <a href="https://github.com/TCU-ClassifAI/classifAI/">Project Information</a>
     
   </p>
 </div>
@@ -156,7 +156,7 @@ To get a local copy up and running follow these simple example steps.
 
 <!-- Get request to /get_transcription with job_id should return a status and a link to the transcription file (if relevant) -->
 
-_For more examples, please refer to the [Documentation](https://tcu-instructional-ai.github.io/classifAI-engine/)_
+_For more examples, please refer to the [Documentation](https://tcu-classifai.github.io/classifAI-engine/)_
 
 
 
@@ -176,7 +176,7 @@ _For more examples, please refer to the [Documentation](https://tcu-instructiona
 
 
 
-See the [open issues](https://github.com/TCU-Instructional-AI/classifAI/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/TCU-ClassifAI/classifAI/issues) for a full list of proposed features (and known issues).
 
 
 
@@ -189,7 +189,7 @@ Contributions are what make the open source community such an amazing place to l
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
 
-### __[Instructions for Contribution](https://tcu-instructional-ai.github.io/classifAI-engine/contribution/contributing/)__
+### __[Instructions for Contribution](https://tcu-classifai.github.io/classifAI-engine/contribution/contributing/)__
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -200,7 +200,7 @@ Don't forget to give the project a star! Thanks again!
 
 [Learn About the Team](http://riogrande.cs.tcu.edu/2324InstructionalEffectiveness)
 
-Project Link: [https://github.com/TCU-Instructional-AI/classifAI](https://github.com/TCU-Instructional-AI/classifAI)
+Project Link: [https://github.com/TCU-ClassifAI/classifAI](https://github.com/TCU-ClassifAI/classifAI)
 
 
 
