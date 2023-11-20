@@ -1,6 +1,6 @@
 import unittest
 import sys
-from services.validation import validate_query_for_transcription
+from transcription.validation import validate_query_for_transcription
 
 sys.path.append("..")
 
