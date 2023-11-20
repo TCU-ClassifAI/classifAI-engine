@@ -4,6 +4,9 @@
 
 ## Directory Structure of the Engine
 
+### This Engine runs on Flask, Celery, and Redis.
+
+In order to be modular, we use [Flask Blueprints](https://flask.palletsprojects.com/en/3.0.x/blueprints/#) to organize our code. 
 
 ```bash
 C: ClassifAI-engine
@@ -14,12 +17,34 @@ C: ClassifAI-engine
 │   ├───contribution
 │   └─── # Documentation files. See docs/contribution/editing_docs.md for more information.
 └───src
-    ├───app.py # main file
+    ├───run.py # main file, this imports the services and runs the engine
     ├───services # services that the engine provides. 
-    ├───settings # settings for the engine (development, production, etc.)
+    ├───config # settings for the engine (development, production, etc.)
     ├───requirements.txt and requirements-dev.txt # Python dependencies
     └───tests # Test suite
 ```
+
+## Structure of the 'services' folder
+
+```bash
+C: Services
+├───transcription # Contains the transcription service
+│   ├───views.py # Contains the API for the transcription service (endpoints)
+│   ├───tasks.py # Config for task queueing of the transcription service (Celery)
+│   └───validate.py # Validates the input for the transcription service
+├─── classification # Contains the classification service
+│   ├───views.py # Contains the API for the classification service (endpoints)
+│   ├─── # TODO: Add Utils
+│   └─── # TODO: Add Tasks and Validation
+├───sentiment # Contains the sentiment service
+│   ├───views.py # Contains the API for the sentiment service (endpoints)
+│   ├───tasks # Contains the tasks for the sentiment service
+│   └───utils # Contains the utils for the sentiment service
+├───summarize # Contains the summarization service
+│   ├───views.py # Contains the API for the summarization service (endpoints)
+│   ├───validate.py # Validates the input for the summarization service
+│   └───utils.py # Contains the utils for the summarization service
+
 
 ## Other Files
 
