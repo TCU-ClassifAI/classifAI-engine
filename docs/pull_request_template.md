@@ -17,7 +17,7 @@
 ## Checklist
 
 - [ ] I have tested these changes locally
-- [ ] My code follows the [style guidelines](https://tcu-instructional-ai.github.io/classifAI-engine/contribution/style_guide/) of this project
+- [ ] My code follows the [style guidelines](https://tcu-classifai.github.io/classifAI-engine/contribution/style_guide/) of this project
 - [ ] I have performed a self-review of my own code
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] I have updated the documentation, if applicable
