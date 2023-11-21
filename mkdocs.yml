@@ -6,7 +6,7 @@ nav:
   - Installation: installation.md
   - 'API Reference':
     - Transcription: api/api_transcription.md
-    - Classification: api/api_classification.md
+    - Classify Questions: api/api_classification.md
     - Summarization: api/api_summarization.md
     - API Key Instructions: api/api_key.md
   - 'Contribution':
