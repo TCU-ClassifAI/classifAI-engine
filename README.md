@@ -59,25 +59,15 @@
   </p>
 </div>
 
-***
+
 [![GitHub contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-*** 
-### Built With
-[![Flask][Flask-shield]][Flask-url]
-[![Torch][Torch-shield]][Torch-url]
-[![OpenAI][OpenAI-shield]][OpenAI-url]
-[![Celery][Celery-shield]][Celery-url]
-[![Redis][Redis-shield]][Redis-url]
-[![MongoDB for Python][MongoDB-shield]][MongoDB-url]
-[![Pydantic][Pydantic-shield]][Pydantic-url]
 
 
-
-    
+***    
 
 
 
@@ -121,16 +111,14 @@ ClassifAI engine provides the heavy lifting for classifAI. It is a RESTful API t
 
 
 
-
-
 ### Built With
-
-* [Flask](https://flask.palletsprojects.com/)
-* [Torch](https://pytorch.org/)
-* [WhisperX](https://github.com/m-bain/whisperX), a fork of Whisper that offers faster-whisper, word-level alignments, batching, diarization, and more.
-* [Celery](https://docs.celeryproject.org/en/stable/index.html)
-* [Redis](https://redis.io/)
-* Firebase (Storage, Firestore, Authentication)
+[![Flask][Flask-shield]][Flask-url]
+[![Torch][Torch-shield]][Torch-url]
+[![OpenAI][OpenAI-shield]][OpenAI-url]
+[![Celery][Celery-shield]][Celery-url]
+[![Redis][Redis-shield]][Redis-url]
+[![MongoDB for Python][MongoDB-shield]][MongoDB-url]
+[![Pydantic][Pydantic-shield]][Pydantic-url]
   
 
 
@@ -178,13 +166,13 @@ To get a local copy up and running follow these simple example steps.
 
 #### start_transcription
 
-* **URL:** `/start_transcription`
+* **URL:** `/transcription/start_transcription`
 * **Method:** `POST`
 * **Data Params:** (Request with file)
 
 #### get_transcription
 
-* **URL:** `/get_transcription`
+* **URL:** `/transcription/get_transcription`
 * **Method:** `GET`
 * **Data Params:** 
   - `job_id` (string)
@@ -204,7 +192,6 @@ To get a local copy up and running follow these simple example steps.
       "message": "Transcription job not found"
     }
     ```
-
 
 
 <!-- Get request to /get_transcription with job_id should return a status and a link to the transcription file (if relevant) -->
@@ -255,14 +242,19 @@ Don't forget to give the project a star! Thanks again!
 
 Project Link: [https://github.com/TCU-ClassifAI/classifAI](https://github.com/TCU-ClassifAI/classifAI)
 
-Instructio
+View the Portal: [http://classifai.tcu.edu/](http://classifai.tcu.edu/)
 
-<!-- ACKNOWLEDGMENTS
+## License
+
+This project is licensed under the GNU GPLv3 License - see the [LICENSE](LICENSE) file for details. The GNU GPLv3 License is a free, copyleft license for software and other kinds of works.
+
+<!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []() -->
+* [TCU Computer Science Department](https://cs.tcu.edu/)
+* [Our Clients](https://ai.tcu.edu/#/ai4edu)
+* [Dr. Bingyang Wei](https://personal.tcu.edu/bwei/)
+* [Dr. Michael Denkowski](https://www.mjdenkowski.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
