@@ -2,7 +2,9 @@ site_name: ClassifAI Engine Documentation
 site_url: https://classifai.github.io/classifai-engine/
 nav:
   - Home: index.md
-  - About: about.md
+  - About: 
+    - About: about/about.md
+    - Changelog: about/changelog.md
   - Installation: installation.md
   - 'API Reference':
     - Transcription: api/api_transcription.md
@@ -15,7 +17,6 @@ nav:
     - 'Style Guide': contribution/style_guide.md
     - 'Pre-Commit Hooks': contribution/instructions_for_pre-commit.md
   - 'Project Structure': structure.md
-  - 'Changelog': changelog.md
   - 'Transcription Model Information': transcription.md
 theme:
   name: material

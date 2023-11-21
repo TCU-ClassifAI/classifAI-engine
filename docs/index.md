@@ -33,13 +33,19 @@
 
 Please read the [installation](installation.md) guide for instructions on how to install the engine.
 
-For usage instructions, check out the [API Documentation](api.md).
+For usage instructions, check out the [API Documentation](api/api_transcription.md).
 
 ## List of Pages of Documentation
 
 - [Home](index.md)
-- [About](about.md)
-- [API Reference](api.md)
+- About > 
+    - [About](about/about.md)
+    - [Change Log](about/changelog.md)
+- API Reference
+    - [Transcription](api/api_transcription.md)
+    - [Classification](api/api_classification.md)
+    - [Summarization](api/api_summarization.md)
+    - [API Key Management](api/api_key.md)
 - [Installation](installation.md)
 - Contribution > 
     - [Contribution Overview](contribution/contributing.md)
@@ -47,6 +53,5 @@ For usage instructions, check out the [API Documentation](api.md).
     - [Style Guide](contribution/style_guide.md)
     - [Pre-Commit Hooks](contribution/instructions_for_pre-commit.md)
 - [Project Structure](structure.md)
-- [Change Log](changelog.md)
 - [Transcription Model Information](transcription.md)
 - Question Categorization Model Information (TBD)

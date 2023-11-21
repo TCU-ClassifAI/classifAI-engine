@@ -11,33 +11,33 @@
 
 1. Clone the repo
 
-   ```sh
-   git clone https://github.com/TCU-ClassifAI/classifAI-engine.git
-    cd classifAI-engine
-    ```
+```sh
+git clone https://github.com/TCU-ClassifAI/classifAI-engine.git
+cd classifAI-engine
+```
 
 2. Install Python packages
 
-    ```sh
-     pip install -r src/requirements.txt -r src/requirements-dev.txt
-     ```
+```sh
+pip install -r src/requirements.txt -r src/requirements-dev.txt
+```
 
 3. Install ffmpeg
 
-    ```sh
-     sudo apt install ffmpeg # Ubuntu
-     brew install ffmpeg # MacOS
-     ```
+```sh
+sudo apt install ffmpeg # Ubuntu
+brew install ffmpeg # MacOS
+```
 
 4. Launch the API
 
-    ```sh
-     python src/app.py
-     ```
+```sh
+python src/run.py
+```
 
 
-### Test: 
+## Test
 `curl http://localhost:5000/healthcheck` should return `OK`
 
 
-More usage can be found in the [API Documentation](api.md).
+More usage can be found in the [API Documentation](api/api_transcription.md).
