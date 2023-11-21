@@ -29,6 +29,9 @@ def start_transcription(file: File, model_type: str, user_id: Optional[str] = No
 
 Please write tests for your code. We use pytest for our testing framework. 
 
+Tests are located in the `src/tests` directory! 
+You can run all tests with `pytest` from the root directory. Simple! See [pytest documentation](https://docs.pytest.org/en/6.2.x/) for more information.
+
 ## Type Hints
 
 We encourage type hints for all functions and classes. Please see [PEP 484](https://www.python.org/dev/peps/pep-0484/) for more information on type hints.
