@@ -7,6 +7,7 @@ nav:
     - Changelog: about/changelog.md
   - Installation: installation.md
   - 'API Reference':
+    - 'API Reference': api/api.md
     - Transcription: api/api_transcription.md
     - Classify Questions: api/api_classification.md
     - Summarization: api/api_summarization.md

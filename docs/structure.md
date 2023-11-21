@@ -27,7 +27,7 @@ C: ClassifAI-engine
 ## Structure of the 'services' folder
 
 ```bash
-C: Services
+C: services
 ├───transcription # Contains the transcription service
 │   ├───views.py # Contains the API for the transcription service (endpoints)
 │   ├───tasks.py # Config for task queueing of the transcription service (Celery)
@@ -44,7 +44,7 @@ C: Services
 │   ├───views.py # Contains the API for the summarization service (endpoints)
 │   ├───validate.py # Validates the input for the summarization service
 │   └───utils.py # Contains the utils for the summarization service
-``````
+```
 
 ## Other Files
 
@@ -72,4 +72,4 @@ The engine functions as a RESTful API. The API is the main entry point for the e
 
 * Both the client and engine share a database. This is so we are not passing over entire audio files to the engine. Instead, we pass over the file path to the audio file. The engine then reads the file from the database. This is more efficient than passing over the entire audio file.
 
-For expectations of the API, check out the [API Documentation](api.md).
+For expectations of the API, check out the [API Documentation](api/api.md).
