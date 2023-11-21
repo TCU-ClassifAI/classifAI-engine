@@ -1,15 +1,15 @@
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/TCU-ClassifAI/classifAI.svg?style=for-the-badge
-[contributors-url]: https://github.com/TCU-ClassifAI/classifAI/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/TCU-ClassifAI/classifAI.svg?style=for-the-badge
-[forks-url]: https://github.com/TCU-ClassifAI/classifAI/network/members
-[stars-shield]: https://img.shields.io/github/stars/TCU-ClassifAI/classifAI.svg?style=for-the-badge
-[stars-url]: https://github.com/TCU-ClassifAI/classifAI/stargazers
-[issues-shield]: https://img.shields.io/github/issues/TCU-ClassifAI/classifAI.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/TCU-ClassifAI/classifAI-engine.svg?style=for-the-badge
+[contributors-url]: https://github.com/TCU-ClassifAI/classifAI-engine/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/TCU-ClassifAI/classifAI-engine.svg?style=for-the-badge
+[forks-url]: https://github.com/TCU-ClassifAI/classifAI-engine/network/members
+[stars-shield]: https://img.shields.io/github/stars/TCU-ClassifAI/classifAI-engine.svg?style=for-the-badge
+[stars-url]: https://github.com/TCU-ClassifAI/classifAI-engine/stargazers
+[issues-shield]: https://img.shields.io/github/issues/TCU-ClassifAI/classifAI-engine.svg?style=for-the-badge
 [issues-url]: https://github.com/TCU-ClassifAI/classifAI-engine/issues
 [license-shield]: https://img.shields.io/github/license/TCU-ClassifAI/classifAI-engine.svg?style=for-the-badge
-[license-url]: https://github.com/TCU-ClassifAI/classifAI/blob/master/LICENSE.txt
+[license-url]: https://github.com/TCU-ClassifAI/classifAI-engine/blob/master/LICENSE.txt
 
 
 
