@@ -19,6 +19,14 @@
 [OpenAI-url]: https://openai.com/
 [Torch-shield]: https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white
 [Torch-url]: https://pytorch.org/
+[Celery-shield]: https://img.shields.io/badge/Celery-37814A?style=for-the-badge&logo=celery&logoColor=white
+[Celery-url]: https://docs.celeryproject.org/en/stable/index.html
+[Redis-shield]: https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white
+[Redis-url]: https://redis.io/
+[MongoDB-shield]: https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white
+[MongoDB-url]: https://www.mongodb.com/
+[Pydantic-shield]: https://img.shields.io/badge/Pydantic-2B7AFD?style=for-the-badge&logo=pydantic&logoColor=white
+[Pydantic-url]: https://pydantic-docs.helpmanual.io/
 
 
 <a name="readme-top"></a>
@@ -57,9 +65,18 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+*** 
+### Built With
 [![Flask][Flask-shield]][Flask-url]
-[![OpenAI][OpenAI-shield]][OpenAI-url]
 [![Torch][Torch-shield]][Torch-url]
+[![OpenAI][OpenAI-shield]][OpenAI-url]
+[![Celery][Celery-shield]][Celery-url]
+[![Redis][Redis-shield]][Redis-url]
+[![MongoDB for Python][MongoDB-shield]][MongoDB-url]
+[![Pydantic][Pydantic-shield]][Pydantic-url]
+
+
+
     
 
 
