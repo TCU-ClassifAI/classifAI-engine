@@ -4,7 +4,11 @@ nav:
   - Home: index.md
   - About: about.md
   - Installation: installation.md
-  - 'API Reference': api.md
+  - 'API Reference':
+    - Transcription: api/api_transcription.md
+    - Classification: api/api_classification.md
+    - Summarization: api/api_summarization.md
+    - API Key Instructions: api/api_key.md
   - 'Contribution':
     - Contribute: contribution/contributing.md
     - Edit the Docs: contribution/editing_docs.md
