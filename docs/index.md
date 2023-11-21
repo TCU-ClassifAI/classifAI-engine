@@ -26,7 +26,7 @@
 
 
 <h4 align="center">
-  <a href="https://tcu-classifai.github.io/classifai-docs/">Looking for main classifAI documentation?</a>
+  <a href="https://tcu-classifai.github.io/classifAI/">Looking for main classifAI documentation?</a>
 </h4>
 
 ## Getting Started
