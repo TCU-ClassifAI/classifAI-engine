@@ -231,9 +231,11 @@ Don't forget to give the project a star! Thanks again!
 
 ### __[Instructions for Contribution](https://tcu-classifai.github.io/classifAI-engine/contribution/contributing/)__
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+## License
 
+This project is licensed under the GNU GPLv3 License - see the [LICENSE](LICENSE) file for details. The GNU GPLv3 License is a free, copyleft license for software and other kinds of works.
 
+Note that this license only applies *to the engine.* Please see the [classifAI portal](https://github.com/TCU-ClassifAI/classifAI) for more information on the license for the portal.
 
 <!-- CONTACT -->
 ## Contact
@@ -244,11 +246,6 @@ Project Link: [https://github.com/TCU-ClassifAI/classifAI](https://github.com/TC
 
 View the Portal: [http://classifai.tcu.edu/](http://classifai.tcu.edu/)
 
-## License
-
-This project is licensed under the GNU GPLv3 License - see the [LICENSE](LICENSE) file for details. The GNU GPLv3 License is a free, copyleft license for software and other kinds of works.
-
-Note that this license only applies *to the engine.* Please see the [classifAI portal](https://github.com/TCU-ClassifAI/classifAI) for more information on the license for the portal.
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
