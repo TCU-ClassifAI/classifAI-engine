@@ -44,7 +44,7 @@ C: Services
 │   ├───views.py # Contains the API for the summarization service (endpoints)
 │   ├───validate.py # Validates the input for the summarization service
 │   └───utils.py # Contains the utils for the summarization service
-
+``````
 
 ## Other Files
 
