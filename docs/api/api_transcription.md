@@ -1,8 +1,8 @@
-# API Reference
+# API Reference - Transcription
 
 !!! abstract "API KEY INSTRUCTIONS"
 
-    Ensure that you include your API key in all requests by using the following format: curl -H "X-API-KEY: MYAPIKEY" https://api.mydomain.com/v1/users. [Need an API key or instructions on how to obtain one?](mailto:meow)
+    Ensure that you include your API key in all requests by using the following format: curl -H "X-API-KEY: MYAPIKEY" https://api.mydomain.com/v1/users. [Need an API key or instructions on how to obtain one?](api_key.md)
 
 ### Start a Transcription
 
@@ -24,7 +24,7 @@ model_type| string| Model Type. Can be "large", "medium", "medium.en", "tiny.en"
 
 #### Example Request
 
-![localhost:5000/start_transcription](assets/example_start_transcription.png?raw=true "Example Request")
+![localhost:5000/start_transcription](../assets/example_start_transcription.png?raw=true "Example Request")
 
 #### Example Response
 
@@ -82,7 +82,7 @@ job_id | string | This is the job ID. It can be used to check the status of the 
 
 #### Example Request
 
-![localhost:5000/get_transcription?job_id=a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee](assets/example_get_transcription.png?raw=true "Example Request")
+![localhost:5000/get_transcription?job_id=a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee](../assets/example_get_transcription.png?raw=true "Example Request")
 
 Element | Type | Description | Required?
 ------- | ---- | ----------- | ---------
@@ -154,12 +154,8 @@ Element | Type | Description | Required?
 
 Element | Type | Description
 ------- | ---- | -----------
-`{"job_id": "a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee", "model_type": "tiny.en", "status": "in progress", "state": "loading
-model", "start_time": 1698877559.0479097, "duration": 22.8137366771698}` | Object | [Brief description of what information the element represents]
-`{"job_id": "a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee", "model_type": "tiny.en", "status": "in progress", "state": "loading
-[Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents]
-[Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents]
-[Element as it appears in response] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents]
+`{"job_id": "a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee", "model_type": "tiny.en", "status": "in progress", "state": "loading model", "start_time": 1698877559.0479097, "duration": 22.8137366771698}` | Object | [Brief description of what information the element represents]
+
 
 #### Error and Status Codes
 
