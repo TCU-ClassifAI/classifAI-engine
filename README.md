@@ -248,13 +248,15 @@ View the Portal: [http://classifai.tcu.edu/](http://classifai.tcu.edu/)
 
 This project is licensed under the GNU GPLv3 License - see the [LICENSE](LICENSE) file for details. The GNU GPLv3 License is a free, copyleft license for software and other kinds of works.
 
+Note that this license only applies *to the engine.* Please see the [classifAI portal](https://github.com/TCU-ClassifAI/classifAI) for more information on the license for the portal.
+
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [TCU Computer Science Department](https://cs.tcu.edu/)
-* [Our Clients](https://ai.tcu.edu/#/ai4edu)
-* [Dr. Bingyang Wei](https://personal.tcu.edu/bwei/)
-* [Dr. Michael Denkowski](https://www.mjdenkowski.com/)
+* [TCU Computer Science Department](https://cs.tcu.edu/), for funding this project
+* [Our Clients](https://ai.tcu.edu/#/ai4edu), for providing us with the opportunity to work on this project and continued support
+* [Dr. Bingyang Wei](https://personal.tcu.edu/bwei/), for being our faculty advisor
+* [Dr. Michael Denkowski](https://www.mjdenkowski.com/), for advising us on our NLP models
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
