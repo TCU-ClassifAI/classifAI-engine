@@ -10,11 +10,6 @@ from concurrent.futures import ThreadPoolExecutor
 transcription = Blueprint("transcription", __name__)
 
 
-# @transcription.route("/<username>")
-# def get_profile(username):
-#     return make_response(f"Hello {username}", 200)
-
-
 @transcription.route("/healthcheck")
 def healthcheck():
     return make_response("OK", 200)
