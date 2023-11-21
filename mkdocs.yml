@@ -15,15 +15,19 @@ nav:
   - 'Transcription Model Information': transcription.md
 theme:
   name: material
+  features:
+    - navigation.tabs
   palette:
-    - scheme: slate
-      toggle:
-        icon: material/weather-sunny
-        name: Switch to light mode
     - scheme: default
+      primary: deep purple
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
+    - scheme: slate
+      primary: deep purple
+      toggle:
+        icon: material/weather-day
+        name: Switch to light mode
   font:
     code: Roboto Mono
   logo: assets/gears.png
