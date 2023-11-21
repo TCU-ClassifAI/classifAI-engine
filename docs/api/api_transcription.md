@@ -10,7 +10,7 @@ This endpoint kicks off a transcription job. It returns a job ID that can be use
 
 #### HTTP Method and URL
 
-`POST https://api.classifai.tcu.edu/start_transcription`
+`POST https://api.classifai.tcu.edu/transcription/start_transcription`
 
 #### Parameters
 
@@ -24,7 +24,7 @@ model_type| string| Model Type. Can be "large", "medium", "medium.en", "tiny.en"
 
 #### Example Request
 
-![localhost:5000/start_transcription](../assets/example_start_transcription.png?raw=true "Example Request")
+![localhost:5000/transcription/start_transcription](../assets/example_start_transcription.png?raw=true "Example Request")
 
 #### Example Response
 
@@ -70,7 +70,7 @@ This endpoint returns the status of a transcription job. It can be used to check
 
 #### HTTP Method and URL
 
-`GET https://api.classifai.tcu.edu/get_transcription`
+`GET https://api.classifai.tcu.edu/transcription/get_transcription`
 
 #### Parameters
 
