@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response
+from flask import Blueprint, make_response, current_app, request
 from typing import Optional
 import time
 import uuid
@@ -140,6 +140,27 @@ def check_transcription(job_id):
 
 
 @transcription.route("/start_transcription", methods=["POST"])
+def start_transcription_endpoint():
+    if "file" not in request.files:
+        return make_response("No file uploaded", 400)
+
+    file = request.files["file"]
+
+    print(current_app.config.get("MODEL_TYPE"))
+    # print the file name
+    print(file.filename)
+
+    model_type = (
+        request.form["model_type"]
+        if "model_type" in request.form
+        else current_app.config.get("MODEL_TYPE", "tiny.en")
+    )
+
+    job_id = start_transcription(file, model_type)
+
+    return make_response(job_id, 200)
+
+
 def start_transcription(file, model_type: str, user_id: Optional[str] = None):
     """
     Start transcription of an audio file using Whisper.
