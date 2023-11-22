@@ -1,4 +1,5 @@
 from flask import Flask, make_response
+import os
 
 # from services.transcription import transcribe, start_transcription, check_transcription
 
@@ -6,15 +7,10 @@ from services.transcription.profile import profile
 from services.transcription.views import transcription
 
 
-app = Flask(__name__)
-app.register_blueprint(profile, url_prefix="/profile")
-app.register_blueprint(transcription, url_prefix="/transcription")
-
-
-# if os.environ.get("ENV") == "production":
-#     from settings import production as config
-# else:
-#     from settings import development as config
+if os.environ.get("ENV") == "production":
+    from config import production as settings
+else:
+    from config import development as settings
 
 
 # @app.route("/start_transcription", methods=["POST"])
@@ -64,10 +60,19 @@ app.register_blueprint(transcription, url_prefix="/transcription")
 #     except Exception as e:
 #         return make_response(str(e), 500)
 
+app = Flask(__name__)
+app.register_blueprint(profile, url_prefix="/profile")
+app.register_blueprint(transcription, url_prefix="/transcription")
+
 
 @app.route("/healthcheck", methods=["GET"])
 def healthcheck():
     return make_response("OK", 200)
+
+
+@app.route("/config", methods=["GET"])
+def config():
+    return make_response(str(settings.SETTINGS_TYPE), 200)
 
 
 @app.errorhandler(404)
