@@ -25,6 +25,7 @@ def help():
         <li><code>/help</code> - Help page</li>
         <li><code>/start_transcription</code> - Start a transcription job</li>
         <li><code>/check_transcription</code> - Check the status of a transcription job</li>
+        <li><code>/config</code> - Get the current configuration</li>
     </ul>
     """
     return make_response(content, 200)
