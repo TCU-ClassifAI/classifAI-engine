@@ -50,6 +50,10 @@ def config():
     return make_response(str(settings.SETTINGS_TYPE), 200)
 
 
+def create_app():
+    return app
+
+
 if __name__ == "__main__":
     local = True if os.environ.get("ENV") == "development" else False
     app.run(debug=True)
