@@ -1,3 +1,4 @@
 flask
-whisper_timestamped
+openai-whisper
+python-dotenv
 openai
