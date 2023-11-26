@@ -21,7 +21,6 @@ app.register_blueprint(transcription, url_prefix="/transcription")
 @app.route("/help", methods=["GET"])
 def help():
     """Forwards to the documentation page (https://tcu-classifai.github.io/classifAI-engine/)"""
-
     return redirect("https://tcu-classifai.github.io/classifAI-engine/", code=302)
 
 
@@ -42,12 +41,20 @@ def index():
 
 @app.route("/healthcheck", methods=["GET"])
 def healthcheck():
+    """Healthcheck endpoint for API
+
+    Returns: OK
+    """
     return make_response("OK", 200)
 
 
 @app.route("/config", methods=["GET"])
 def config():
     return make_response(str(settings.SETTINGS_TYPE), 200)
+
+
+def create_app():
+    return app
 
 
 if __name__ == "__main__":
