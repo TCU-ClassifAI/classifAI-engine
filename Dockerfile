@@ -17,5 +17,5 @@ COPY src/ ./
 EXPOSE 5000
 
 # Run the specified command within the container.
-CMD [ "python", "./app.py" ]
+CMD [ "python", "./run.py" ]
 
