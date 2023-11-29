@@ -1,7 +1,5 @@
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import (
-    create_access_token,
-)
+from flask_jwt_extended import create_access_token, jwt_required
 from dataclasses import dataclass
 import uuid
 
@@ -50,3 +48,9 @@ def login():
     print(username)
     print(password)
     return jsonify({"msg": "Bad username or password"}), 401
+
+
+@auth.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    return jsonify({"msg": "Success!"}), 200
