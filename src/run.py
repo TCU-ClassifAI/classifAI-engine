@@ -3,6 +3,9 @@ import os
 from dotenv import load_dotenv
 from services.transcription.profile import profile
 from services.transcription.views import transcription
+from services.auth import auth
+from flask_jwt_extended import JWTManager
+import secrets
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -16,6 +19,13 @@ else:
 app = Flask(__name__)
 app.register_blueprint(profile, url_prefix="/profile")
 app.register_blueprint(transcription, url_prefix="/transcription")
+app.register_blueprint(auth, url_prefix="/auth")
+
+# Initialize JWT Manager
+app.config["JWT_SECRET_KEY"] = secrets.token_urlsafe(
+    32
+)  # This dynamically generates a secure key at runtime
+jwt = JWTManager(app)
 
 
 @app.route("/help", methods=["GET"])
