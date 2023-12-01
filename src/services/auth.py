@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token, jwt_required
 from dataclasses import dataclass
 import uuid
+import secrets
 
 
 auth = Blueprint("auth", __name__)
@@ -9,20 +10,19 @@ auth = Blueprint("auth", __name__)
 
 @dataclass
 class User(object):
-    username: str
-    password: str
+    api_key: str = str(secrets.token_urlsafe(32))
     id: str = str(uuid.uuid4())
 
 
 # Use a dictionary with usernames as keys in userid_table
 userid_table = {
-    "admin": User(username="admin", password="admin")
+    "admin": User(api_key="admin", id="admin"),
 }  # Replace with a database
 
 
-def authenticate(username, password):
-    user = userid_table.get(username, None)
-    if user and password == user.password:
+def authenticate(api_key, username=None):
+    user = userid_table.get(api_key, None)
+    if user:
         return user
 
 
