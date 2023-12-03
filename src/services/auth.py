@@ -33,21 +33,17 @@ def identity(payload):
 
 @auth.route("/login", methods=["POST"])
 def login():
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
+    api_key = request.json.get("api_key", None)
+    if not api_key:
+        return jsonify({"msg": "Missing api_key parameter"}), 400
 
-    if not username or not password:
-        return jsonify({"msg": "Missing username or password"}), 400
+    user = authenticate(api_key)
+    if not user:
+        return jsonify({"msg": "Bad api_key"}), 401
 
-    user = authenticate(username, password)
-
-    if user:
-        access_token = create_access_token(identity=user.id)
-        return jsonify(access_token=access_token), 200
-
-    print(username)
-    print(password)
-    return jsonify({"msg": "Bad username or password"}), 401
+    # Identity can be any data that is json serializable
+    access_token = create_access_token(identity=user.id)
+    return jsonify(access_token=access_token), 200
 
 
 @auth.route("/protected", methods=["GET"])
