@@ -1,4 +1,5 @@
 flask
 openai-whisper
+faster-whisper
 python-dotenv
 openai
