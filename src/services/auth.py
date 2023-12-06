@@ -1,52 +1,34 @@
-from flask import Blueprint, request, jsonify
-from flask_jwt_extended import create_access_token, jwt_required
-from dataclasses import dataclass
-import uuid
-import secrets
 
 
-auth = Blueprint("auth", __name__)
+from flask import request, make_response
+
+def api_key_required(func):
+    """
+    Decorator to check for API key in request header.
+    @param func: Function to decorate
+
+    @return: Wrapper function
+    """
+    def wrapper(*args, **kwargs):
+        api_key = request.headers.get('API-Key')
+
+        # Check if API key is present in the environment or any other desired validation
+        if api_key and validate_api_key(api_key):
+            # If the API key is valid, proceed with the decorated function
+            return func(*args, **kwargs)
+        else:
+            # If the API key is not valid, return a 401 Unauthorized response
+            return make_response("Unauthorized. Pleae add a header with the key API-Key and your secret key.", 401)
+
+    return wrapper
+
+def validate_api_key(api_key):
+    """
+    Validate the API key. Currently it has a basic functionality
+
+    @param api_key: API key to validate
+    @return: True if the API key is valid, False otherwise
+    """
+    return api_key == "secret_key"
 
 
-@dataclass
-class User(object):
-    api_key: str = str(secrets.token_urlsafe(32))
-    id: str = str(uuid.uuid4())
-
-
-# Use a dictionary with usernames as keys in userid_table
-userid_table = {
-    "admin": User(api_key="admin", id="admin"),
-}  # Replace with a database
-
-
-def authenticate(api_key, username=None):
-    user = userid_table.get(api_key, None)
-    if user:
-        return user
-
-
-def identity(payload):
-    user_id = payload["identity"]
-    return userid_table.get(user_id, None)
-
-
-@auth.route("/login", methods=["POST"])
-def login():
-    api_key = request.json.get("api_key", None)
-    if not api_key:
-        return jsonify({"msg": "Missing api_key parameter"}), 400
-
-    user = authenticate(api_key)
-    if not user:
-        return jsonify({"msg": "Bad api_key"}), 401
-
-    # Identity can be any data that is json serializable
-    access_token = create_access_token(identity=user.id)
-    return jsonify(access_token=access_token), 200
-
-
-@auth.route("/protected", methods=["GET"])
-@jwt_required()
-def protected():
-    return jsonify({"msg": "Success!"}), 200

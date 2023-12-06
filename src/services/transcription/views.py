@@ -6,7 +6,7 @@ import json
 from dataclasses import dataclass, asdict
 import whisper
 from concurrent.futures import ThreadPoolExecutor
-from flask_jwt_extended import jwt_required
+# from flask_jwt_extended import jwt_required
 
 transcription = Blueprint("transcription", __name__)
 
@@ -123,7 +123,7 @@ def transcribe(file, job: TranscriptionJob):
 
 
 @transcription.route("/check_transcription", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def check_transcription(job_id):
     """
     Check the status of a transcription job by job_id.
@@ -143,7 +143,7 @@ def check_transcription(job_id):
 
 
 @transcription.route("/start_transcription", methods=["POST"])
-@jwt_required()
+# @jwt_required()
 def start_transcription_endpoint():
     if "file" not in request.files:
         return make_response("No file uploaded", 400)
