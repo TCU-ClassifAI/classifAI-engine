@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 from services.transcription.profile import profile
 from services.transcription.views import transcription
 from services.auth import api_key_required, validate_api_key
-# from flask_api_key import APIKeyManager
 import secrets
 
 load_dotenv()  # Load environment variables from .env file
@@ -19,16 +18,6 @@ else:
 app = Flask(__name__)
 app.register_blueprint(profile, url_prefix="/profile")
 app.register_blueprint(transcription, url_prefix="/transcription")
-# app.register_blueprint(auth, url_prefix="/auth")
-
-# # Initialize JWT Manager
-# app.config["JWT_SECRET_KEY"] = secrets.token_urlsafe(
-#     32
-# )  # This dynamically generates a secure key at runtime
-# jwt = JWTManager(app)
-
-# key_manager = APIKeyManager(app)
-
 
 
 
@@ -76,14 +65,7 @@ def secure():
 def create_app():
     return app
 
-# @app.route("/create_key", methods=["GET"])
-# def create_key():
-#     key = key_manager.create("HelloWorld")
-#     return print(key.secret)
 
 if __name__ == "__main__":
     local = True if os.environ.get("ENV") == "development" else False
     app.run(debug=True)
-    # my_key = key_manager.create("HellowWorld")
-
-    # print(my_key)
