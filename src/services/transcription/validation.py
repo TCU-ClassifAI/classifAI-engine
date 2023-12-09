@@ -46,4 +46,7 @@ def validate_query_for_transcription(query_string: str):
 
     return ValidationResponse(True)
 
-    # Check to ensure path is in the database
+
+# Check to ensure path is in the database
+def validate_path(path: str):
+    return True
