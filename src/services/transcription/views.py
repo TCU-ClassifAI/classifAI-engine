@@ -6,7 +6,7 @@ import json
 from dataclasses import dataclass, asdict
 import whisper
 from concurrent.futures import ThreadPoolExecutor
-from auth import api_key_required, validate_api_key
+from auth import api_key_required
 
 transcription = Blueprint("transcription", __name__)
 

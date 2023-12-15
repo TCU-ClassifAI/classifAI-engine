@@ -1,5 +1,6 @@
 from flask import request, make_response
 
+
 def api_key_required(func):
     """
     Decorator to check for API key in request header.
@@ -7,8 +8,9 @@ def api_key_required(func):
 
     @return: Wrapper function
     """
+
     def wrapper(*args, **kwargs):
-        api_key = request.headers.get('API-Key')
+        api_key = request.headers.get("API-Key")
 
         # Check if API key is present in the environment or any other desired validation
         if api_key and validate_api_key(api_key):
@@ -16,9 +18,13 @@ def api_key_required(func):
             return func(*args, **kwargs)
         else:
             # If the API key is not valid, return a 401 Unauthorized response
-            return make_response("Unauthorized. Pleae add a header with the key API-Key and your secret key.", 401)
+            return make_response(
+                "Unauthorized. Pleae add a header with the key API-Key and your secret key.",
+                401,
+            )
 
     return wrapper
+
 
 def validate_api_key(api_key):
     """
@@ -28,5 +34,3 @@ def validate_api_key(api_key):
     @return: True if the API key is valid, False otherwise
     """
     return api_key == "secret_key"
-
-

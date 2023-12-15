@@ -3,8 +3,7 @@ import os
 from dotenv import load_dotenv
 from services.transcription.profile import profile
 from services.transcription.views import transcription
-from services.auth import api_key_required, validate_api_key
-import secrets
+from services.auth import api_key_required
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -18,7 +17,6 @@ else:
 app = Flask(__name__)
 app.register_blueprint(profile, url_prefix="/profile")
 app.register_blueprint(transcription, url_prefix="/transcription")
-
 
 
 @app.route("/help", methods=["GET"])
