@@ -35,7 +35,7 @@ prompt = gpt_instructions + "Here are the texts:" + "\n\n" + file_content
 response = openai.ChatCompletion.create(
     model="gpt-4-1106-preview",
     messages=[{"role": "user", "content": prompt}],
-    temperature=0.7
+    temperature=0.7,
     # '''Temperature is a number between 0 and 2, with a default value of 1 or 0.7
     # depending on the model you choose. The temperature is used to control the randomness
     # of the output. When you set it higher, you'll get more random outputs.
