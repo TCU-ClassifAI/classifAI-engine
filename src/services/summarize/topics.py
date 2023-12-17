@@ -1,12 +1,15 @@
 import os
-import openai
+from openai import OpenAI
 from datetime import datetime
 
 # Load .env file if it exists
 from dotenv import load_dotenv
 
 load_dotenv()
-openai.api_key = os.environ["OPENAI_API_KEY"]
+client = OpenAI(
+    # This is the default and can be omitted
+    api_key=os.environ.get("OPENAI_API_KEY"),
+)
 
 # Open text files
 # Specify the file path
@@ -30,9 +33,9 @@ gpt_instructions = """You will be provided with the text of a transcript. Your g
  Your response should be detailed, concise, and clear. The tone should be that of a clinical diagnosis.
  Use as few words as necessary without sacrificing quality.  """
 
-prompt = gpt_instructions + "Here are the texts:" + "\n\n" + file_content
+prompt = gpt_instructions + "Here are the texts:" + "\n\n" + "dummy"  # file_content
 
-response = openai.ChatCompletion.create(
+response = client.chat.completions.create(
     model="gpt-4-1106-preview",
     messages=[{"role": "user", "content": prompt}],
     temperature=0.7,
@@ -43,7 +46,7 @@ response = openai.ChatCompletion.create(
 )
 
 print(response)
-print(response["choices"][0]["message"]["content"])
+print(response["choices"])
 
 
 # Get current time
