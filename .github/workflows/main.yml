@@ -7,14 +7,14 @@ jobs:
     name: Black Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: psf/black@stable
   flake8-lint:
       runs-on: ubuntu-latest
       name: flake8 Lint
       steps:
       - name: Check out source repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up Python environment
         uses: actions/setup-python@v4
         with:
@@ -26,13 +26,13 @@ jobs:
   ruff:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: chartboost/ruff-action@v1
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
         with:
           python-version: "3.11"
