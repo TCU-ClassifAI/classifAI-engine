@@ -12,6 +12,7 @@ nav:
     - Classify Questions: api/api_classification.md
     - Summarization: api/api_summarization.md
     - API Key Instructions: api/api_key.md
+    - YouTube API: api/api_yt.md
   - 'Contribution':
     - Contribute: contribution/contributing.md
     - Edit the Docs: contribution/editing_docs.md
@@ -51,4 +52,12 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+plugins:
+- search
+- mkdocstrings:
+    default_handler: python
+    handlers:
+      python: 
+        paths: [.]
+
 
