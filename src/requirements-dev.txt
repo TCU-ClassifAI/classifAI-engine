@@ -3,5 +3,5 @@ flake8
 black
 flask
 pytest
-sphynx
+sphinx
 ruff
