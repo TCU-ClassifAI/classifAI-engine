@@ -1,10 +1,35 @@
-import whisper_timestamped as whisper
-from concurrent.futures import ThreadPoolExecutor
+from flask import Blueprint, make_response, current_app, request
+from typing import Optional
 import time
 import uuid
 import json
 from dataclasses import dataclass, asdict
-from typing import Optional
+import whisper
+from concurrent.futures import ThreadPoolExecutor
+from auth import api_key_required
+
+transcription = Blueprint("transcription", __name__)
+
+
+@transcription.route("/healthcheck")
+def healthcheck():
+    return make_response("OK", 200)
+
+
+@transcription.route("/help")
+def help():
+    content = """
+    <h1>WhisperX API</h1>
+    <h2>Endpoints</h2>
+    <ul>
+        <li><code>/healthcheck</code> - Healthcheck endpoint</li>
+        <li><code>/help</code> - Help page</li>
+        <li><code>/start_transcription</code> - Start a transcription job</li>
+        <li><code>/check_transcription</code> - Check the status of a transcription job</li>
+        <li><code>/config</code> - Get the current configuration</li>
+    </ul>
+    """
+    return make_response(content, 200)
 
 
 # Dictionary to store job status
@@ -81,9 +106,7 @@ def transcribe(file, job: TranscriptionJob):
         return f"Error loading audio: {e}"
 
     try:
-        result = whisper.transcribe_timestamped(
-            model, audio, refine_whisper_precision=0.1
-        )
+        result = whisper.transcribe(model, audio, refine_whisper_precision=0.1)
         job.result = result
         job.status = job.state = "completed"
         job.end_time = time.time()
@@ -99,6 +122,8 @@ def transcribe(file, job: TranscriptionJob):
         return job.to_json_string()
 
 
+@transcription.route("/check_transcription", methods=["GET"])
+@api_key_required
 def check_transcription(job_id):
     """
     Check the status of a transcription job by job_id.
@@ -115,6 +140,29 @@ def check_transcription(job_id):
         return job_info.to_json_string()
     else:
         return {"status": "not found"}
+
+
+@transcription.route("/start_transcription", methods=["POST"])
+@api_key_required
+def start_transcription_endpoint():
+    if "file" not in request.files:
+        return make_response("No file uploaded", 400)
+
+    file = request.files["file"]
+
+    print(current_app.config.get("MODEL_TYPE"))
+    # print the file name
+    print(file.filename)
+
+    model_type = (
+        request.form["model_type"]
+        if "model_type" in request.form
+        else current_app.config.get("MODEL_TYPE", "tiny.en")
+    )
+
+    job_id = start_transcription(file, model_type)
+
+    return make_response(job_id, 200)
 
 
 def start_transcription(file, model_type: str, user_id: Optional[str] = None):
