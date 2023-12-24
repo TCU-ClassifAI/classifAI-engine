@@ -4,6 +4,10 @@
 
     Ensure that you include your API key in all requests by using the following format: curl -H "X-API-KEY: MYAPIKEY" https://api.mydomain.com/v1/users. [Need an API key or instructions on how to obtain one?](api_key.md)
 
+
+:::src.services.transcription.views
+
+
 ### Start a Transcription
 
 This endpoint kicks off a transcription job. It returns a job ID that can be used to check the status of the transcription job.
