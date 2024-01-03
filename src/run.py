@@ -1,8 +1,6 @@
-from flask import Flask, make_response, redirect
+from flask import Flask, make_response
 import os
 from dotenv import load_dotenv
-from services.transcription.profile import profile
-from services.transcription.views import transcription
 from services.auth import api_key_required
 
 load_dotenv()  # Load environment variables from .env file
@@ -15,14 +13,8 @@ else:
 
 # Initialize Flask app
 app = Flask(__name__)
-app.register_blueprint(profile, url_prefix="/profile")
-app.register_blueprint(transcription, url_prefix="/transcription")
-
-
-@app.route("/help", methods=["GET"])
-def help():
-    """Forwards to the documentation page (https://tcu-classifai.github.io/classifAI-engine/)"""
-    return redirect("https://tcu-classifai.github.io/classifAI-engine/", code=302)
+# app.register_blueprint(profile, url_prefix="/profile")
+# app.register_blueprint(transcription, url_prefix="/transcription")
 
 
 @app.route("/", methods=["GET"])
@@ -54,7 +46,7 @@ def config():
     return make_response(str(settings.SETTINGS_TYPE), 200)
 
 
-@app.route("/secure", methods=["GET"])
+@app.route("/auth", methods=["GET"])
 @api_key_required
 def secure():
     return make_response("OK", 200)
