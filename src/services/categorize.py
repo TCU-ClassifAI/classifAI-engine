@@ -35,6 +35,46 @@ def healthcheck():
 # @categorize.route("/categorize", methods=["POST"])
 
 
+def validate_category_output(output):
+    """
+    Validate the output of the categorize function.
+
+    Args:
+        output (dict): Output of the categorize function.
+
+    Returns:
+        (bool, str): A tuple containing a boolean indicating whether the output is valid and an error message if is not valid.
+    """
+
+    # Ensure the output JSON has the required fields
+    required_fields = ["question_type", "question_level"]
+    if not all(field in output for field in required_fields):
+        return (False, "Output JSON must contain question_type and question_level")
+    # Ensure the question level is an integer
+    if not isinstance(output["question_level"], int):
+        return (False, "question_level must be an integer")
+    # Ensure the question level is between 0 and 3
+    if not 0 <= output["question_level"] <= 3:
+        return (False, "question_level must be between 0 and 3")
+    # Ensure the question type is a string and is one of the allowed values
+    if not isinstance(output["question_type"], str):
+        return (False, "question_type must be a string")
+    allowed_question_types = [
+        "Knowledge",
+        "Analyze",
+        "Apply",
+        "Create",
+        "Evaluate",
+        "Understand",
+        "Rhetorical",
+        "Unknown",
+    ]
+    if output["question_type"] not in allowed_question_types:
+        return (False, f"question_type must be one of {allowed_question_types}")
+
+    return True, None
+
+
 def categorize_endpoint(data):
     """
     Categorize the question type and Costa's level of reasoning of a question given the context, using GPT-4.
@@ -123,12 +163,18 @@ def categorize_endpoint(data):
     output = str(response.choices[0].message.content)
 
     # Parse the output JSON
-    try:
-        output_json = json.loads(output)
-    except json.JSONDecodeError:
-        return jsonify({"error": "Invalid response format from language model"}), 500
+    output = json.loads(output)
 
-    return jsonify(output_json)
+    # Validate the output JSON
+    valid, error = validate_category_output(output)
+    if not valid:  # If the output JSON is not valid, return that we don't know the question type or level
+        return {
+            "question_type": "Unknown",
+            "question_level": 0,
+        }
+
+    # Return the output JSON
+    return output
 
 
 # Define your sample input data
@@ -145,5 +191,4 @@ sample_data = {
 # Call the function with the sample data
 result = categorize_endpoint(sample_data)
 
-# Print the result
-print(jsonify(result).data)
+print(result)
