@@ -1,29 +1,11 @@
 from flask import Blueprint, make_response, jsonify
-from openai import OpenAI
+from openai import AsyncOpenAI
 from dotenv import load_dotenv
 import json
+import asyncio
 
 load_dotenv()
-
-
-client = OpenAI()
-
-
-# async def main() -> None:
-#     chat_completion = await client.chat.completions.create(
-#         messages=[
-#             {
-#                 "role": "user",
-#                 "content": "Say this is a test",
-#             }
-#         ],
-#         model="gpt-3.5-turbo",
-#     )
-
-
-# asyncio.run(main())
-
-
+client = AsyncOpenAI()
 categorize = Blueprint("categorize", __name__)
 
 
@@ -32,7 +14,15 @@ def healthcheck():
     return make_response("OK", 200)
 
 
-# @categorize.route("/categorize", methods=["POST"])
+@categorize.route("/categorize", methods=["POST"])
+def categorize_endpoint():
+    """Given a transcript, return the question type and Costa's level of reasoning for each question.
+
+    Returns:
+        dict: A dictionary containing the question type and Costa's level of reasoning for each question.
+    """
+
+    pass
 
 
 def validate_category_output(output):
@@ -75,7 +65,7 @@ def validate_category_output(output):
     return True, None
 
 
-def categorize_endpoint(data):
+async def categorize_question(data) -> dict:
     """
     Categorize the question type and Costa's level of reasoning of a question given the context, using GPT-4.
 
@@ -91,8 +81,6 @@ def categorize_endpoint(data):
     Returns:
         dict: A dictionary containing the question type and Costa's level of reasoning.
     """
-
-    # data = request.json
 
     # Basic input validation
     required_fields = [
@@ -150,7 +138,7 @@ def categorize_endpoint(data):
     ]
 
     # Call the OpenAI API with the prompt
-    response = client.chat.completions.create(
+    response = await client.chat.completions.create(
         model="gpt-3.5-turbo-1106",
         response_format={"type": "json_object"},
         messages=messages,
@@ -177,7 +165,29 @@ def categorize_endpoint(data):
     return output
 
 
-# Define your sample input data
+# async def test_categorize_question():
+#     """
+#     Test the categorize_question function.
+#     """
+
+#     # Define the sample input data
+#     sample_data = {
+#         "summary": "Context summary",
+#         "previous_sentence": "Previous sentence",
+#         "previous_speaker": "Speaker A",
+#         "question": "What is the capital of France?",
+#         "question_speaker": "Speaker B",
+#         "next_sentence": "Next sentence",
+#         "next_speaker": "Speaker C",
+#     }
+
+#     tasks = [categorize_question(sample_data) for _ in range(10)]
+#     results = asyncio.run(asyncio.gather(*tasks))
+
+#     print(results)
+
+# asyncio.run(test_categorize_question())
+
 sample_data = {
     "summary": "Context summary",
     "previous_sentence": "Previous sentence",
@@ -188,7 +198,6 @@ sample_data = {
     "next_speaker": "Speaker C",
 }
 
-# Call the function with the sample data
-result = categorize_endpoint(sample_data)
-
-print(result)
+loop = asyncio.get_event_loop()
+ret_val = loop.run_until_complete(categorize_question(sample_data))
+print(ret_val)
