@@ -20,7 +20,6 @@ RUN pip install numba==0.58.0
 RUN pip install unidecode
 RUN pip install flask
 RUN pip install python_dotenv
-RUN pip install gunicorn
 
 # Set the working directory
 WORKDIR /app
@@ -32,4 +31,4 @@ COPY src/ ./
 EXPOSE 5000
 
 # Set the entrypoint
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "run:app"]
+CMD ["python3", "run.py"]
