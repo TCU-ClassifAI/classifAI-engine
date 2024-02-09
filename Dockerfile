@@ -31,4 +31,4 @@ COPY src/ ./
 EXPOSE 5000
 
 # Set the entrypoint
-CMD ["python3", "run.py"]
+CMD ["python3", "app.py"]
