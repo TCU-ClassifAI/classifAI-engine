@@ -125,22 +125,32 @@ ClassifAI engine provides the heavy lifting for classifAI. It is a RESTful API t
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up this API locally.
-To get a local copy up and running follow these simple example steps.
+This runs in a docker container. The best way to get it to run is just `./run.sh`, which takes care of docker setup, packages, and etc. 
+This will also run it in a production WSGI server instead of the simple. 
 
+Test: 
+`curl localhost:5000/healthcheck` should return `OK`
+
+For more instructions please see the [documentation 
+](https://tcu-classifai.github.io/classifAI-engine/)
 ### Prerequisites
 
-* Python 3.10 (will probably work with 3.11+)
-* ffmpeg
+* Docker
+* ffmpeg (if running outside of docker)
 
+### Installation 
 
-### Installation
-
+#### Via Docker (reccomended)
 1. Clone the repo
    ```sh
    git clone https://github.com/TCU-ClassifAI/classifAI-engine.git
    cd classifAI-engine
    ```
+2. Launch the run script:
+  ```sh
+    ./run.sh
+  ```
+#### Manually
 2. Install Python packages
    ```sh
     pip install -r src/requirements.txt -r src/requirements-dev.txt
