@@ -2,6 +2,7 @@ from flask import Flask, make_response
 import os
 from dotenv import load_dotenv
 from services.auth import api_key_required
+from services.transcription import transcription
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -14,7 +15,7 @@ else:
 # Initialize Flask app
 app = Flask(__name__)
 # app.register_blueprint(profile, url_prefix="/profile")
-# app.register_blueprint(transcription, url_prefix="/transcription")
+app.register_blueprint(transcription, url_prefix="/transcription")
 
 
 @app.route("/", methods=["GET"])
@@ -58,4 +59,4 @@ def create_app():
 
 if __name__ == "__main__":
     local = True if os.environ.get("ENV") == "development" else False
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host="0.0.0.0")

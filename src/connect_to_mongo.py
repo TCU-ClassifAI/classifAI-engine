@@ -1,4 +1,5 @@
-from pymongo import MongoClient 
+from pymongo import MongoClient
+
 client = MongoClient("classifai.tcu.edu", 27017)
 
 # print mongo client
