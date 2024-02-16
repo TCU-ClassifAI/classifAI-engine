@@ -23,11 +23,7 @@ import threading
 from typing import TextIO
 import uuid
 from dataclasses import dataclass, asdict
-import time
-
-transcription = Blueprint("transcription", __name__)
-
-job_status = {}
+from datetime import datetime
 
 
 @dataclass
@@ -41,9 +37,9 @@ class TranscriptionJob:
         model_type: Name of the model used for transcription (default: "large-v3").
         status: Status of the transcription job (default: "in progress").
         state: State of the transcription job (default: "transcribing").
-        start_time: Start time of the transcription job (default: time.time()).
+        start_time: Start time of the transcription job (datetime) (default: current time).
         end_time: End time of the transcription job (default: None).
-        duration: Duration of the transcription job in seconds (default: 0).
+        duration: Duration of the transcription job in milliseconds (default: 0).
         result: List of transcription segments (default: None).
         error_message: Error message of the transcription job (default: None).
     """
@@ -53,9 +49,9 @@ class TranscriptionJob:
     model_type: str = "large-v3"
     status: str = "in progress"  # "in progress", "completed", "failed"
     progress: str = "transcribing"  # "transcribing", "diarizing", "punctuating", "completed", "failed
-    start_time: float = time.time()
-    end_time: float = None
-    duration: float = 0  # in seconds
+    start_time: datetime = datetime.now()
+    end_time: datetime = None
+    duration: float = 0  # in milliseconds
     result: list = None
     error_message: str = None
 
@@ -68,6 +64,14 @@ class TranscriptionJob:
         Returns:
             str: JSON string representation of the dataclass.
         """
+
+        # Helper function to format the datetime
+        def format_datetime(datetime_obj) -> str:
+            return (
+                datetime_obj.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+                if datetime_obj
+                else None
+            )
 
         # Get current duration if the job is still in progress
         if self.status == "in progress":
@@ -82,23 +86,29 @@ class TranscriptionJob:
         filtered_dict = {
             key: value for key, value in data_dict.items() if value is not None
         }
-        return json.dumps(filtered_dict)
 
-    def get_duration(self) -> float:
+        if filtered_dict.get("start_time") is not None:
+            filtered_dict["start_time"] = format_datetime(filtered_dict["start_time"])
+
+        if filtered_dict.get("end_time") is not None:
+            filtered_dict["end_time"] = format_datetime(filtered_dict["end_time"])
+
+        return json.dumps(filtered_dict, default=str)
+
+    def get_duration(self) -> int:
         """
         Get the duration of the transcription job.
 
         Args:
-            None (self)
+            None (self) (accesses the start_time and end_time datetime attributes of the dataclass)
         Returns:
-            float: Duration of the transcription job in seconds.
+            int: Duration of the transcription job in milliseconds.
         """
-        if self.start_time is None:
-            return None
-        elif self.end_time is None:
-            return time.time() - self.start_time
-        else:
-            return self.end_time - self.start_time
+        if self.start_time is not None and self.end_time is not None:
+            return int((self.end_time - self.start_time).total_seconds() * 1000)
+        if self.start_time is not None:
+            return int((datetime.now() - self.start_time).total_seconds() * 1000)
+        return 0
 
 
 @dataclass
@@ -121,8 +131,20 @@ class TranscriptionSegment:
     text: str
 
 
-@transcription.route("/", methods=["GET"])
+transcription = Blueprint("transcription", __name__)
+
+# We could possibly use a database to store the job status and create the method get_job_status_from_db(job_id) to retrieve the job status from the database
+job_status = {}
+
+
+@transcription.route("/healthcheck")
 def healthcheck():
+    """
+    Healthcheck endpoint.
+
+    Returns:
+        str: "OK" if the server is running.
+    """
     return make_response("OK", 200)
 
 
@@ -242,16 +264,16 @@ def get_transcription_status():
         return jsonify({"error": "No job ID provided"}), 400
 
     if job_id not in job_status:
-        return jsonify({"error": "Invalid job ID"}), 400
+        return make_response(jsonify({"error": "Invalid job ID"}), 400)
 
-    return jsonify({"status": job_status[job_id].to_json_string()}), 200
+    return make_response(job_status[job_id].to_json_string(), 200)
 
 
 def transcribe_and_generate_files(
     audio_path: str, model_name="large-v3", job_id=None
 ) -> TextIO:
     """
-    Transcribe and diarize an audio file and generate an srt file with speakers.
+    Transcribe and diarize an audio file and update the status of the transcription job.
 
     Args:
         audio_path: Path to the audio file to transcribe (str) (required) (possible formats: wav, mp3, ogg, flac)
@@ -259,7 +281,7 @@ def transcribe_and_generate_files(
         job_id: ID of the transcription job (default: None). Used to update the status of the transcription job.
 
     Returns:
-        open() file object of the generated srt file (TextIO).
+        None
     """
 
     # List of languages supported by the punctuation model (https://huggingface.co/kredor/punctuate-all)
@@ -526,22 +548,6 @@ def transcribe_and_generate_files(
 
         hours_marker = f"{hours:02d}:" if always_include_hours or hours > 0 else ""
         return f"{hours_marker}{minutes:02d}:{seconds:02d}{decimal_marker}{milliseconds:03d}"
-
-    def write_srt(transcript, file):
-        """
-        Write a transcript to a file in SRT format.
-
-        """
-        for i, segment in enumerate(transcript, start=1):
-            # write srt lines
-            print(
-                f"{i}\n"
-                f"{format_timestamp(segment['start_time'], always_include_hours=True, decimal_marker=',')} --> "
-                f"{format_timestamp(segment['end_time'], always_include_hours=True, decimal_marker=',')}\n"
-                f"{segment['speaker']}: {segment['text'].strip().replace('-->', '->')}\n",
-                file=file,
-                flush=True,
-            )
 
     def find_numeral_symbol_tokens(tokenizer):
         numeral_symbol_tokens = [
@@ -908,73 +914,26 @@ def transcribe_and_generate_files(
     # print first 5 segments
     print(ssm_objects[:5])
 
-    # path_textfile_with_speakers = f"{os.path.splitext(audio_path)[0]}.txt"
-    # path_srtfile_with_speakers = f"{os.path.splitext(audio_path)[0]}.srt"
-
-    # with open(path_textfile_with_speakers, "w", encoding="utf-8-sig") as f:
-    #     get_speaker_aware_transcript(ssm, f)
-
-    # with open(path_srtfile_with_speakers, "w", encoding="utf-8-sig") as srt:
-    #     write_srt(ssm, srt)
-
-    # cleanup(temp_path)
-
-    # # cleanup text file with speakers
-    # with open(path_textfile_with_speakers, "r") as f:
-    #     lines = f.readlines()
-    #     lines = [
-    #         re.sub(" +", " ", line.strip("\ufeff").strip())
-    #         for line in lines
-    #         if line != "\n"
-    #     ]
-
-    # with open(path_textfile_with_speakers, "w", encoding="utf-8-sig") as f:
-    #     for i, line in enumerate(lines):
-    #         if i < len(lines) - 1:
-    #             f.write(f"{line}\n\n")
-    #         else:
-    #             f.write(f"{line}")
-
-    # print("Transcription complete")
-    # print(f"Transcript saved to {path_textfile_with_speakers}")
-    # print(f"SRT file saved to {path_srtfile_with_speakers}")
-    # # Return the SRT file
-
-    srt_file_text = open(path_srtfile_with_speakers, "r").read()
-    # Update the status of the transcription job
     if job_id is not None:
         job_status[job_id] = TranscriptionJob(
             job_id=job_id,
             status="completed",
             progress="completed",
             result=ssm_objects,
-            end_time=time.time(),
+            end_time=datetime.now(),
             duration=job_status[job_id].get_duration(),
         )
 
-    return open(path_srtfile_with_speakers, "rb")
+    return None
 
 
-app = Flask(__name__)
-app.register_blueprint(transcription, url_prefix="/transcription")
+# Testing the transcription process (in production, this is a service endpoint)
+if __name__ == "__main__":
+    app = Flask(__name__)
+    app.register_blueprint(transcription, url_prefix="/transcription")
 
+    @app.route("/")
+    def hello_world():
+        return "Hello, World!"
 
-@app.route("/")
-def hello_world():
-    return "Hello, World!"
-
-
-app.run(debug=True, host="0.0.0.0")
-
-# if __name__ == '__main__':
-#     app = Flask(__name__)
-#     app.register_blueprint(transcription, url_prefix='/transcription')
-#     @app.route('/')
-#     def hello_world():
-#         return 'Hello, World!'
-#     app.run(debug=True)
-
-# Open court audio file
-# audio_file = open('court_audio.mp3', 'rb')
-# # Test transcribe_and_generate_files function
-# transcribe_and_generate_files(audio_file)
+    app.run(debug=True, host="0.0.0.0")
