@@ -3,7 +3,6 @@ import wget
 from omegaconf import OmegaConf
 import json
 import shutil
-from faster_whisper import WhisperModel
 import whisperx
 import torch
 from pydub import AudioSegment
@@ -17,18 +16,16 @@ from whisperx.utils import LANGUAGES, TO_LANGUAGE_CODE
 
 import unidecode
 from unidecode import unidecode
-import pathlib
 from pathlib import Path
 
 from flask import Flask, request, jsonify, Blueprint, make_response
-import werkzeug
 import threading
 from typing import TextIO
 import uuid
 from dataclasses import dataclass, asdict
 import time
 
-transcription = Blueprint('transcription', __name__)
+transcription = Blueprint("transcription", __name__)
 
 job_status = {}
 
@@ -43,10 +40,11 @@ class TranscriptionJob:
         user_id: ID of the user who started the transcription job (default: None).
         model_type: Name of the model used for transcription (default: "large-v3").
         status: Status of the transcription job (default: "in progress").
+        state: State of the transcription job (default: "transcribing").
         start_time: Start time of the transcription job (default: time.time()).
         end_time: End time of the transcription job (default: None).
         duration: Duration of the transcription job in seconds (default: 0).
-        result: Result of the transcription job (default: None).
+        result: List of transcription segments (default: None).
         error_message: Error message of the transcription job (default: None).
     """
 
@@ -58,7 +56,7 @@ class TranscriptionJob:
     start_time: float = time.time()
     end_time: float = None
     duration: float = 0  # in seconds
-    result: str = None
+    result: list = None
     error_message: str = None
 
     def to_json_string(self) -> str:
@@ -70,7 +68,17 @@ class TranscriptionJob:
         Returns:
             str: JSON string representation of the dataclass.
         """
+
+        # Get current duration if the job is still in progress
+        if self.status == "in progress":
+            self.duration = self.get_duration()
+
         data_dict = asdict(self)
+
+        # Ensure result is formatted correctly
+        if self.result is not None:
+            data_dict["result"] = [asdict(segment) for segment in self.result]
+
         filtered_dict = {
             key: value for key, value in data_dict.items() if value is not None
         }
@@ -93,13 +101,32 @@ class TranscriptionJob:
             return self.end_time - self.start_time
 
 
+@dataclass
+class TranscriptionSegment:
+    """
+    Dataclass to store information about a transcription segment.
 
-@transcription.route('/', methods=['GET'])
+    Attributes:
+        List of:
+            speaker: Speaker label
+            start_time: Start time of the segment (0 is the start of the audio file)
+            end_time: End time of the segment
+            text: Transcribed text of the segment
+            confidence: Confidence of the transcription of the segment
+    """
+
+    speaker: str
+    start_time: float
+    end_time: float
+    text: str
+
+
+@transcription.route("/", methods=["GET"])
 def healthcheck():
-    return make_response('OK', 200)
+    return make_response("OK", 200)
 
 
-@transcription.route('/start_transcription', methods=['POST'])
+@transcription.route("/start_transcription", methods=["POST"])
 def start_transcription():
     """
     Start the transcription process for an audio file by creating a new thread to run the process.
@@ -113,44 +140,57 @@ def start_transcription():
     """
     print("Starting transcription")
 
-    audio_file = request.files.get('file')
-    
+    audio_file = request.files.get("file")
+
     # Check if the file is present
     if audio_file is None:
         print(request.files)  # This should not be empty if the file is sent correctly
-        return jsonify({'error': 'No file part'}), 400
-    
-    
+        return jsonify({"error": "No file part"}), 400
+
     print("File retrieved")
 
     # Input validation
-    if audio_file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
+    if audio_file.filename == "":
+        return jsonify({"error": "No selected file"}), 400
 
     print(f"File name: {audio_file.filename}")
 
-
-
     # Get model name from the request
-    model_name = request.form.get('model_name', 'large-v3')
-    if model_name not in ['tiny.en', 'tiny', 'base.en', 'base', 'small.en', 'small', 'medium.en', 'medium', 'large-v1', 'large-v2', 'large-v3', 'large']:
-        return jsonify({'error': 'Invalid model name'}), 400
-    
+    model_name = request.form.get("model_name", "large-v3")
+    if model_name not in [
+        "tiny.en",
+        "tiny",
+        "base.en",
+        "base",
+        "small.en",
+        "small",
+        "medium.en",
+        "medium",
+        "large-v1",
+        "large-v2",
+        "large-v3",
+        "large",
+    ]:
+        return jsonify({"error": "Invalid model name"}), 400
+
     # Check if the file is a valid audio file and if not, return an error
-    if audio_file and audio_file.filename.split('.')[-1] not in ['wav', 'mp3', 'ogg', 'flac']:
-        return jsonify({'error': 'Invalid file type'}), 400
-    
+    if audio_file and audio_file.filename.split(".")[-1] not in [
+        "wav",
+        "mp3",
+        "ogg",
+        "flac",
+    ]:
+        return jsonify({"error": "Invalid file type"}), 400
+
     print(f"Starting transcription for audio file with model {model_name}")
-    
 
     if audio_file:
-
-        file_extension = audio_file.filename.split('.')[-1]
+        file_extension = audio_file.filename.split(".")[-1]
         uuid_audio_file = uuid.uuid4().hex
         secure_filename = f"{uuid_audio_file}.{file_extension}"
 
         # Make "tmp" directory in the current directory if it doesn't exist
-        tmp_dir = os.path.join(os.getcwd(), 'tmp')
+        tmp_dir = os.path.join(os.getcwd(), "tmp")
         os.makedirs(tmp_dir, exist_ok=True)
 
         # change directory to tmp (required because of audio_file.save() function) (its weird)
@@ -160,25 +200,33 @@ def start_transcription():
         audio_file.save(secure_filename)
 
         # change directory back to the original directory
-        os.chdir('..')
+        os.chdir("..")
 
         audio_file_path = os.path.join(tmp_dir, secure_filename)
 
-
-
         print("File saved to temporary location")
         print(f"File path: {audio_file_path}")
-        
+
+        # Create job in job_status
+        job_status[uuid_audio_file] = TranscriptionJob(
+            uuid_audio_file, model_type=model_name
+        )
+
         # Start the transcription process in a new thread
-        thread = threading.Thread(target=transcribe_and_generate_files, args=(audio_file_path, model_name, uuid_audio_file))
+        thread = threading.Thread(
+            target=transcribe_and_generate_files,
+            args=(audio_file_path, model_name, uuid_audio_file),
+        )
         thread.start()
-        
-        return jsonify({'message': 'Transcription started', 'job_id': uuid_audio_file}), 200
 
-    return jsonify({'error': 'Invalid request'}), 400
+        return jsonify(
+            {"message": "Transcription started", "job_id": uuid_audio_file}
+        ), 200
+
+    return jsonify({"error": "Invalid request"}), 400
 
 
-@transcription.route('/get_transcription_status', methods=['GET'])
+@transcription.route("/get_transcription_status", methods=["GET"])
 def get_transcription_status():
     """
     Get the status of a transcription job.
@@ -189,17 +237,19 @@ def get_transcription_status():
     Returns:
         Response object with the status code.
     """
-    job_id = request.args.get('job_id')
+    job_id = request.args.get("job_id")
     if job_id is None:
-        return jsonify({'error': 'No job ID provided'}), 400
+        return jsonify({"error": "No job ID provided"}), 400
 
     if job_id not in job_status:
-        return jsonify({'error': 'Invalid job ID'}), 400
+        return jsonify({"error": "Invalid job ID"}), 400
 
-    return jsonify({'status': job_status[job_id].to_json_string()}), 200
+    return jsonify({"status": job_status[job_id].to_json_string()}), 200
 
 
-def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id=None) -> TextIO:
+def transcribe_and_generate_files(
+    audio_path: str, model_name="large-v3", job_id=None
+) -> TextIO:
     """
     Transcribe and diarize an audio file and generate an srt file with speakers.
 
@@ -211,22 +261,21 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
     Returns:
         open() file object of the generated srt file (TextIO).
     """
-    
 
     # List of languages supported by the punctuation model (https://huggingface.co/kredor/punctuate-all)
     punct_model_langs = [
-    "en",
-    "fr",
-    "de",
-    "es",
-    "it",
-    "nl",
-    "pt",
-    "bg",
-    "pl",
-    "cs",
-    "sk",
-    "sl",
+        "en",
+        "fr",
+        "de",
+        "es",
+        "it",
+        "nl",
+        "pt",
+        "bg",
+        "pl",
+        "cs",
+        "sk",
+        "sl",
     ]
     wav2vec2_langs = list(DEFAULT_ALIGN_MODELS_TORCH.keys()) + list(
         DEFAULT_ALIGN_MODELS_HF.keys()
@@ -236,8 +285,7 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
         [k.title() for k in TO_LANGUAGE_CODE.keys()]
     )
 
-
-    def create_config(output_dir, DOMAIN_TYPE = "telephonic"):
+    def create_config(output_dir, DOMAIN_TYPE="telephonic"):
         # DOMAIN_TYPE: can be meeting, telephonic, or general based on domain type of the audio file
         CONFIG_FILE_NAME = f"diar_infer_{DOMAIN_TYPE}.yaml"
         CONFIG_URL = f"https://raw.githubusercontent.com/NVIDIA/NeMo/main/examples/speaker_tasks/diarization/conf/inference/{CONFIG_FILE_NAME}"
@@ -265,8 +313,12 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
 
         pretrained_vad = "vad_multilingual_marblenet"
         pretrained_speaker_model = "titanet_large"
-        config.num_workers = 0  # Workaround for multiprocessing hanging with ipython issue
-        config.diarizer.manifest_filepath = os.path.join(data_dir, "input_manifest.json")
+        config.num_workers = (
+            0  # Workaround for multiprocessing hanging with ipython issue
+        )
+        config.diarizer.manifest_filepath = os.path.join(
+            data_dir, "input_manifest.json"
+        )
         config.diarizer.out_dir = (
             output_dir  # Directory to store intermediate files and prediction outputs
         )
@@ -288,14 +340,12 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
 
         return config
 
-
     def get_word_ts_anchor(s, e, option="start"):
         if option == "end":
             return e
         elif option == "mid":
             return (s + e) / 2
         return s
-
 
     def get_words_speaker_mapping(wrd_ts, spk_ts, word_anchor_option="start"):
         s, e, sp = spk_ts[0]
@@ -319,9 +369,7 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
             )
         return wrd_spk_mapping
 
-
     sentence_ending_punctuations = ".?!"
-
 
     def get_first_word_idx_of_sentence(word_idx, word_list, speaker_list, max_words):
         is_word_sentence_end = (
@@ -337,7 +385,6 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
             left_idx -= 1
 
         return left_idx if left_idx == 0 or is_word_sentence_end(left_idx - 1) else -1
-
 
     def get_last_word_idx_of_sentence(word_idx, word_list, max_words):
         is_word_sentence_end = (
@@ -356,7 +403,6 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
             if right_idx == len(word_list) - 1 or is_word_sentence_end(right_idx)
             else -1
         )
-
 
     def get_realigned_ws_mapping_with_punctuation(
         word_speaker_mapping, max_words_in_sentence=50
@@ -417,9 +463,10 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
 
         return realigned_list
 
-
     def get_sentences_speaker_mapping(word_speaker_mapping, spk_ts):
-        sentence_checker = nltk.tokenize.PunktSentenceTokenizer().text_contains_sentbreak
+        sentence_checker = (
+            nltk.tokenize.PunktSentenceTokenizer().text_contains_sentbreak
+        )
         s, e, spk = spk_ts[0]
         prev_spk = spk
 
@@ -445,7 +492,6 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
         snts.append(snt)
         return snts
 
-
     def get_speaker_aware_transcript(sentences_speaker_mapping, f):
         previous_speaker = sentences_speaker_mapping[0]["speaker"]
         f.write(f"{previous_speaker}: ")
@@ -462,9 +508,10 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
             # No matter what, write the current sentence
             f.write(sentence + " ")
 
-
     def format_timestamp(
-        milliseconds: float, always_include_hours: bool = False, decimal_marker: str = "."
+        milliseconds: float,
+        always_include_hours: bool = False,
+        decimal_marker: str = ".",
     ):
         assert milliseconds >= 0, "non-negative timestamp expected"
 
@@ -478,10 +525,7 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
         milliseconds -= seconds * 1_000
 
         hours_marker = f"{hours:02d}:" if always_include_hours or hours > 0 else ""
-        return (
-            f"{hours_marker}{minutes:02d}:{seconds:02d}{decimal_marker}{milliseconds:03d}"
-        )
-
+        return f"{hours_marker}{minutes:02d}:{seconds:02d}{decimal_marker}{milliseconds:03d}"
 
     def write_srt(transcript, file):
         """
@@ -499,7 +543,6 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
                 flush=True,
             )
 
-
     def find_numeral_symbol_tokens(tokenizer):
         numeral_symbol_tokens = [
             -1,
@@ -509,7 +552,6 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
             if has_numeral_symbol:
                 numeral_symbol_tokens.append(token_id)
         return numeral_symbol_tokens
-
 
     def _get_next_start_timestamp(word_timestamps, current_word_index):
         # if current word is the last word
@@ -530,7 +572,6 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
 
             else:
                 return word_timestamps[next_word_index]["start"]
-
 
     def filter_missing_timestamps(word_timestamps):
         # handle the first and last word
@@ -553,7 +594,6 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
                 result.append(ws)
         return result
 
-
     def cleanup(path: str):
         """path could either be relative or absolute."""
         # check if file or directory exists
@@ -565,7 +605,6 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
             shutil.rmtree(path)
         else:
             raise ValueError("Path {} is not a file or dir.".format(path))
-
 
     def process_language_arg(language: str, model_name: str):
         """
@@ -587,7 +626,6 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
             language = "en"
         return language
 
-
     def transcribe(
         audio_file: str,
         language: str,
@@ -601,7 +639,9 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
 
         # Faster Whisper non-batched
         # Run on GPU with FP16
-        whisper_model = WhisperModel(model_name, device=device, compute_type=compute_dtype)
+        whisper_model = WhisperModel(
+            model_name, device=device, compute_type=compute_dtype
+        )
 
         # or run on GPU with INT8
         # model = WhisperModel(model_size, device="cuda", compute_type="int8_float16")
@@ -609,7 +649,9 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
         # model = WhisperModel(model_size, device="cpu", compute_type="int8")
 
         if suppress_numerals:
-            numeral_symbol_tokens = find_numeral_symbol_tokens(whisper_model.hf_tokenizer)
+            numeral_symbol_tokens = find_numeral_symbol_tokens(
+                whisper_model.hf_tokenizer
+            )
         else:
             numeral_symbol_tokens = None
 
@@ -634,7 +676,6 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
         torch.cuda.empty_cache()
         return whisper_results, language
 
-
     def transcribe_batched(
         audio_file: str,
         language: str,
@@ -654,17 +695,18 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
             asr_options={"suppress_numerals": suppress_numerals},
         )
         audio = whisperx.load_audio(audio_file)
-        result = whisper_model.transcribe(audio, language=language, batch_size=batch_size)
+        result = whisper_model.transcribe(
+            audio, language=language, batch_size=batch_size
+        )
         del whisper_model
         torch.cuda.empty_cache()
         return result["segments"], result["language"]
-
 
     # no space, punctuation, accent in lower string
     def cleanString(string):
         cleanString = unidecode(string)
         # cleanString = re.sub('\W+','_', cleanString)
-        cleanString = re.sub(r'[^\w\s]','',cleanString)
+        cleanString = re.sub(r"[^\w\s]", "", cleanString)
         cleanString = cleanString.replace(" ", "_")
         return cleanString.lower()
 
@@ -672,24 +714,23 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
     def rename_file(filepath):
         suffix = Path(filepath).suffix
         if str(Path(filepath).parent) != ".":
-            new_filepath = str(Path(filepath).parent) + cleanString(filepath.replace(suffix, "")) + suffix
+            new_filepath = (
+                str(Path(filepath).parent)
+                + cleanString(filepath.replace(suffix, ""))
+                + suffix
+            )
         else:
             new_filepath = cleanString(filepath.replace(suffix, "")) + suffix
         os.rename(filepath, new_filepath)
         return new_filepath
 
-
-
     # rename audio filename if necessary to get string without accent, space, in lower case
     audio_path = rename_file(audio_path)
-
-
 
     # (Option) Whether to enable music removal from speech, helps increase diarization quality but uses alot of ram
     enable_stemming = False
 
-
-    whisper_model_name = model_name # Set via the function argument
+    whisper_model_name = model_name  # Set via the function argument
 
     # replaces numerical digits with their pronounciation, increases diarization accuracy
     suppress_numerals = True
@@ -720,12 +761,13 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
     else:
         vocal_target = audio_path
 
-
-    if device == "cuda": compute_type = "float16"
+    if device == "cuda":
+        compute_type = "float16"
     # or run on GPU with INT8
     # compute_type = "int8_float16"
     # or run on CPU with INT8
-    else: compute_type = "int8"
+    else:
+        compute_type = "int8"
 
     if batch_size != 0:
         whisper_results, language = transcribe_batched(
@@ -747,6 +789,10 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
             device,
         )
 
+    # Change job status to diarizing
+    if job_id is not None:
+        job_status[job_id].progress = "diarizing"
+
     if language in wav2vec2_langs:
         device = "cuda"
         alignment_model, metadata = whisperx.load_align_model(
@@ -761,14 +807,18 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
         del alignment_model
         torch.cuda.empty_cache()
     else:
-        assert batch_size == 0, (  # TODO: add a better check for word timestamps existence
+        assert (
+            batch_size == 0
+        ), (  # TODO: add a better check for word timestamps existence
             f"Unsupported language: {language}, use --batch_size to 0"
             " to generate word timestamps using whisper directly and fix this error."
         )
         word_timestamps = []
         for segment in whisper_results:
             for word in segment["words"]:
-                word_timestamps.append({"word": word[2], "start": word[0], "end": word[1]})
+                word_timestamps.append(
+                    {"word": word[2], "start": word[0], "end": word[1]}
+                )
 
     # Convert audio to mono for nemo compatibility
 
@@ -780,11 +830,17 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
 
     # Run diarization using NeMo MSDD model
 
-    msdd_model = NeuralDiarizer(cfg=create_config(temp_path, DOMAIN_TYPE="telephonic")).to("cuda")
-    msdd_model.diarize() # Takes about 1 minute for 1 hour of audio
+    msdd_model = NeuralDiarizer(
+        cfg=create_config(temp_path, DOMAIN_TYPE="telephonic")
+    ).to("cuda")
+    msdd_model.diarize()  # Takes about 1 minute for 1 hour of audio
 
     del msdd_model
     torch.cuda.empty_cache()
+
+    # Change job status to aligning
+    if job_id is not None:
+        job_status[job_id].progress = "aligning"
 
     # Map speaker labels to speaker names
     speaker_ts = []
@@ -832,47 +888,83 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
     wsm = get_realigned_ws_mapping_with_punctuation(wsm)
     ssm = get_sentences_speaker_mapping(wsm, speaker_ts)
 
-    path_textfile_with_speakers = f"{os.path.splitext(audio_path)[0]}.txt"
-    path_srtfile_with_speakers = f"{os.path.splitext(audio_path)[0]}.srt"
-
-    with open(path_textfile_with_speakers, "w", encoding="utf-8-sig") as f:
-        get_speaker_aware_transcript(ssm, f)
-
-    with open(path_srtfile_with_speakers, "w", encoding="utf-8-sig") as srt:
-        write_srt(ssm, srt)
-
-    cleanup(temp_path)
-
-    # cleanup text file with speakers
-    with open(path_textfile_with_speakers, "r") as f:
-        lines = f.readlines()
-        lines = [re.sub(' +', ' ', line.strip("\ufeff").strip()) for line in lines if line != "\n"]
-
-    with open(path_textfile_with_speakers, "w", encoding="utf-8-sig") as f:
-        for i,line in enumerate(lines):
-            if i < len(lines) - 1: f.write(f"{line}\n\n")
-            else: f.write(f"{line}")
-
     print("Transcription complete")
-    print(f"Transcript saved to {path_textfile_with_speakers}")
-    print(f"SRT file saved to {path_srtfile_with_speakers}")
-    # Return the SRT file
 
-    srt_file_text = open(path_srtfile_with_speakers, 'r').read()
+    print(ssm)
+
+    # Convert SSM into a list of TranscriptionSegment objects
+    ssm_objects = list(
+        map(
+            lambda x: TranscriptionSegment(
+                speaker=x["speaker"],
+                start_time=x["start_time"],
+                end_time=x["end_time"],
+                text=x["text"],
+            ),
+            ssm,
+        )
+    )
+
+    # print first 5 segments
+    print(ssm_objects[:5])
+
+    # path_textfile_with_speakers = f"{os.path.splitext(audio_path)[0]}.txt"
+    # path_srtfile_with_speakers = f"{os.path.splitext(audio_path)[0]}.srt"
+
+    # with open(path_textfile_with_speakers, "w", encoding="utf-8-sig") as f:
+    #     get_speaker_aware_transcript(ssm, f)
+
+    # with open(path_srtfile_with_speakers, "w", encoding="utf-8-sig") as srt:
+    #     write_srt(ssm, srt)
+
+    # cleanup(temp_path)
+
+    # # cleanup text file with speakers
+    # with open(path_textfile_with_speakers, "r") as f:
+    #     lines = f.readlines()
+    #     lines = [
+    #         re.sub(" +", " ", line.strip("\ufeff").strip())
+    #         for line in lines
+    #         if line != "\n"
+    #     ]
+
+    # with open(path_textfile_with_speakers, "w", encoding="utf-8-sig") as f:
+    #     for i, line in enumerate(lines):
+    #         if i < len(lines) - 1:
+    #             f.write(f"{line}\n\n")
+    #         else:
+    #             f.write(f"{line}")
+
+    # print("Transcription complete")
+    # print(f"Transcript saved to {path_textfile_with_speakers}")
+    # print(f"SRT file saved to {path_srtfile_with_speakers}")
+    # # Return the SRT file
+
+    srt_file_text = open(path_srtfile_with_speakers, "r").read()
     # Update the status of the transcription job
     if job_id is not None:
-        job_status[job_id] = TranscriptionJob(job_id=job_id, status="completed", result=srt_file_text, end_time=time.time())
+        job_status[job_id] = TranscriptionJob(
+            job_id=job_id,
+            status="completed",
+            progress="completed",
+            result=ssm_objects,
+            end_time=time.time(),
+            duration=job_status[job_id].get_duration(),
+        )
+
+    return open(path_srtfile_with_speakers, "rb")
 
 
-    return open(path_srtfile_with_speakers, 'rb')
+app = Flask(__name__)
+app.register_blueprint(transcription, url_prefix="/transcription")
 
 
-# app = Flask(__name__)
-# app.register_blueprint(transcription, url_prefix='/transcription')
-# @app.route('/')
-# def hello_world():
-#     return 'Hello, World!'
-# app.run(debug=True)
+@app.route("/")
+def hello_world():
+    return "Hello, World!"
+
+
+app.run(debug=True, host="0.0.0.0")
 
 # if __name__ == '__main__':
 #     app = Flask(__name__)
@@ -882,8 +974,7 @@ def transcribe_and_generate_files(audio_path: str, model_name="large-v3", job_id
 #         return 'Hello, World!'
 #     app.run(debug=True)
 
-    # Open court audio file
-    # audio_file = open('court_audio.mp3', 'rb')
-    # # Test transcribe_and_generate_files function
-    # transcribe_and_generate_files(audio_file)
-
+# Open court audio file
+# audio_file = open('court_audio.mp3', 'rb')
+# # Test transcribe_and_generate_files function
+# transcribe_and_generate_files(audio_file)
