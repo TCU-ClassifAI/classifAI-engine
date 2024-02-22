@@ -129,6 +129,7 @@ class TranscriptionSegment:
     start_time: float
     end_time: float
     text: str
+    confidence: float = 1.0
 
 
 transcription = Blueprint("transcription", __name__)
@@ -394,6 +395,9 @@ def transcribe_and_generate_files(
     sentence_ending_punctuations = ".?!"
 
     def get_first_word_idx_of_sentence(word_idx, word_list, speaker_list, max_words):
+        """
+        Helper function to get the index of the first word in a sentence.
+        """
         is_word_sentence_end = (
             lambda x: x >= 0 and word_list[x][-1] in sentence_ending_punctuations
         )
@@ -409,6 +413,9 @@ def transcribe_and_generate_files(
         return left_idx if left_idx == 0 or is_word_sentence_end(left_idx - 1) else -1
 
     def get_last_word_idx_of_sentence(word_idx, word_list, max_words):
+        """
+        Helper function to get the index of the last word in a sentence.
+        """
         is_word_sentence_end = (
             lambda x: x >= 0 and word_list[x][-1] in sentence_ending_punctuations
         )
@@ -429,6 +436,9 @@ def transcribe_and_generate_files(
     def get_realigned_ws_mapping_with_punctuation(
         word_speaker_mapping, max_words_in_sentence=50
     ):
+        """
+        Realign the word-sentence mapping based on the speaker labels.
+        """
         is_word_sentence_end = (
             lambda x: x >= 0
             and word_speaker_mapping[x]["word"][-1] in sentence_ending_punctuations
@@ -897,6 +907,9 @@ def transcribe_and_generate_files(
     print("Transcription complete")
 
     print(ssm)
+
+    # Clean up temporary files (remove tmphomeclassgpu.* files)
+    cleanup(temp_path)
 
     # Convert SSM into a list of TranscriptionSegment objects
     ssm_objects = list(
