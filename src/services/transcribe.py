@@ -286,7 +286,6 @@ def transcribe_and_generate_files(
     """
 
     try:
-        
         # List of languages supported by the punctuation model (https://huggingface.co/kredor/punctuate-all)
         punct_model_langs = [
             "en",
@@ -344,9 +343,7 @@ def transcribe_and_generate_files(
             config.diarizer.manifest_filepath = os.path.join(
                 data_dir, "input_manifest.json"
             )
-            config.diarizer.out_dir = (
-                output_dir  # Directory to store intermediate files and prediction outputs
-            )
+            config.diarizer.out_dir = output_dir  # Directory to store intermediate files and prediction outputs
 
             config.diarizer.speaker_embeddings.model_path = pretrained_speaker_model
             config.diarizer.oracle_vad = (
@@ -396,7 +393,9 @@ def transcribe_and_generate_files(
 
         sentence_ending_punctuations = ".?!"
 
-        def get_first_word_idx_of_sentence(word_idx, word_list, speaker_list, max_words):
+        def get_first_word_idx_of_sentence(
+            word_idx, word_list, speaker_list, max_words
+        ):
             """
             Helper function to get the index of the first word in a sentence.
             """
@@ -412,7 +411,9 @@ def transcribe_and_generate_files(
             ):
                 left_idx -= 1
 
-            return left_idx if left_idx == 0 or is_word_sentence_end(left_idx - 1) else -1
+            return (
+                left_idx if left_idx == 0 or is_word_sentence_end(left_idx - 1) else -1
+            )
 
         def get_last_word_idx_of_sentence(word_idx, word_list, max_words):
             """
@@ -505,7 +506,13 @@ def transcribe_and_generate_files(
             prev_spk = spk
 
             snts = []
-            snt = {"speaker": f"Speaker {spk}", "start_time": s, "end_time": e, "text": ""}
+            snt = {
+                "speaker": f"Speaker {spk}",
+                "start_time": s,
+                "end_time": e,
+                "text": "",
+            }
+
 
             for wrd_dict in word_speaker_mapping:
                 wrd, spk = wrd_dict["word"], wrd_dict["speaker"]
@@ -524,6 +531,12 @@ def transcribe_and_generate_files(
                 prev_spk = spk
 
             snts.append(snt)
+
+
+            # if the speaker is "Speaker 0", change it to "Main Speaker" for clarity
+            for snt in snts:
+                if snt["speaker"] == "Speaker 0":
+                    snt["speaker"] = "Main Speaker"
             return snts
 
         def get_speaker_aware_transcript(sentences_speaker_mapping, f):
@@ -595,7 +608,9 @@ def transcribe_and_generate_files(
             # handle the first and last word
             if word_timestamps[0].get("start") is None:
                 word_timestamps[0]["start"] = 0
-                word_timestamps[0]["end"] = _get_next_start_timestamp(word_timestamps, 0)
+                word_timestamps[0]["end"] = _get_next_start_timestamp(
+                    word_timestamps, 0
+                )
 
             result = [
                 word_timestamps[0],
@@ -806,6 +821,12 @@ def transcribe_and_generate_files(
                 suppress_numerals,
                 device,
             )
+
+        # whisper_probs = [segment["avg_logprob"] for segment in whisper_results]
+
+        # print("====================================")
+        # print(f"Whisper results: {whisper_probs}")
+        # logging.info(f"Whisper results: {whisper_probs}")
 
         # Change job status to diarizing
         if job_id is not None:

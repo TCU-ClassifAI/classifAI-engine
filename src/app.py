@@ -2,7 +2,7 @@ from flask import Flask, make_response
 import os
 from dotenv import load_dotenv
 from services.auth import api_key_required
-from services.transcription import transcription
+from services.transcribe import transcription
 
 load_dotenv()  # Load environment variables from .env file
 
