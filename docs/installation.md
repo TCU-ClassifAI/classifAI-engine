@@ -41,3 +41,40 @@ python src/run.py
 
 
 More usage can be found in the [API Documentation](api/api_transcription.md).
+
+
+## Installation on the GPU Server
+
+Currently, it is run as a Systemd service. The service file is located at `/etc/systemd/system/classifai.service`. The service can be started, stopped, and restarted using the following commands:
+
+```sh
+sudo systemctl start classifai
+sudo systemctl stop classifai
+sudo systemctl restart classifai
+```
+
+The logs can be viewed using the following command:
+
+```sh
+sudo journalctl -u classifai
+```
+
+Below is the startup script that is used to start the server. It is located at `/home/classgpu/classifAI-engine/startup.sh`.
+```sh
+#!/bin/bash
+
+# change to the directory where the script is located
+cd /home/classgpu/classifAI-engine
+
+# if there is a nohup.out file, remove it
+if [ -f nohup.out ]; then
+    rm nohup.out
+fi
+
+
+# activate the virtual environment (in /home/classgpu/classifAI-engine)
+source bin/activate
+
+# Start the server
+gunicorn --bind 0.0.0.0:5000 --chdir src/ wsgi:app
+```
