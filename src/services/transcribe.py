@@ -24,6 +24,8 @@ from typing import TextIO
 import uuid
 from dataclasses import dataclass, asdict
 from datetime import datetime
+from pytube import YouTube
+import requests
 
 
 @dataclass
@@ -35,8 +37,7 @@ class TranscriptionJob:
         job_id: Unique ID of the transcription job.
         user_id: ID of the user who started the transcription job (default: None).
         model_type: Name of the model used for transcription (default: "large-v3").
-        status: Status of the transcription job (default: "in progress").
-        state: State of the transcription job (default: "transcribing").
+        status: Status of the transcription job (default: "transcribing").
         start_time: Start time of the transcription job (datetime) (default: current time).
         end_time: End time of the transcription job (default: None).
         duration: Duration of the transcription job in milliseconds (default: 0).
@@ -47,8 +48,7 @@ class TranscriptionJob:
     job_id: str
     user_id: str = None
     model_type: str = "large-v3"
-    status: str = "in progress"  # "in progress", "completed", "failed"
-    progress: str = "transcribing"  # "transcribing", "diarizing", "punctuating", "completed", "failed
+    status: str = "transcribing"  # "transcribing", "diarizing", "punctuating", "completed", "failed"
     start_time: datetime = datetime.now()
     end_time: datetime = None
     duration: float = 0  # in milliseconds
@@ -73,8 +73,8 @@ class TranscriptionJob:
                 else None
             )
 
-        # Get current duration if the job is still in progress
-        if self.status == "in progress":
+        # Get current duration if the job is still not "completed" or "failed"
+        if self.status not in ["completed", "failed"]:
             self.duration = self.get_duration()
 
         data_dict = asdict(self)
@@ -148,6 +148,94 @@ def healthcheck():
     """
     return make_response("OK", 200)
 
+
+def cleanup(path: str):
+    """path could either be relative or absolute."""
+    # check if file or directory exists
+    if os.path.isfile(path) or os.path.islink(path):
+        # remove file
+        os.remove(path)
+    elif os.path.isdir(path):
+        # remove directory and all its content
+        shutil.rmtree(path)
+    else:
+        raise ValueError("Path {} is not a file or dir.".format(path))
+
+@transcription.route("/test")
+def test_yt_transcription():
+    """ Test the start_yt_transcription endpoint. """
+    url = "https://www.youtube.com/watch?v=tWYsfOSY9vY"
+    model_name = "large-v3"
+
+    data = {
+        "url": url,
+        "model_name": model_name,
+    }
+
+    print(f"Starting transcription for YouTube video {url} with model {model_name}")
+    response = requests.post(
+        "http://localhost:5000/transcription/start_yt_transcription", json=data
+    )
+
+    return response.text
+
+@transcription.route("/start_yt_transcription", methods=["POST"])
+def start_yt_transcription():
+    """ Start the transcription process for a YouTube video by creating a new thread to run the process.
+
+    Args:
+        url: URL of the YouTube video to transcribe.
+        model_name: name of the model to use for transcription (default: large-v3)
+
+    Returns:
+        Response object with the status code.
+    """
+
+    data = request.get_json()
+    url = data.get("url")
+    model_name = data.get("model_name", "large-v3")
+
+    if url is None:
+        return jsonify({"error": "No URL provided"}), 400
+    
+    # Call start_transcription with the audio file from the YouTube video
+    server = request.host_url.rstrip('/')
+
+    print("=====================================")
+    print(f"Starting transcription for YouTube video {url} with model {model_name}")
+    print("=====================================")
+
+    # Download MP3 from YouTube video
+
+    yt = YouTube(url)
+    video = yt.streams.filter(only_audio=True).first()
+    destination = "./tmp"
+
+    out_file = video.download(output_path=destination)
+    base, ext = os.path.splitext(out_file)
+    new_file = base + '.mp3'
+    os.rename(out_file, new_file)
+
+
+    print(f"Downloaded {yt.title} to {new_file}")
+
+    files = {
+        "file": open(f"tmp/{yt.title}.mp3", "rb")
+    }
+
+
+    data = {
+        "model_name": model_name
+    }
+
+    print(f"Successfully downloaded YT Video. Sending request to {server}/transcription/start_transcription")
+
+    transcription_url = f"{server}/transcription/start_transcription"
+    response = requests.post(transcription_url, files=files, data=data)
+
+ 
+    cleanup(new_file)
+    return response.text
 
 @transcription.route("/start_transcription", methods=["POST"])
 def start_transcription():
@@ -627,17 +715,7 @@ def transcribe_and_generate_files(
                     result.append(ws)
             return result
 
-        def cleanup(path: str):
-            """path could either be relative or absolute."""
-            # check if file or directory exists
-            if os.path.isfile(path) or os.path.islink(path):
-                # remove file
-                os.remove(path)
-            elif os.path.isdir(path):
-                # remove directory and all its content
-                shutil.rmtree(path)
-            else:
-                raise ValueError("Path {} is not a file or dir.".format(path))
+        
 
         def process_language_arg(language: str, model_name: str):
             """
@@ -830,7 +908,7 @@ def transcribe_and_generate_files(
 
         # Change job status to diarizing
         if job_id is not None:
-            job_status[job_id].progress = "diarizing"
+            job_status[job_id].status = "diarizing"
 
         if language in wav2vec2_langs:
             device = "cuda"
@@ -881,7 +959,7 @@ def transcribe_and_generate_files(
 
         # Change job status to aligning
         if job_id is not None:
-            job_status[job_id].progress = "aligning"
+            job_status[job_id].status = "aligning"
 
         # Map speaker labels to speaker names
         speaker_ts = []
@@ -936,6 +1014,9 @@ def transcribe_and_generate_files(
         # Clean up temporary files (remove tmphomeclassgpu.* files)
         cleanup(temp_path)
 
+        # Remove the original audio file
+        cleanup(audio_path)
+
         # Convert SSM into a list of TranscriptionSegment objects
         ssm_objects = list(
             map(
@@ -957,7 +1038,6 @@ def transcribe_and_generate_files(
             job_status[job_id] = TranscriptionJob(
                 job_id=job_id,
                 status="completed",
-                progress="completed",
                 result=ssm_objects,
                 end_time=datetime.now(),
                 duration=job_status[job_id].get_duration(),
@@ -983,3 +1063,4 @@ if __name__ == "__main__":
         return "Hello, World!"
 
     app.run(debug=True, host="0.0.0.0")
+
