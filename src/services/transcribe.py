@@ -18,7 +18,7 @@ import unidecode
 from unidecode import unidecode
 from pathlib import Path
 
-from flask import Flask, request, jsonify, Blueprint, make_response
+from flask import Flask, request, jsonify, Blueprint, make_response, g
 import threading
 from typing import TextIO
 import uuid
@@ -161,27 +161,11 @@ def cleanup(path: str):
     else:
         raise ValueError("Path {} is not a file or dir.".format(path))
 
-@transcription.route("/test")
-def test_yt_transcription():
-    """ Test the start_yt_transcription endpoint. """
-    url = "https://www.youtube.com/watch?v=tWYsfOSY9vY"
-    model_name = "large-v3"
 
-    data = {
-        "url": url,
-        "model_name": model_name,
-    }
 
-    print(f"Starting transcription for YouTube video {url} with model {model_name}")
-    response = requests.post(
-        "http://localhost:5000/transcription/start_yt_transcription", json=data
-    )
-
-    return response.text
-
-@transcription.route("/start_yt_transcription", methods=["POST"])
+@transcription.route('/start_yt')
 def start_yt_transcription():
-    """ Start the transcription process for a YouTube video by creating a new thread to run the process.
+    """ Start the transcription process for a YouTube video by creating a new thread to run the process. Either a GET or POST request can be used.
 
     Args:
         url: URL of the YouTube video to transcribe.
@@ -189,43 +173,51 @@ def start_yt_transcription():
 
     Returns:
         Response object with the status code.
-    """
-
-    data = request.get_json()
-    url = data.get("url")
-    model_name = data.get("model_name", "large-v3")
-
-    if url is None:
-        return jsonify({"error": "No URL provided"}), 400
+    """ 
+    if request.method == 'GET':
+        url = request.args.get("url")
+        if url is None:
+            return jsonify({"error": "No URL provided"}), 400
+    if request.method == 'POST':
+        url = request.form.get("url")
+        if url is None:
+            return jsonify({"error": "No URL provided"}), 400
     
+    
+    print(f"Starting transcription for YouTube video {url} with model large-v3")
     # Call start_transcription with the audio file from the YouTube video
     server = request.host_url.rstrip('/')
 
     print("=====================================")
-    print(f"Starting transcription for YouTube video {url} with model {model_name}")
+    print(f"Starting transcription for YouTube video {url} with model large-v3")
     print("=====================================")
 
     # Download MP3 from YouTube video
+    try:
+        yt = YouTube(url)
+        video = yt.streams.filter(only_audio=True).first()
+        destination = "./tmp"
 
-    yt = YouTube(url)
-    video = yt.streams.filter(only_audio=True).first()
-    destination = "./tmp"
-
-    out_file = video.download(output_path=destination)
+        out_file = video.download(output_path=destination)
+    except Exception as e:
+        print(f"Error downloading YT Video: {e}")
+        return jsonify({"error": f"Error downloading YT Video: {e}"}), 400
     base, ext = os.path.splitext(out_file)
-    new_file = base + '.mp3'
+    new_file = "./tmp" + uuid.uuid4().hex + ".mp3"
     os.rename(out_file, new_file)
 
 
     print(f"Downloaded {yt.title} to {new_file}")
 
     files = {
-        "file": open(f"tmp/{yt.title}.mp3", "rb")
+        "file": open(f"{new_file}", "rb")
     }
+    # print filesize in MB
+    print(f"File size: {os.path.getsize(new_file) / (1024 * 1024)} MB")
 
 
     data = {
-        "model_name": model_name
+        "model_name": "large-v3"
     }
 
     print(f"Successfully downloaded YT Video. Sending request to {server}/transcription/start_transcription")
