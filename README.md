@@ -180,6 +180,19 @@ For more instructions please see the [documentation
 * **Method:** `POST`
 * **Data Params:** (Request with file)
 
+#### start_yt
+
+* **URL:** `/transcription/start_yt`
+* **Method:** `POST` or `GET`
+* **Data Params:** 
+  - `url` (string)
+
+* Example:
+  ```sh
+  curl http://localhost:5000/transcription/start_yt?url=https://www.youtube.com/watch?v=M7nCITD1HpY
+  ```
+
+
 #### get_transcription
 
 * **URL:** `/transcription/get_transcription`
