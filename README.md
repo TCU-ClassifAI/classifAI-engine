@@ -229,13 +229,18 @@ _For more examples, please refer to the [Documentation](https://tcu-classifai.gi
 
 - [x] Add Transcription Service
     - [x] Use Whisper for transcription
-    - [ ] Integrate WhisperX for faster transcription and diarization
+    - [x] Integrate WhisperX for faster transcription and diarization
     - [ ] Use Celery for better asynchronous processing
     - [ ] Use Redis for better asynchronous processing
     - [ ] Ensemble different models for better transcription
-- [ ] Add Question Categorization Service
-- [ ] Add Question Categorization Service
+    - [x] Add support for YouTube videos
+- [x] Add Question Categorization Service
+    - [ ] Generate summaries of the questions
+    - [ ] Add support for more question types
+    - [ ] Add support for more languages
 - [ ] Add Engagement Insights Service
+    - [ ] Add support for more languages
+    
 
 
 
