@@ -1,5 +1,9 @@
-flask
 openai-whisper
-faster-whisper
+transformers
+pyannote.audio
+flask
+torch
+torchvision
+torchaudio
+pytube
 python-dotenv
-openai
