@@ -4,6 +4,10 @@
 
     Ensure that you include your API key in all requests by using the following format: curl -H "X-API-KEY: MYAPIKEY" https://api.mydomain.com/v1/users. [Need an API key or instructions on how to obtain one?](api_key.md)
 
+    At the moment, the API key is not required. However, it will be required in the future.
+    At the moment, you cannot access the HTTP API from outside the TCU network. However, everything is set up to work assuming you self-host the API.
+
+## Starting Transcriptions
 
 
 ### Start a Transcription
@@ -12,7 +16,7 @@ This endpoint kicks off a transcription job. It returns a job ID that can be use
 
 #### HTTP Method and URL
 
-`POST https://api.classifai.tcu.edu/transcription/start_transcription`
+`POST https://llm.cs.tcu.edu:5000/transcription/start_transcription`
 
 #### Parameters
 
@@ -72,7 +76,7 @@ This endpoint returns the status of a transcription job. It can be used to check
 
 #### HTTP Method and URL
 
-`GET https://api.classifai.tcu.edu/transcription/get_transcription`
+`GET https://api.classifai.tcu.edu/transcription/get_transcription_status`
 
 #### Parameters
 
