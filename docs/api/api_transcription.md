@@ -16,7 +16,7 @@ This endpoint kicks off a transcription job. It returns a job ID that can be use
 
 #### HTTP Method and URL
 
-`POST https://llm.cs.tcu.edu:5000/transcription/start_transcription`
+`POST https://llm.cs.tcu.edu:5000/transcription/transcribe`
 
 #### Parameters
 
@@ -69,14 +69,25 @@ Code | Message | Meaning
 400 | Invalid user ID | The user ID is not valid
 500 | Internal Server Error | Something went wrong on our end. Please try again later.
 
+### Start a YouTube Transcription
 
-### Get Transcription
+This endpoint kicks off a transcription job. It returns a job ID that can be used to check the status of the transcription job.
+
+#### HTTP Method and URL
+
+`POST https://llm.cs.tcu.edu:5000/transcription/transcribe_yt`
+
+
+## Get Transcriptions Status
+
+
+### Get Transcription Status
 
 This endpoint returns the status of a transcription job. It can be used to check the status of a transcription job, or to get the transcription file.
 
 #### HTTP Method and URL
 
-`GET https://api.classifai.tcu.edu/transcription/get_transcription_status`
+`GET https://llm.cs.tcu.edu:5000/transcription/get_transcription_status?job_id=[INSERT_JOB_ID]`
 
 #### Parameters
 
@@ -125,50 +136,3 @@ Code | Message | Meaning
 400 | No job ID provided | The request did not include a job ID
 404 | Job not found | The job ID provided does not match any transcription jobs.
 500 | Internal Server Error | Something went wrong on our end. Please try again later.
-
-### [Remove an employee]
-
-[The heading above should be a very brief description of what the endpoint does.]
-
-#### HTTP Method and URL
-
-[`GET`, `PUT`, `POST`, or `DELETE` and URL---for example, `DELETE https://api.payrollrecord.com/employee/{employee_id}`]
-
-#### Parameters
-
-[Table that lists all query and path parameters for the endpoint. If this endpoint has query and path parameters, consider listing them in separate tables---one for path parameters, one for query parameters. If there aren't any parameters for this endpoint, replace the table with "None"]
-
-Name | Type | Description | Required?
----- | ---- | ----------- | ---------
-[Name or parameter] | [Query or Path] | [Brief description of parameter function. What does it do?] | [Required or Optional]
-[Name or parameter] | [Query or Path] | [Brief description of parameter function. What does it do?] | [Required or Optional]
-[Name or parameter] | [Query or Path] | [Brief description of parameter function. What does it do?] | [Required or Optional]
-
-#### Example Request
-
-[Code or pseudocode sample of a complete request for this endpoint, including header and body, followed by a table that lists each element in the example request]
-
-Element | Type | Description | Required?
-------- | ---- | ----------- | ---------
-[Element as it appears in request] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents, including default and valid values] | [Required or Optional]
-[Element as it appears in request] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents, including default and valid values] | [Required or Optional]
-[Element as it appears in request] | [Array, Object, String, Integer, or Float] | [Brief description of what information the element represents, including default and valid values] | [Required or Optional]
-
-#### Example Response
-
-[Code or pseudocode sample of a complete response for this endpoint, followed by a table that lists each element in the example response]
-
-Element | Type | Description
-------- | ---- | -----------
-`{"job_id": "a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee", "model_type": "tiny.en", "status": "in progress", "state": "loading model", "start_time": 1698877559.0479097, "duration": 22.8137366771698}` | Object | [Brief description of what information the element represents]
-
-
-#### Error and Status Codes
-
-[Table that lists all possible error and status codes for this endpoint]
-
-Code | Message | Meaning
----- | ------- | -------
-[HTTP or error code] | [Message for the code, such as "Not Found"] | [Brief description of what the code means within your API, such as "We couldn't complete your request right now"]
-[HTTP or error code] | [Message for the code, such as "Not Found"] | [Brief description of what the code means within your API, such as "We couldn't complete your request right now"]
-[HTTP or error code] | [Message for the code, such as "Not Found"] | [Brief description of what the code means within your API, such as "We couldn't complete your request right now"]
