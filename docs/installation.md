@@ -22,17 +22,42 @@ cd classifAI-engine
 pip install -r src/requirements.txt -r src/requirements-dev.txt
 ```
 
-3. Install ffmpeg
+3. Install required system packages 
 
 ```sh
+# Install ffmpeg
 sudo apt install ffmpeg # Ubuntu
 brew install ffmpeg # MacOS
+# install Redis
+sudo apt install redis-server # Ubuntu
+brew install redis # MacOS
+# start Redis
+sudo redis-server # Ubuntu
 ```
+4. Accept the Hugging Face terms and conditions
+- 1. visit hf.co/pyannote/speaker-diarization-3.1 and accept user conditions
+- 2. visit hf.co/pyannote/segmentation-3.0 and accept user conditions
+- 3. visit hf.co/settings/tokens to create an access token
+
+
+4. Set up the environment variables and ins
+
+- Create a `.env` file in the root directory of the project. The `.env` file should contain the following environment variables:
+
+```sh
+# .env
+HF_TOKEN=your_hugging_face_token # Get a token from https://hf.co/settings/tokens
+REDIS_PORT=6379 #(default port for Redis, can be changed)
+REDIS_HOST=localhost #(default host for Redis, can be changed)
+REDIS_DB=0 #(default db for Redis, can be changed)
+OPENAI_API_KEY=your_openai_api_key # Get a token from https://platform.openai.com/account/api-keys
+```
+
 
 4. Launch the API
 
 ```sh
-python src/run.py
+python src/app.py
 ```
 
 
