@@ -4,6 +4,8 @@ import json
 from typing import Optional
 import redis
 from datetime import datetime
+import pickle
+import base64
 
 @dataclass
 class Job:
@@ -81,6 +83,10 @@ class Job:
             key: value for key, value in data_dict.items() if value is not None
         }
 
+        # convert job_info to a dictionary if it is not None
+        if filtered_dict.get("job_info") is not None:
+            filtered_dict["job_info"] = json.dumps(filtered_dict["job_info"])
+
         # convert submit_time into int
 
 
@@ -106,6 +112,28 @@ class Job:
             if value is None:
                 data_dict[key] = None
         return Job(**data_dict)
+    
+    def pickle(self) -> str:
+        """
+        Convert the dataclass to a pickle base64 string.
+
+        Args:
+            None (self)
+        Returns:
+            str: Pickle base64 string representation of the dataclass.
+        """
+        return base64.b64encode(pickle.dumps(self)).decode("utf-8")
+    
+    def unpickle(pickled_string: str) -> "Job":
+        """
+        Convert a pickle base64 string to a Job object.
+
+        Args:
+            pickled_string (str): Pickle base64 string representation of the dataclass.
+        Returns:
+            Job: Job object created from the pickle base64 string.
+        """
+        return pickle.loads(base64.b64decode(pickled_string))
     
     def initialize_transcription_job(self, audio_path: str, model_type: str = "large-v3", title: str = None):
         """
@@ -166,42 +194,5 @@ class Job:
         
         return self.end_time - self.submit_time
     
-    # def enqueue(self, r):
-    #     """
-    #     Enqueue the job in the job queue (redis) according to the job type.
-
-    #     Args:
-    #         r (redis.Redis): Redis connection object.
-    #     Returns:
-    #         None
-    #     """
-    #     # Connect to Redis
-    #     # Enqueue the job
-    #     r.lpush(self.type, self.to_json_string())
-
-    # def dequeue(self, r):
-    #     """
-    #     A worker dequeues the job from the job queue and starts processing it.
-
-    #     Args:
-    #         r (redis.Redis): Redis connection object.
-    #     Returns:
-    #         The job object that was dequeued. (Job)
-    #     """
-    #     # Connect to Redis
-
-    #     # Dequeue the job
-    #     job_string = r.rpop(self.type)
-    #     # Convert the job string to a Job object
-    #     job = Job(**json.loads(job_string))
-    #     # Update the status of the job
-    #     job.status = "in progress"
-    #     job.start_time = time.time()
-    #     # Update the job in the queue
-    #     r.lpush(self.type, job.to_json_string())
-    #     return job
-
-
-# job = Job("123", "transcription", "user1", "queued", "loading_model", "large-v3", time.time(), None, None, 0, None, None)
-
+    
 

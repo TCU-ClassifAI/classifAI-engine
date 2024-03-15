@@ -1,10 +1,14 @@
 from utils.jobs import Job
 import redis
+from rq import Queue
 from flask import Flask, request, jsonify, Blueprint
 from dotenv import load_dotenv
 import os
 import logging
 import uuid
+import json
+from utils.worker_manager import process_job
+from rq.job import Job as RQJob
 
 load_dotenv()
 
@@ -14,7 +18,7 @@ queue_management = Blueprint("queue_management", __name__)
 
 # Connect to Redis
 r = redis.Redis(host='localhost', port=os.getenv("REDIS_PORT"), db=0)
-
+q = Queue('jobs', connection=r)
 
 
 @queue_management.route("/enqueue", methods=["POST"])
@@ -30,6 +34,8 @@ def enqueue():
     """
     job_type = request.form.get("job_type")
     job_id = request.form.get("job_id")
+    job_info = request.form.get("job_info")
+
 
     if job_type is None:
         return jsonify({"error": "job_type is required"}), 400
@@ -37,24 +43,39 @@ def enqueue():
     if job_id is None:
         job_id = str(uuid.uuid4())
 
-    
+    # convert job_info to a dictionary if it is not None
+    if job_info is not None:
+        try:
+            job_info = json.loads(job_info)
+        except json.JSONDecodeError as e:
+            return jsonify({"error": "Invalid job_info"}), 400
+        
     try:
-        #Create a job object
-        job = Job(type=job_type, job_id=job_id)
 
-        r.lpush("jobs", job.to_json_string())
-
-
-        logging.info(f"Job enqueued: {job.to_json_string()}")
-        print(f"Job enqueued: {job.to_json_string()}")
-        return jsonify({"message": "Job enqueued"}), 200
-
-
-    except redis.exceptions.RedisError as e:
-        return jsonify({"Redis error": str(e)}), 500
-    
+        # create a job object from the request parameters
+        job = Job(type=job_type, job_id=job_id, job_info=job_info)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+    job_pickle = job.pickle()
+
+    description = {
+        "job_type": job.type,
+        "job_status": "queued",
+    }
+
+    description = json.dumps(description)
+
+    q.enqueue(process_job, job_pickle, job_id=job.job_id, job_timeout="5m", description=description, result_ttl=-1)
+
+    logging.info(f"Job enqueued: {job.job_id}")
+
+    return jsonify({"message": "Job enqueued", "job_id": str(job.job_id)}), 200
+
+    
+
+    
+
 
 
 @queue_management.route("/get_job_status", methods=["GET"])
@@ -71,37 +92,21 @@ def get_job_status():
     if job_id is None:
         return jsonify({"error": "No job ID provided"}), 400
 
-    job_strings = r.lrange("jobs", 0, -1) # Get all jobs from the queue 
-
-    for job_string in job_strings:
-        job = Job.from_json_string(job_string)
-        if job.job_id == job_id:
-            return job.to_json_string(), 200
-
-    if job is None:
+    rqjob = RQJob.fetch(job_id, connection=r)
+    if rqjob is None:
         return jsonify({"error": "Invalid job ID"}), 400
+    
+    logging.info(f"Job status for {job_id}: {rqjob.get_status()}")
 
-    return job.to_json_string(), 200
+    if rqjob.is_finished:
+        
+        result = Job.to_json_string(Job.unpickle(rqjob.result))
 
-def update_progress(job: Job):
-    """
-    Update the status of the job in the job queue.
+        return jsonify({"status": rqjob.get_status(), "result": result, "meta": rqjob.get_meta()}), 200
+        
 
-    Args:
-        job (Job): Job object to update.
-    Returns:
-        None
-    """
-    job_strings = r.lrange("jobs", 0, -1) # Get all jobs from the queue 
+    return jsonify({"status": rqjob.get_status(), "meta": rqjob.get_meta()}), 200
 
-    for job_string in job_strings:
-        job_in_queue = Job.from_json_string(job_string)
-        if job_in_queue.job_id == job.job_id:
-            r.lrem("jobs", 0, job_in_queue.to_json_string()) # Remove the old job from the queue
-            r.lpush("jobs", job.to_json_string()) # Add the updated job to the queue
-            return
-
-    return jsonify({"error": "Invalid job ID"}), 400
 
 
 if __name__ == "__main__":
