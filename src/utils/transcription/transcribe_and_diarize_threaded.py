@@ -8,31 +8,16 @@ import torchaudio
 import threading
 import time
 import logging
-
-from download_utils import download_and_convert_to_mp3
-from word_timestamp_utils import words_per_segment
-
-progress_status = {
-    "state": "idle",
-    "message": ""
-}
-
-progress_lock = threading.Lock()
-
-def update_progress(state: str, message: str):
-    """Update the progress status with the given state and message.
-
-    Args:
-        state (str): The state of the progress
-        message (str): The message to display
-    """
-    progress_lock.acquire()
-    progress_status["state"] = state
-    progress_status["message"] = message
-    progress_lock.release()
+import redis
 
 
-def transcribe_and_diarize(audio_path: str, model_id: str = "large-v3") -> dict:
+from utils.jobs import Job
+from utils.transcription.download_utils import download_and_convert_to_mp3
+from utils.transcription.word_timestamp_utils import words_per_segment
+from utils.queue_manager import update_progress
+
+
+def transcribe_and_diarize(audio_path: str, model_id: str = "large-v3", r: redis.Redis = None, job: Job = None):
     """Transcribe and diarize a given audio file using the whisper library and pyannote library.
 
     Args:
@@ -44,11 +29,18 @@ def transcribe_and_diarize(audio_path: str, model_id: str = "large-v3") -> dict:
     """
         
     load_dotenv()
-    url = "https://www.youtube.com/watch?v=UVzLd304keA"
-    update_progress("downloading", "Downloading and converting to mp3")
+
+    audio_path = job.job_info.get("audio_path", None)
+    model_id = job.job_info.get("model_id", "large-v3")
+
+
+    # url = "https://www.youtube.com/watch?v=UVzLd304keA"
+
+
+    # update_progress("downloading", "Downloading and converting to mp3")
     
     try:
-        audio_path = download_and_convert_to_mp3(url)
+        # audio_path = download_and_convert_to_mp3(url)
 
         # make sure model_id is a valid model
         if model_id not in whisper.available_models():
@@ -58,14 +50,20 @@ def transcribe_and_diarize(audio_path: str, model_id: str = "large-v3") -> dict:
         if not torch.cuda.is_available():
             model_id = "tiny"
 
-        update_progress("load-model", f"Loading model: {model_id}")
+        job.subtask = "loading_model"
+        job.subtask_message = f"Loading model: {model_id}"
+        update_progress(job=job)
 
         model = whisper.load_model(model_id) # By default, large-v3 model is used
-        update_progress("transcribing", "Transcribing audio")
+        job.subtask = "transcribing"
+        job.subtask_message = "Transcribing audio"
+        update_progress(job=job)
 
         transcript = model.transcribe(audio_path, word_timestamps=True)
         
         logging.info(transcript)
+
+
         update_progress("load-diarization", "Loading diarization pipeline")
 
         pipeline = Pipeline.from_pretrained(
@@ -104,12 +102,12 @@ def transcribe_and_diarize(audio_path: str, model_id: str = "large-v3") -> dict:
     return final_result
 
 
-def check_progress():
-    """Returns the current progress status"""
-    progress_lock.acquire()
-    status_copy = progress_status.copy()  # Avoid issues if the status changes mid-check
-    progress_lock.release()
-    return status_copy
+# def check_progress():
+#     """Returns the current progress status"""
+#     progress_lock.acquire()
+#     status_copy = progress_status.copy()  # Avoid issues if the status changes mid-check
+#     progress_lock.release()
+#     return status_copy
 
 if __name__ == "__main__": # Testing: do not use in prod.
     transcribe_and_diarize("court_audio.mp3")

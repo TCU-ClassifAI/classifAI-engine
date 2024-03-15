@@ -78,6 +78,26 @@ def get_job_status():
 
     return job.to_json_string(), 200
 
+def update_progress(job: Job):
+    """
+    Update the status of the job in the job queue.
+
+    Args:
+        job (Job): Job object to update.
+    Returns:
+        None
+    """
+    job_strings = r.lrange("jobs", 0, -1) # Get all jobs from the queue 
+
+    for job_string in job_strings:
+        job_in_queue = Job.from_json_string(job_string)
+        if job_in_queue.job_id == job.job_id:
+            r.lrem("jobs", 0, job_in_queue.to_json_string()) # Remove the old job from the queue
+            r.lpush("jobs", job.to_json_string()) # Add the updated job to the queue
+            return
+
+    return jsonify({"error": "Invalid job ID"}), 400
+
 
 if __name__ == "__main__":
     app = Flask(__name__)
