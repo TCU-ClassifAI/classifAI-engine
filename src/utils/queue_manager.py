@@ -52,23 +52,6 @@ def enqueue():
         return jsonify({"error": str(e)}), 500
 
 
-
-@queue_management.route("/dequeue", methods=["POST"])
-def dequeue():
-    """
-    A worker dequeues the job from the job queue and starts processing it.
-
-    Args:
-        job_type (str): Type of the job.
-    Returns:
-        str: A message confirming the job has been dequeued.
-    """
-    job_type = request.form["job_type"]
-
-    job = r.rpop(job_type)
-
-    return jsonify({"message": "Job dequeued"}), 200
-
 @queue_management.route("/get_job_status", methods=["GET"])
 def get_job_status():
     """
@@ -83,13 +66,12 @@ def get_job_status():
     if job_id is None:
         return jsonify({"error": "No job ID provided"}), 400
 
-    job_strings = r.lrange("jobs", 0, -1)
+    job_strings = r.lrange("jobs", 0, -1) # Get all jobs from the queue 
 
     for job_string in job_strings:
         job = Job.from_json_string(job_string)
         if job.job_id == job_id:
             return job.to_json_string(), 200
-
 
     if job is None:
         return jsonify({"error": "Invalid job ID"}), 400
