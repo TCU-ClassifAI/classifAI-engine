@@ -40,7 +40,7 @@ sudo redis-server # Ubuntu
 - 3. visit hf.co/settings/tokens to create an access token
 
 
-4. Set up the environment variables and ins
+5. Set up the environment variables and ins
 
 - Create a `.env` file in the root directory of the project. The `.env` file should contain the following environment variables:
 
@@ -51,10 +51,13 @@ REDIS_PORT=6379 #(default port for Redis, can be changed)
 REDIS_HOST=localhost #(default host for Redis, can be changed)
 REDIS_DB=0 #(default db for Redis, can be changed)
 OPENAI_API_KEY=your_openai_api_key # Get a token from https://platform.openai.com/account/api-keys
+ENV=development # Set to production when deploying to production
 ```
+5. (Optional) Set up configuration for the API
 
+- Edit values in `src/config/config.py` to match your environment. The default values are:
 
-4. Launch the API
+6. Launch the API
 
 ```sh
 python src/app.py
