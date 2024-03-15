@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify, Blueprint
 from dotenv import load_dotenv
 import os
 import logging
+import uuid
 
 load_dotenv()
 
@@ -30,8 +31,12 @@ def enqueue():
     job_type = request.form.get("job_type")
     job_id = request.form.get("job_id")
 
-    if job_type is None or job_id is None:
-        return jsonify({"error": "job_type and job_id are required"}), 400
+    if job_type is None:
+        return jsonify({"error": "job_type is required"}), 400
+    
+    if job_id is None:
+        job_id = str(uuid.uuid4())
+
     
     try:
         #Create a job object

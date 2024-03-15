@@ -3,6 +3,7 @@ import time
 import json
 from typing import Optional
 import redis
+from datetime import datetime
 
 @dataclass
 class Job:
@@ -37,7 +38,7 @@ class Job:
     status: str = "queued"
     subtask: str = None
     subtask_message: str = None
-    submit_time: float = time.time()
+    submit_time: float = round(time.time(), 2)
     start_time: float = None
     end_time: float = None
     duration: float = 0
@@ -54,10 +55,41 @@ class Job:
         Returns:
             str: JSON string representation of the dataclass.
         """
+        # Helper function to format the datetime
+        # def format_datetime(datetime_obj) -> str:
+        #     # if type(datetime_obj) != int:
+        #     #     datetime_obj = int(datetime_obj)
+
+        #     print(datetime_obj)
+
+        #     # Format unix timestamp to datetime
+        #     return (
+        #         datetime.fromtimestamp(datetime_obj).strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
+        #         if datetime_obj
+        #         else None
+        #     )
+        
+        
+        # Get current duration if the job is still not "completed" or "failed"
+        if self.status not in ["completed", "failed"]:
+            self.duration = self.get_duration()
+            print(self.duration)
+
         data_dict = asdict(self)
+        
         filtered_dict = {
             key: value for key, value in data_dict.items() if value is not None
         }
+
+        # convert submit_time into int
+
+
+        # if filtered_dict.get("submit_time") is not None:
+        #     filtered_dict["submit_time"] = format_datetime(filtered_dict["submit_time"])
+
+        # if filtered_dict.get("end_time") is not None:
+        #     filtered_dict["end_time"] = format_datetime(filtered_dict["end_time"])
+
         return json.dumps(filtered_dict)
     
     def from_json_string(json_string: str):
@@ -127,9 +159,12 @@ class Job:
         Returns:
             float: Duration of the job in seconds.
         """
-        if self.start_time is None:
+        if self.submit_time is None:
             return None
-        return self.end_time - self.start_time
+        elif self.end_time is None:
+            return round(time.time() - self.submit_time, 2)
+        
+        return self.end_time - self.submit_time
     
     # def enqueue(self, r):
     #     """
