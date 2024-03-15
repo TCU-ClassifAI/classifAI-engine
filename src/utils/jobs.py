@@ -14,14 +14,15 @@ class Job:
         type (str): Type of the job. 'transcription', 'summarization', or 'categorization'.
         user_id (str, optional): ID of the user who uploaded the audio file (default=None).
         status (str, optional): Status of the job 'queued', 'in progress', 'completed', or 'failed'.
-        subtasks (str, optional): List of subtasks that are part of the job. (loading_model, transcribing, diarizing, etc.)
-        model_type (str, optional): Model type to use for transcription (default='large-v3').
+        subtask (str, optional): List of subtasks that are part of the job. (loading_model, transcribing, diarizing, etc.)
+        subtask_message (str, optional): Message for the subtask (default=None).
         submit_time (float, optional): Time when the job was submitted (default=time.time()).
         start_time (float, optional): Start time of the job from the queue (default=None).
         end_time (float, optional): End time of the job (default=None).
         duration (float, optional): Duration of the job from submission to completion (default=0).
         result (str, optional): Result of the job, if any (default=None).
         error_message (str, optional): Error message of the job, if any (default=None).
+        job_info (dict, optional): Additional information about the job used by the worker, like the audio file path, model_type, etc. (default=None).
 
     Methods:
         to_json_string: Convert the dataclass to a JSON string.
@@ -34,14 +35,15 @@ class Job:
     type: str
     user_id: str = None
     status: str = "queued"
-    subtasks: str = None
-    model_type: str = "large-v3"
+    subtask: str = None
+    subtask_message: str = None
     submit_time: float = time.time()
     start_time: float = None
     end_time: float = None
     duration: float = 0
     result: str = None
     error_message: str = None
+    job_info: dict = None
 
     def to_json_string(self) -> str:
         """
@@ -72,6 +74,49 @@ class Job:
             if value is None:
                 data_dict[key] = None
         return Job(**data_dict)
+    
+    def initialize_transcription_job(self, audio_path: str, model_type: str = "large-v3", title: str = None):
+        """
+        Initialize a transcription job with the audio file path and model type.
+
+        Args:
+            audio_path (str): Path to the audio file.
+            model_type (str): Name of the model used for transcription (default: "large-v3").
+            title (str, optional): Title of Youtube or other video (default: None).
+        Returns:
+            None
+        """
+        self.job_info = {
+            "audio_path": audio_path, # Path to the audio file, downloaded before processing
+            "model_type": model_type, # Name of the model used for transcription (default: "large-v3")
+            "title": title,
+        }
+
+    def initialize_categorization_job(self, transcript: str):
+        """
+        Initialize a categorization job with the transcript.
+
+        Args:
+            transcript (str): Transcript of the audio file.
+        Returns:
+            None
+        """
+        self.job_info = {
+            "transcript": transcript, # Transcript of the audio file to be categorized
+        }
+
+    def initialize_summarization_job(self, transcript: str):
+        """
+        Initialize a summarization job with the transcript.
+
+        Args:
+            transcript (str): Transcript of the audio file.
+        Returns:
+            None
+        """
+        self.job_info = {
+            "transcript": transcript, # Transcript of the audio file to be summarized
+        }
     
     def get_duration(self) -> float:
         """
