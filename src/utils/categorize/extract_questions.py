@@ -31,7 +31,7 @@ def extract_questions_in_context():
         transcript (str): the transcript JSON (format is on documenation)
 
     Returns:
-        list: list of dictionaries, each containing the question, speaker, start and end time, previous segment, 
+        list: list of dictionaries, each containing the question, speaker, start and end time, previous segment,
         next segment, previous speaker, and next speaker
 
     """
@@ -80,7 +80,7 @@ def categorize_all_questions() -> list:
         transcript (str): the transcript JSON (format is on documenation)
 
     Returns:
-        list: list of dictionaries, each containing the question, speaker, start and end time, previous segment, next segment, 
+        list: list of dictionaries, each containing the question, speaker, start and end time, previous segment, next segment,
         previous speaker, next speaker, question type, and Costa's level of reasoning
 
     """
@@ -135,7 +135,6 @@ def process_question(question):
 
 # Test on log.txt
 if __name__ == "__main__":
-    from flask import Flask
     import requests
 
     with open("log.txt", "r") as file:

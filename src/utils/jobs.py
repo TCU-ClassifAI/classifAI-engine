@@ -23,7 +23,7 @@ class Job:
         duration (float, optional): Duration of the job from submission to completion (default=0).
         result (str, optional): Result of the job, if any (default=None).
         error_message (str, optional): Error message of the job, if any (default=None).
-        job_info (dict, optional): Additional information about the job used by the worker, 
+        job_info (dict, optional): Additional information about the job used by the worker,
             like the audio file path, model_type, etc. (default=None).
 
     Methods:
