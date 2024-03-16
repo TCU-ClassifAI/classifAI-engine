@@ -4,14 +4,11 @@ from dotenv import load_dotenv
 from utils.auth import api_key_required
 #from utils.transcribe import transcription # update with endpoints.transcription once the file is created
 from endpoints.transcription import transcription
+from config import config as settings
 
 load_dotenv()  # Load environment variables from .env file
 
-# Load settings based on environment
-if os.environ.get("ENV") == "production":
-    from config import production as settings
-else:
-    from config import development as settings
+
 
 # Initialize Flask app
 app = Flask(__name__)
