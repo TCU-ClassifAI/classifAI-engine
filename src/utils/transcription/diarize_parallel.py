@@ -8,7 +8,7 @@ from utils.transcription.helpers import (
     punct_model_langs,
     get_realigned_ws_mapping_with_punctuation,
     get_sentences_speaker_mapping,
-    cleanup
+    cleanup,
 )
 
 
@@ -21,6 +21,7 @@ import logging
 from rq import get_current_job
 from utils.jobs import Job
 from utils.transcription.transcription_helpers import transcribe, transcribe_batched
+
 
 def update_progress(status, message):
     """Update the progress of the current job"""
@@ -35,7 +36,6 @@ def transcribe_and_diarize(job: Job):
     logging.info("Transcribing and diarizing: ", job.job_info.get("audio_path"))
     print(f"Transcribing and diarizing: {job.job_info.get('audio_path')}")
 
-     
     try:
         mtypes = {"cpu": "int8", "cuda": "float16"}
 
@@ -44,7 +44,9 @@ def transcribe_and_diarize(job: Job):
         # add the job info to the args
         args.audio = job.job_info.get("audio_path", None)
         args.language = job.job_info.get("language", None)
-        args.device = job.job_info.get("device", "cuda" if torch.cuda.is_available() else "cpu")
+        args.device = job.job_info.get(
+            "device", "cuda" if torch.cuda.is_available() else "cpu"
+        )
         args.model_name = job.job_info.get("model_name", "large-v3")
         args.stemming = job.job_info.get("stemming", True)
         args.batch_size = job.job_info.get("batch_size", 6)
@@ -52,7 +54,10 @@ def transcribe_and_diarize(job: Job):
 
         print(args.audio)
 
-        update_progress("splitting", "Splitting audio into vocals and accompaniment for faster processing")
+        update_progress(
+            "splitting",
+            "Splitting audio into vocals and accompaniment for faster processing",
+        )
 
         if args.stemming:
             # Isolate vocals from the rest of the audio
@@ -81,7 +86,14 @@ def transcribe_and_diarize(job: Job):
         update_progress("loading-nemo", "Loading Nemo process")
         logging.info("Starting Nemo process with vocal_target: ", vocal_target)
         nemo_process = subprocess.Popen(
-            ["python3", "src/utils/transcription/nemo_process.py", "-a", vocal_target, "--device", args.device],
+            [
+                "python3",
+                "src/utils/transcription/nemo_process.py",
+                "-a",
+                vocal_target,
+                "--device",
+                args.device,
+            ],
         )
         # Transcribe the audio file
 
@@ -89,9 +101,8 @@ def transcribe_and_diarize(job: Job):
         logging.info("Transcribing audio file: ", vocal_target)
         print("Transcribing audio file: ", vocal_target)
 
-
         if args.batch_size != 0:
-            
+
             print("Batch size: ", args.batch_size)
             whisper_results, language = transcribe_batched(
                 vocal_target,
@@ -104,7 +115,6 @@ def transcribe_and_diarize(job: Job):
             )
         else:
 
-
             whisper_results, language = transcribe(
                 vocal_target,
                 args.language,
@@ -113,7 +123,6 @@ def transcribe_and_diarize(job: Job):
                 args.suppress_numerals,
                 args.device,
             )
-
 
         print("Aligning audio file: ", vocal_target)
 
@@ -136,7 +145,8 @@ def transcribe_and_diarize(job: Job):
             torch.cuda.empty_cache()
         else:
             assert (
-                args.batch_size == 0  # TODO: add a better check for word timestamps existence
+                args.batch_size
+                == 0  # TODO: add a better check for word timestamps existence
             ), (
                 f"Unsupported language: {language}, use --batch_size to 0"
                 " to generate word timestamps using whisper directly and fix this error."
@@ -144,7 +154,9 @@ def transcribe_and_diarize(job: Job):
             word_timestamps = []
             for segment in whisper_results:
                 for word in segment["words"]:
-                    word_timestamps.append({"word": word[2], "start": word[0], "end": word[1]})
+                    word_timestamps.append(
+                        {"word": word[2], "start": word[0], "end": word[1]}
+                    )
 
         # Reading timestamps <> Speaker Labels mapping
         nemo_process.communicate()
@@ -186,8 +198,6 @@ def transcribe_and_diarize(job: Job):
                     bool: True if the word is an acronym, False otherwise.
                 """
                 return re.fullmatch(r"\b(?:[a-zA-Z]\.){2,}", x)
-            
-
 
             for word_dict, labeled_tuple in zip(wsm, labled_words):
                 word = word_dict["word"]

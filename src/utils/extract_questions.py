@@ -8,13 +8,15 @@ import concurrent.futures
 
 questions = Blueprint("questions", __name__)
 
+
 def extract_questions(transcript: str) -> list:
     questions = []
     transcript = json.loads(transcript)
-    for segment in transcript['result']:
-        if '?' in segment['text']:
-            questions.append(segment['text'])
+    for segment in transcript["result"]:
+        if "?" in segment["text"]:
+            questions.append(segment["text"])
     return questions
+
 
 @questions.route("/healthcheck")
 def healthcheck():
@@ -36,26 +38,36 @@ def extract_questions_in_context():
     """
 
     data = request.json
-    transcript = data['transcript']
-
+    transcript = data["transcript"]
 
     questions = []
     transcript = json.loads(transcript)
-    for i, segment in enumerate(transcript['result']):
-        if '?' in segment['text']:
+    for i, segment in enumerate(transcript["result"]):
+        if "?" in segment["text"]:
             question = {
-                "question": segment['text'],
-                "speaker": segment['speaker'],
-                "start_time": segment['start_time'],
-                "end_time": segment['end_time'],
-                "previous_segment": transcript['result'][i-1]['text'] if i > 0 else None,
-                "next_segment": transcript['result'][i+1]['text'] if i < len(transcript['result']) - 1 else None,
-                "previous_speaker": transcript['result'][i-1]['speaker'] if i > 0 else None,
-                "next_speaker": transcript['result'][i+1]['speaker'] if i < len(transcript['result']) - 1 else None
+                "question": segment["text"],
+                "speaker": segment["speaker"],
+                "start_time": segment["start_time"],
+                "end_time": segment["end_time"],
+                "previous_segment": (
+                    transcript["result"][i - 1]["text"] if i > 0 else None
+                ),
+                "next_segment": (
+                    transcript["result"][i + 1]["text"]
+                    if i < len(transcript["result"]) - 1
+                    else None
+                ),
+                "previous_speaker": (
+                    transcript["result"][i - 1]["speaker"] if i > 0 else None
+                ),
+                "next_speaker": (
+                    transcript["result"][i + 1]["speaker"]
+                    if i < len(transcript["result"]) - 1
+                    else None
+                ),
             }
             questions.append(question)
     return questions
-
 
 
 @questions.route("/categorize_questions", methods=["POST"])
@@ -77,14 +89,15 @@ def categorize_all_questions() -> list:
 
     if transcript is None:
         return make_response("No transcript provided", 400)
-    
 
-    # Get server url 
+    # Get server url
     server_url = request.url_root
 
     # Extract questions from the transcript
 
-    response = requests.post(f"{server_url}/questions/extract_questions", json={"transcript": transcript})
+    response = requests.post(
+        f"{server_url}/questions/extract_questions", json={"transcript": transcript}
+    )
 
     questions = response.json()
 
@@ -104,12 +117,9 @@ def categorize_all_questions() -> list:
         # Converting map object to list to access the processed questions
         processed_questions = list(processed_questions)
 
-    
-
     print(categorize_question_response)
 
     return questions
-
 
 
 def process_question(question):
@@ -124,7 +134,6 @@ if __name__ == "__main__":
     from flask import Flask
     import requests
 
-
     with open("log.txt", "r") as file:
         transcript = file.read()
 
@@ -134,11 +143,9 @@ if __name__ == "__main__":
 
     app.run(port=5001)
 
-
     # include transcript in the request
-    response = requests.post("http://localhost:5001/questions/extract_questions", json={"transcript": transcript})
+    response = requests.post(
+        "http://localhost:5001/questions/extract_questions",
+        json={"transcript": transcript},
+    )
     print(response.json())
-
-    
-    
-

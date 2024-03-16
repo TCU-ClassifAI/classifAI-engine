@@ -1,4 +1,3 @@
-
 from rq import get_current_job
 from utils.jobs import Job
 from utils.transcription.diarize_parallel import transcribe_and_diarize
@@ -31,7 +30,7 @@ def process_job(job_pickle: str):
         if job.type == "transcription":
             # Perform the transcription
             result = transcribe_and_diarize(job)
-            return result   
+            return result
         if job.type == "summarization":
             # Perform the summarization
             pass
@@ -48,4 +47,3 @@ def process_job(job_pickle: str):
         job_queue.save_meta()
 
     return job
-

@@ -2,12 +2,12 @@ from flask import Flask, make_response
 import os
 from dotenv import load_dotenv
 from utils.auth import api_key_required
-#from utils.transcribe import transcription # update with endpoints.transcription once the file is created
+
+# from utils.transcribe import transcription # update with endpoints.transcription once the file is created
 from endpoints.transcription import transcription
 from config import config as settings
 
 load_dotenv()  # Load environment variables from .env file
-
 
 
 # Initialize Flask app

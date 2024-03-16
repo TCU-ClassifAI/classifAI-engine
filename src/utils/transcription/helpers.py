@@ -122,6 +122,7 @@ sentence_ending_punctuations = ".?!"
 def get_first_word_idx_of_sentence(word_idx, word_list, speaker_list, max_words):
     def is_word_sentence_end(x):
         return x >= 0 and word_list[x][-1] in sentence_ending_punctuations
+
     left_idx = word_idx
     while (
         left_idx > 0
@@ -137,6 +138,7 @@ def get_first_word_idx_of_sentence(word_idx, word_list, speaker_list, max_words)
 def get_last_word_idx_of_sentence(word_idx, word_list, max_words):
     def is_word_sentence_end(x):
         return x >= 0 and word_list[x][-1] in sentence_ending_punctuations
+
     right_idx = word_idx
     while (
         right_idx < len(word_list)
@@ -156,7 +158,11 @@ def get_realigned_ws_mapping_with_punctuation(
     word_speaker_mapping, max_words_in_sentence=50
 ):
     def is_word_sentence_end(x):
-        return x >= 0 and word_speaker_mapping[x]["word"][-1] in sentence_ending_punctuations
+        return (
+            x >= 0
+            and word_speaker_mapping[x]["word"][-1] in sentence_ending_punctuations
+        )
+
     wsp_len = len(word_speaker_mapping)
 
     words_list, speaker_list = [], []

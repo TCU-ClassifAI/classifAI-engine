@@ -18,8 +18,8 @@ load_dotenv()
 queue_management = Blueprint("queue_management", __name__)
 
 # Connect to Redis
-r = redis.Redis(host='localhost', port=os.getenv("REDIS_PORT"), db=0)
-q = Queue('jobs', connection=r)
+r = redis.Redis(host="localhost", port=os.getenv("REDIS_PORT"), db=0)
+q = Queue("jobs", connection=r)
 
 
 def enqueue_yt_transcription(job_id, url, model_name):
@@ -35,14 +35,8 @@ def enqueue_yt_transcription(job_id, url, model_name):
     audio_path = download_and_convert_to_mp3(url)
     if audio_path is None:
         return jsonify({"error": "Error downloading audio"}), 500
-    job_info = {
-        "audio_path": audio_path,
-        "model_id": model_name
-    }
+    job_info = {"audio_path": audio_path, "model_id": model_name}
     return enqueue("transcription", job_id, job_info)
-
-
-
 
 
 def enqueue(job_type: str, job_id: str, job_info: dict = None):
@@ -67,10 +61,9 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
     # job_id = request.form.get("job_id")
     # job_info = request.form.get("job_info")
 
-
     if job_type is None:
         return jsonify({"error": "job_type is required"}), 400
-    
+
     if job_id is None:
         job_id = str(uuid.uuid4())
 
@@ -79,7 +72,7 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
         try:
             job_info = json.loads(job_info)
         except json.JSONDecodeError:
-            return jsonify({"error": "Invalid job_info"}), 400     
+            return jsonify({"error": "Invalid job_info"}), 400
     try:
         job = Job(type=job_type, job_id=job_id, job_info=job_info)
     except Exception as e:
@@ -90,15 +83,17 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
         "job_status": "queued",
     }
     description = json.dumps(description)
-    q.enqueue(process_job, job_pickle, job_id=job.job_id, job_timeout="5m", description=description, result_ttl=-1, meta={"job_type": job.type, "job_id": job.job_id, "status": "queued"})
+    q.enqueue(
+        process_job,
+        job_pickle,
+        job_id=job.job_id,
+        job_timeout="5m",
+        description=description,
+        result_ttl=-1,
+        meta={"job_type": job.type, "job_id": job.job_id, "status": "queued"},
+    )
     logging.info(f"Job enqueued: {job.job_id}")
     return jsonify({"message": "Job enqueued", "job_id": str(job.job_id)}), 200
-
-    
-
-    
-
-
 
 
 def get_job_status(job_id: str):
@@ -120,7 +115,7 @@ def get_job_status(job_id: str):
         return jsonify({"error": "Invalid job ID: " + str(job_id)}), 400
     if rqjob is None:
         return jsonify({"error": "Invalid job ID: {job_id}"}), 400
-    
+
     logging.info(f"Job status for {job_id}: {rqjob.get_status()}")
     print(rqjob.get_status())
 
@@ -135,11 +130,18 @@ def get_job_status(job_id: str):
 
         if job_unpickled.result is not None:
             result = Job.to_json_string(job_unpickled)
-            return jsonify({"status": rqjob.get_status(), "result": result, "meta": rqjob.get_meta()}), 200
-        
+            return (
+                jsonify(
+                    {
+                        "status": rqjob.get_status(),
+                        "result": result,
+                        "meta": rqjob.get_meta(),
+                    }
+                ),
+                200,
+            )
 
     return jsonify({"status": rqjob.get_status(), "meta": rqjob.get_meta()}), 200
-
 
 
 if __name__ == "__main__":
