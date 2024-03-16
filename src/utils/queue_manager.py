@@ -75,7 +75,7 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
         job_id = str(uuid.uuid4())
 
     # convert job_info to a dictionary if it is not None
-    if job_info is not None and type(job_info) == str:
+    if job_info is not None and isinstance(job_info, str):
         try:
             job_info = json.loads(job_info)
         except json.JSONDecodeError:
