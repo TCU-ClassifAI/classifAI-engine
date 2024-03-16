@@ -23,7 +23,8 @@ def process_job(job_pickle: str):
 
     job_queue.meta["job_type"] = job.type
     job_queue.meta["job_id"] = job.job_id
-    job_queue.meta["status"] = "in progress"
+    job_queue.meta["progress"] = "assigning_worker"
+    job_queue.meta["message"] = "Job assigned to worker"
     job_queue.save_meta()
 
     try:
@@ -45,5 +46,5 @@ def process_job(job_pickle: str):
         job_queue.meta["status"] = "error"
         job_queue.meta["message"] = job.result
         job_queue.save_meta()
+        raise Exception(f"Error: {traceback.format_exc()}")
 
-    return job

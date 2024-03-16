@@ -57,12 +57,13 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
     Returns:
         str: A message confirming the job has been enqueued.
     """
-    # job_type = request.form.get("job_type")
-    # job_id = request.form.get("job_id")
-    # job_info = request.form.get("job_info")
+
 
     if job_type is None:
         return jsonify({"error": "job_type is required"}), 400
+    
+    if job_type not in ["transcription", "summarization", "categorization"]:
+        return jsonify({"error": "Invalid job_type. Must be one of: transcription, summarization, categorization"}), 400
 
     if job_id is None:
         job_id = str(uuid.uuid4())
@@ -89,8 +90,8 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
         job_id=job.job_id,
         job_timeout="5m",
         description=description,
-        result_ttl=-1,
-        meta={"job_type": job.type, "job_id": job.job_id, "status": "queued"},
+        result_ttl=-1,  # Keep the result in Redis indefinitely
+        meta={"job_type": job.type, "job_id": job.job_id, "progress": "queued"},
     )
     logging.info(f"Job enqueued: {job.job_id}")
     return jsonify({"message": "Job enqueued", "job_id": str(job.job_id)}), 200
@@ -119,27 +120,17 @@ def get_job_status(job_id: str):
     logging.info(f"Job status for {job_id}: {rqjob.get_status()}")
     print(rqjob.get_status())
 
-    if rqjob.is_finished:
-
-        job_unpickled = Job.unpickle(rqjob.result)
-        print("Successfully unpickled job!!")
-
-        print(Job.to_json_string(job_unpickled))
-        if job_unpickled is None:
-            return jsonify({"error": "Job not found"}), 400
-
-        if job_unpickled.result is not None:
-            result = Job.to_json_string(job_unpickled)
-            return (
-                jsonify(
-                    {
-                        "status": rqjob.get_status(),
-                        "result": result,
-                        "meta": rqjob.get_meta(),
-                    }
-                ),
-                200,
-            )
+    if rqjob.is_finished and rqjob.result is not None:
+        return (
+            jsonify(
+                {
+                    "status": rqjob.get_status(),
+                    "result": str(rqjob.result),
+                    "meta": rqjob.get_meta(),
+                }
+            ),
+            200,
+        )
 
     return jsonify({"status": rqjob.get_status(),
                    "meta": rqjob.get_meta()}), 200

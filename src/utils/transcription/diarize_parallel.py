@@ -23,15 +23,24 @@ from utils.jobs import Job
 from utils.transcription.transcription_helpers import transcribe, transcribe_batched
 
 
-def update_progress(status, message):
+def update_progress(progress, message):
     """Update the progress of the current job"""
     job = get_current_job()
-    job.meta["status"] = status
+    job.meta["progress"] = progress
     job.meta["message"] = message
     job.save_meta()
 
 
 def transcribe_and_diarize(job: Job):
+    """
+    Transcribe and diarize an audio file.
+
+    Args:
+        job (Job): Job object containing the audio file and job information.
+
+    Returns:
+        result (str): Result of the transcription and diarization job. Speaker labels and timestamps.
+    """
 
     logging.info(
         "Transcribing and diarizing: ",
@@ -233,13 +242,12 @@ def transcribe_and_diarize(job: Job):
 
         cleanup(temp_path)
 
-        update_progress("completed", "Transcription and diarization completed")
-        print("Transcription and diarization completed")
+        update_progress("finished", "Transcription and diarization finished")
+        print("Transcription and diarization finished")
         print(ssm)
-        job.result = str(ssm)
-        job.status = "completed"
+        
 
-        return Job.pickle(job)
+        return str(ssm)
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         print(f"An error occurred: {str(e)}")
