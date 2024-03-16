@@ -2,7 +2,6 @@ import argparse
 import os
 from utils.transcription.helpers import *
 
-from faster_whisper import WhisperModel
 import whisperx
 import torch
 from deepmultilingualpunctuation import PunctuationModel
