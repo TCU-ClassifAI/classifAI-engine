@@ -5,6 +5,13 @@ Transcription is done by the transcription worker. The worker uses the whisper l
 
 ## Transcription format
 
+Recall that you can check the status of a job by sending a GET request to `get_transcription_status` with the `job_id` as a query parameter, like so:
+
+```sh
+curl http://localhost:5000/transcription/get_transcription_status?job_id=3c73dd07-66ff-48ab-9f4e-e6726987c06f
+```
+
+
 A job status will look like this:
 
 ```json
