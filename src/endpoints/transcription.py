@@ -34,7 +34,8 @@ def start_yt_transcription():
             return jsonify({"error": "No URL provided"}), 400
         model_name = request.form.get("model_name")
 
-    logging.info(f"Starting transcription for YouTube video {url} with model large-v3")
+    logging.info(
+        f"Starting transcription for YouTube video {url} with model large-v3")
 
     job_id = str(uuid.uuid4())  # Generate a job ID using uuid
 

@@ -12,7 +12,8 @@ def api_key_required(func):
     def wrapper(*args, **kwargs):
         api_key = request.headers.get("API-Key")
 
-        # Check if API key is present in the environment or any other desired validation
+        # Check if API key is present in the environment or any other desired
+        # validation
         if api_key and validate_api_key(api_key):
             # If the API key is valid, proceed with the decorated function
             return func(*args, **kwargs)

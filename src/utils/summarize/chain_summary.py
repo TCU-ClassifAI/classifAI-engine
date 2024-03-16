@@ -59,11 +59,15 @@ def summarize_content_long(
         )
     else:
         # Summarize each chunk
-        chunk_summaries = [summarize_content(chunk, MAX_TOKENS) for chunk in chunks]
+        chunk_summaries = [
+            summarize_content(
+                chunk,
+                MAX_TOKENS) for chunk in chunks]
 
         # Combine chunk summaries and summarize the combined content
         combined_summary = summarize_content(
-            " ".join([" ".join(chunk_summary) for chunk_summary in chunk_summaries]),
+            " ".join([" ".join(chunk_summary)
+                     for chunk_summary in chunk_summaries]),
             MAX_TOKENS,
         )
 

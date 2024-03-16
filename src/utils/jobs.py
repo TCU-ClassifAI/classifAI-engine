@@ -45,7 +45,9 @@ class Job:
     result: str = None
     error_message: str = None
     job_info: dict = (
-        None  # Additional information about the job used by the worker, like the audio file path, model_type, etc.
+        # Additional information about the job used by the worker, like the
+        # audio file path, model_type, etc.
+        None
     )
 
     def to_json_string(self) -> str:
@@ -151,7 +153,8 @@ class Job:
         """
         self.job_info = {
             "audio_path": audio_path,  # Path to the audio file, downloaded before processing
-            "model_type": model_type,  # Name of the model used for transcription (default: "large-v3")
+            # Name of the model used for transcription (default: "large-v3")
+            "model_type": model_type,
             "title": title,
         }
 

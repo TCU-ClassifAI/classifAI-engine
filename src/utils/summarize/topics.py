@@ -33,7 +33,8 @@ gpt_instructions = """You will be provided with the text of a transcript. Your g
  Your response should be detailed, concise, and clear. The tone should be that of a clinical diagnosis.
  Use as few words as necessary without sacrificing quality.  """
 
-prompt = gpt_instructions + "Here are the texts:" + "\n\n" + "dummy"  # file_content
+prompt = gpt_instructions + "Here are the texts:" + \
+    "\n\n" + "dummy"  # file_content
 
 response = client.chat.completions.create(
     model="gpt-4-1106-preview",
@@ -55,7 +56,8 @@ now = datetime.now()  # current date and time
 # Set the name for the response file
 names = file_path.rsplit(".", 1)
 # response_file_name = names[0] + "-Response" +  + ".txt"
-response_file_name = names[0] + ";" + now.strftime("%m-%d-%Y;%H:%M:%S") + ".txt"
+response_file_name = names[0] + ";" + \
+    now.strftime("%m-%d-%Y;%H:%M:%S") + ".txt"
 
 # Create the response file if it doesn't exist
 if not os.path.exists(response_file_name):

@@ -33,7 +33,9 @@ def update_progress(status, message):
 
 def transcribe_and_diarize(job: Job):
 
-    logging.info("Transcribing and diarizing: ", job.job_info.get("audio_path"))
+    logging.info(
+        "Transcribing and diarizing: ",
+        job.job_info.get("audio_path"))
     print(f"Transcribing and diarizing: {job.job_info.get('audio_path')}")
 
     try:
@@ -133,8 +135,11 @@ def transcribe_and_diarize(job: Job):
             )
             update_progress("aligning", "Aligning audio")
             result_aligned = whisperx.align(
-                whisper_results, alignment_model, metadata, vocal_target, args.device
-            )
+                whisper_results,
+                alignment_model,
+                metadata,
+                vocal_target,
+                args.device)
             word_timestamps = filter_missing_timestamps(
                 result_aligned["word_segments"],
                 initial_timestamp=whisper_results[0].get("start"),
@@ -175,7 +180,8 @@ def transcribe_and_diarize(job: Job):
         wsm = get_words_speaker_mapping(word_timestamps, speaker_ts, "start")
 
         if language in punct_model_langs:
-            # restoring punctuation in the transcript to help realign the sentences
+            # restoring punctuation in the transcript to help realign the
+            # sentences
             punct_model = PunctuationModel(model="kredor/punctuate-all")
 
             words_list = list(map(lambda x: x["word"], wsm))

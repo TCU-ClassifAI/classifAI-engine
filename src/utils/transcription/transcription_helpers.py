@@ -14,7 +14,10 @@ def transcribe(
 
     # Faster Whisper non-batched
     # Run on GPU with FP16
-    whisper_model = WhisperModel(model_name, device=device, compute_type=compute_dtype)
+    whisper_model = WhisperModel(
+        model_name,
+        device=device,
+        compute_type=compute_dtype)
 
     # or run on GPU with INT8
     # model = WhisperModel(model_size, device="cuda", compute_type="int8_float16")
@@ -22,7 +25,8 @@ def transcribe(
     # model = WhisperModel(model_size, device="cpu", compute_type="int8")
 
     if suppress_numerals:
-        numeral_symbol_tokens = find_numeral_symbol_tokens(whisper_model.hf_tokenizer)
+        numeral_symbol_tokens = find_numeral_symbol_tokens(
+            whisper_model.hf_tokenizer)
     else:
         numeral_symbol_tokens = None
 
@@ -35,7 +39,8 @@ def transcribe(
         audio_file,
         language=language,
         beam_size=5,
-        word_timestamps=word_timestamps,  # TODO: disable this if the language is supported by wav2vec2
+        word_timestamps=word_timestamps,
+        # TODO: disable this if the language is supported by wav2vec2
         suppress_tokens=numeral_symbol_tokens,
         vad_filter=True,
     )
@@ -67,7 +72,8 @@ def transcribe_batched(
         asr_options={"suppress_numerals": suppress_numerals},
     )
     audio = whisperx.load_audio(audio_file)
-    result = whisper_model.transcribe(audio, language=language, batch_size=batch_size)
+    result = whisper_model.transcribe(
+        audio, language=language, batch_size=batch_size)
     del whisper_model
     torch.cuda.empty_cache()
     return result["segments"], result["language"]

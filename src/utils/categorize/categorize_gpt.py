@@ -59,7 +59,8 @@ def validate_category_output(output):
         "Unknown",
     ]
     if output["question_type"] not in allowed_question_types:
-        return (False, f"question_type must be one of {allowed_question_types}")
+        return (
+            False, f"question_type must be one of {allowed_question_types}")
 
     return True, None
 

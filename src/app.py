@@ -3,7 +3,8 @@ import os
 from dotenv import load_dotenv
 from utils.auth import api_key_required
 
-# from utils.transcribe import transcription # update with endpoints.transcription once the file is created
+# from utils.transcribe import transcription # update with
+# endpoints.transcription once the file is created
 from endpoints.transcription import transcription
 from config import config as settings
 
@@ -27,8 +28,7 @@ def index():
     documentation = "https://tcu-classifai.github.io/classifAI-engine/"
 
     return "<h1>{}</h1><p>Version: {}</p><p>Config: {}</p><p>Healthcheck: {}</p><a href='{}'>Documentation</a>".format(
-        description, version, config, healthcheck, documentation
-    )
+        description, version, config, healthcheck, documentation)
 
 
 @app.route("/healthcheck", methods=["GET"])

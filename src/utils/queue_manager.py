@@ -141,7 +141,8 @@ def get_job_status(job_id: str):
                 200,
             )
 
-    return jsonify({"status": rqjob.get_status(), "meta": rqjob.get_meta()}), 200
+    return jsonify({"status": rqjob.get_status(),
+                   "meta": rqjob.get_meta()}), 200
 
 
 if __name__ == "__main__":

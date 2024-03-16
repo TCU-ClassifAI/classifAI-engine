@@ -22,7 +22,8 @@ def client(app):
 # --- Tests for '/transcribe_yt' endpoint ---
 
 
-@patch("utils.queue_manager.enqueue_yt_transcription")  # Mock the queueing function
+# Mock the queueing function
+@patch("utils.queue_manager.enqueue_yt_transcription")
 def test_start_yt_transcription_get(mock_enqueue, client):
     response = client.get(
         "/transcribe_yt?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ"

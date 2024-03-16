@@ -96,22 +96,26 @@ def categorize_all_questions() -> list:
     # Extract questions from the transcript
 
     response = requests.post(
-        f"{server_url}/questions/extract_questions", json={"transcript": transcript}
-    )
+        f"{server_url}/questions/extract_questions",
+        json={
+            "transcript": transcript})
 
     questions = response.json()
 
     print(questions)
 
-    # for the first question, categorize the question type and Costa's level of reasoning
+    # for the first question, categorize the question type and Costa's level
+    # of reasoning
     question_one = questions[0]
 
     # categorize the question
     categorize_question_response = categorize_question(question_one)
 
-    # for each question, categorize the question type and Costa's level of reasoning
+    # for each question, categorize the question type and Costa's level of
+    # reasoning
 
-    # Using concurrent.futures.ProcessPoolExecutor() to parallelize the process_question function
+    # Using concurrent.futures.ProcessPoolExecutor() to parallelize the
+    # process_question function
     with concurrent.futures.ProcessPoolExecutor() as executor:
         processed_questions = executor.map(process_question, questions)
         # Converting map object to list to access the processed questions

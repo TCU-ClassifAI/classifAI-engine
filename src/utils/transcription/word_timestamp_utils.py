@@ -52,11 +52,13 @@ def words_per_segment(
     for idx, (segment, _, speaker) in enumerate(
         res_diarization.itertracks(yield_label=True)
     ):
-        buffer_time = calculate_dynamic_buffer(idx, segments) if add_buffer else 0
+        buffer_time = calculate_dynamic_buffer(
+            idx, segments) if add_buffer else 0
 
         adjusted_start = max(0, segment.start - buffer_time) if idx != 0 else 0
         adjusted_end = (
-            segment.end + buffer_time if idx != len(segments) - 1 else segment.end
+            segment.end +
+            buffer_time if idx != len(segments) - 1 else segment.end
         )
 
         segment_words = []

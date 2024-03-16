@@ -52,7 +52,8 @@ now = datetime.now()  # current date and time
 # Set the name for the response file
 names = file_path.rsplit(".", 1)
 # response_file_name = names[0] + "-Response" +  + ".txt"
-response_file_name = names[0] + ";" + now.strftime("%m-%d-%Y;%H:%M:%S") + ".txt"
+response_file_name = names[0] + ";" + \
+    now.strftime("%m-%d-%Y;%H:%M:%S") + ".txt"
 
 # Create the response file if it doesn't exist
 if not os.path.exists(response_file_name):
