@@ -4,7 +4,7 @@ import requests
 import logging
 
 from utils.auth import api_key_required
-from utils.queue_manager import enqueue_yt_transcription, enqueue_transcription, get_transcription_status
+from utils.queue_manager import enqueue_yt_transcription, enqueue as enqueue_transcription, get_job_status as get_transcription_status
 
 
 transcription = Blueprint("transcription", __name__)
@@ -35,10 +35,8 @@ def start_yt_transcription():
     logging.info(f"Starting transcription for YouTube video {url} with model large-v3")
 
     job_id = str(uuid.uuid4())  # Generate a job ID using uuid
-
-    enqueue_yt_transcription(job_id, url, model_name)
     
-    return jsonify({"job_id": job_id}), 200
+    return enqueue_yt_transcription(job_id, url, model_name)
 
 
 @transcription.route('/transcribe', methods=["POST"])
@@ -63,9 +61,14 @@ def start_transcription():
 
     job_id = str(uuid.uuid4())  # Generate a job ID using uuid
 
-    enqueue_transcription(job_id, file, model_name)
+    job_info = {
+        "audio_path": file,
+        "model_id": model_name
+    }
+
+    return enqueue_transcription("transcription", job_id, job_info)
     
-    return jsonify({"job_id": job_id}), 200
+
 
 @transcription.route("/get_transcription_status")
 def get_status():
@@ -73,8 +76,8 @@ def get_status():
     if not job_id:
         return jsonify({"error": "job_id parameter is required"}), 400
 
-    status = get_transcription_status(job_id)
-    return jsonify(status)
+    return get_transcription_status(job_id)
+    
 
 
 

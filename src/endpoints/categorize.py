@@ -7,6 +7,6 @@ load_dotenv()
 if os.environ.get("ENV") == "production":
     from config import production as settings
 else:
-    from config import development as settings
+    from config import config as settings
 
 categorize = Blueprint("categorize", __name__)
