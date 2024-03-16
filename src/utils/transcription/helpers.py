@@ -41,8 +41,8 @@ def create_config(output_dir):
     if not os.path.exists(MODEL_CONFIG_PATH):
         os.makedirs(CONFIG_LOCAL_DIRECTORY, exist_ok=True)
         CONFIG_URL = f"https://raw.githubusercontent.com/NVIDIA/NeMo/main/" \
-                    f"examples/speaker_tasks/diarization/conf/inference/" \
-                    f"{CONFIG_FILE_NAME}"
+            f"examples/speaker_tasks/diarization/conf/inference/" \
+            f"{CONFIG_FILE_NAME}"
         MODEL_CONFIG_PATH = wget.download(CONFIG_URL, MODEL_CONFIG_PATH)
 
     config = OmegaConf.load(MODEL_CONFIG_PATH)
