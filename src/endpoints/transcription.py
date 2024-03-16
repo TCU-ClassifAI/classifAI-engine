@@ -1,9 +1,7 @@
-from flask import Flask, request, jsonify, Blueprint, make_response, g
+from flask import Flask, request, jsonify, Blueprint, make_response
 import uuid
-import requests
 import logging
 
-from utils.auth import api_key_required
 from utils.queue_manager import enqueue_yt_transcription, enqueue as enqueue_transcription, get_job_status as get_transcription_status
 
 
