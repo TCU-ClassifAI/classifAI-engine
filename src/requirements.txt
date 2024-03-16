@@ -242,7 +242,7 @@ wcwidth==0.2.13
 webdataset==0.1.62
 Werkzeug==3.0.1
 wget==3.2
-whisperx @ git+https://github.com/m-bain/whisperX.git@78dcfaab51005aa703ee21375f81ed31bc248560
+whisperx @ git+https://github.com/TCU-ClassifAI/whisperX.git
 widgetsnbextension==4.0.10
 wrapt==1.16.0
 xxhash==3.4.1
