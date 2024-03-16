@@ -125,47 +125,45 @@ ClassifAI engine provides the heavy lifting for classifAI. It is a RESTful API t
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This runs in a docker container. The best way to get it to run is just `./run.sh`, which takes care of docker setup, packages, and etc. 
-This will also run it in a production WSGI server instead of the simple. 
-
-Test: 
-`curl localhost:5000/healthcheck` should return `OK`
+To get a local copy up and running follow these simple steps.
 
 For more instructions please see the [documentation 
 ](https://tcu-classifai.github.io/classifAI-engine/)
 ### Prerequisites
 
-* Docker
-* ffmpeg (if running outside of docker)
+* Python 3.10 (can probably work with 3.9+ but not tested)
+* Redis
 
 ### Installation 
 
-#### Via Docker (reccomended)
 1. Clone the repo
    ```sh
    git clone https://github.com/TCU-ClassifAI/classifAI-engine.git
    cd classifAI-engine
    ```
-2. Launch the run script:
+
+2. Install and run Redis
+   ```sh
+    sudo apt-get install redis-server
+    redis-server
+   ```sh
+
+3. Install Python packages
   ```sh
-    ./run.sh
+  pip install -r src/requirements.txt -r src/requirements-dev.txt
   ```
-#### Manually
-2. Install Python packages
-   ```sh
-    pip install -r src/requirements.txt -r src/requirements-dev.txt
-   ```
-3. Install ffmpeg
-   ```sh
-    sudo apt install ffmpeg # Ubuntu
-    brew install ffmpeg # MacOS
-   ```
+
 4. Launch the API 
    ```sh
-    python src/run.py
+    python src/app.py
    ```
 
+5. Launch your worker
+   ```sh
+    rq worker jobs
+   ```
 
+#### Testing
 `curl http://localhost:5000/healthcheck` should return `OK`
 
 
@@ -232,7 +230,7 @@ _For more examples, please refer to the [Documentation](https://tcu-classifai.gi
     - [x] Integrate WhisperX for faster transcription and diarization
     - [x] Use Redis for better asynchronous processing
     - [x] Add support for YouTube videos
-- [ ] Add Question Categorization Service
+- [] Add Question Categorization Service
     - [ ] Generate summaries of the questions
     - [ ] Add support for more question types
     - [ ] Add support for more languages
