@@ -17,6 +17,7 @@ braceexpand==0.1.7
 celery==5.3.6
 certifi==2024.2.2
 cffi==1.16.0
+cfgv==3.4.0
 charset-normalizer==3.3.2
 click==8.1.7
 click-didyoumean==0.3.0
@@ -38,6 +39,7 @@ deepmultilingualpunctuation==1.0.1
 demucs @ git+https://github.com/facebookresearch/demucs@e976d93ecc3865e5757426930257e200846a520a
 dill==0.3.8
 Distance==0.1.3
+distlib==0.3.8
 docker-pycreds==0.4.0
 docopt==0.6.2
 dora-search==0.1.12
@@ -62,6 +64,7 @@ huggingface-hub==0.21.4
 humanfriendly==10.0
 hydra-core==1.3.2
 HyperPyYAML==1.2.2
+identify==2.5.35
 idna==3.6
 imageio==2.34.0
 imageio-ffmpeg==0.4.9
@@ -106,6 +109,7 @@ multiprocess==0.70.16
 nemo_toolkit==1.22.0
 networkx==3.2.1
 nltk==3.8.1
+nodeenv==1.8.0
 numba==0.59.0
 numpy==1.23.5
 nvidia-cublas-cu11==11.10.3.66
@@ -146,6 +150,7 @@ plac==1.4.3
 platformdirs==4.2.0
 pluggy==1.4.0
 pooch==1.8.1
+pre-commit==3.6.2
 primePy==1.3
 proglog==0.1.10
 prompt-toolkit==3.0.43
@@ -184,6 +189,7 @@ rich==13.7.1
 rq==1.16.1
 ruamel.yaml==0.18.6
 ruamel.yaml.clib==0.2.8
+ruff==0.3.3
 sacremoses==0.1.1
 safetensors==0.4.2
 scikit-learn==1.4.1.post1
@@ -230,6 +236,7 @@ typing_extensions==4.10.0
 tzdata==2024.1
 urllib3==2.2.1
 vine==5.1.0
+virtualenv==20.25.1
 wandb==0.16.4
 wcwidth==0.2.13
 webdataset==0.1.62
