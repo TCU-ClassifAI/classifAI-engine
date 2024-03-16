@@ -1,7 +1,7 @@
 from utils.jobs import Job
 import redis
 from rq import Queue
-from flask import Flask, request, jsonify, Blueprint
+from flask import Flask, jsonify, Blueprint
 from dotenv import load_dotenv
 import os
 import logging
@@ -78,7 +78,7 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
     if job_info is not None and type(job_info) == str:
         try:
             job_info = json.loads(job_info)
-        except json.JSONDecodeError as e:
+        except json.JSONDecodeError:
             return jsonify({"error": "Invalid job_info"}), 400     
     try:
         job = Job(type=job_type, job_id=job_id, job_info=job_info)
@@ -116,7 +116,7 @@ def get_job_status(job_id: str):
 
     try:
         rqjob = RQJob.fetch(job_id, connection=r)
-    except Exception as e:
+    except Exception:
         return jsonify({"error": "Invalid job ID: " + str(job_id)}), 400
     if rqjob is None:
         return jsonify({"error": "Invalid job ID: {job_id}"}), 400

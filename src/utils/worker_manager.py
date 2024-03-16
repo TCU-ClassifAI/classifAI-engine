@@ -3,7 +3,6 @@ from rq import get_current_job
 from utils.jobs import Job
 from utils.transcription.diarize_parallel import transcribe_and_diarize
 import traceback
-import logging
 
 
 def process_job(job_pickle: str):
@@ -41,7 +40,7 @@ def process_job(job_pickle: str):
             # Perform the categorization
             pass
 
-    except Exception as e:
+    except Exception:
         job.status = "error"
         job.result = f"Error: {traceback.format_exc()}"
         job_queue.meta["status"] = "error"
