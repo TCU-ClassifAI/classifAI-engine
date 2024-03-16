@@ -1,7 +1,7 @@
 
 from rq import get_current_job
 from utils.jobs import Job
-from utils.transcription.transcribe_and_diarize_threaded import transcribe_and_diarize
+from utils.transcription.diarize_parallel import transcribe_and_diarize
 import traceback
 import logging
 

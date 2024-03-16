@@ -46,7 +46,7 @@ class Job:
     duration: float = 0
     result: str = None
     error_message: str = None
-    job_info: dict = None
+    job_info: dict = None # Additional information about the job used by the worker, like the audio file path, model_type, etc.
 
     def to_json_string(self) -> str:
         """
@@ -133,6 +133,9 @@ class Job:
         Returns:
             Job: Job object created from the pickle base64 string.
         """
+        if pickled_string is None:
+            return None
+        
         return pickle.loads(base64.b64decode(pickled_string))
     
     def initialize_transcription_job(self, audio_path: str, model_type: str = "large-v3", title: str = None):
