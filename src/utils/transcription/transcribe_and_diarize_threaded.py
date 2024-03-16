@@ -8,16 +8,23 @@ import torchaudio
 import threading
 import time
 import logging
-import redis
+from rq import get_current_job
 
 
 from utils.jobs import Job
 from utils.transcription.download_utils import download_and_convert_to_mp3
 from utils.transcription.word_timestamp_utils import words_per_segment
-from utils.queue_manager import update_progress
 
 
-def transcribe_and_diarize(audio_path: str, model_id: str = "large-v3", r: redis.Redis = None, job: Job = None):
+def update_progress(status, message):
+    """Update the progress of the current job"""
+    job = get_current_job()
+    job.meta["status"] = status
+    job.meta["message"] = message
+    job.save_meta()
+
+
+def transcribe_and_diarize(job: Job):
     """Transcribe and diarize a given audio file using the whisper library and pyannote library.
 
     Args:
@@ -27,17 +34,15 @@ def transcribe_and_diarize(audio_path: str, model_id: str = "large-v3", r: redis
     Returns:
         dict: A dictionary containing the transcribed and diarized result
     """
-        
+    
     load_dotenv()
 
-    audio_path = job.job_info.get("audio_path", None)
+    audio_path = job.job_info.get("audio_path", os.getenv("TEST_AUDIO_PATH"))
     model_id = job.job_info.get("model_id", "large-v3")
 
 
-    # url = "https://www.youtube.com/watch?v=UVzLd304keA"
+    print(f"Transcribing and diarizing: {audio_path}")
 
-
-    # update_progress("downloading", "Downloading and converting to mp3")
     
     try:
         # audio_path = download_and_convert_to_mp3(url)
@@ -50,14 +55,11 @@ def transcribe_and_diarize(audio_path: str, model_id: str = "large-v3", r: redis
         if not torch.cuda.is_available():
             model_id = "tiny"
 
-        job.subtask = "loading_model"
-        job.subtask_message = f"Loading model: {model_id}"
-        update_progress(job=job)
+        update_progress("loading-model", "Loading model")
 
         model = whisper.load_model(model_id) # By default, large-v3 model is used
-        job.subtask = "transcribing"
-        job.subtask_message = "Transcribing audio"
-        update_progress(job=job)
+        
+        update_progress("transcribing", "Transcribing audio")
 
         transcript = model.transcribe(audio_path, word_timestamps=True)
         
@@ -91,15 +93,21 @@ def transcribe_and_diarize(audio_path: str, model_id: str = "large-v3", r: redis
 
         logging.info(final_result)
 
-        update_progress("complete", final_result)
+        update_progress("complete", "complete")
 
         del waveform
         del sample_rate
+
+        job.status = "completed"
     except Exception as e:
         update_progress("error", f"An error occurred: {str(e)}")
+        job.status = "failed"
+        job.error_message = str(e)
         final_result = None
 
-    return final_result
+    job.result = final_result
+    
+    return Job.pickle(job)
 
 
 # def check_progress():
