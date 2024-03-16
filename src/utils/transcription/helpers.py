@@ -241,7 +241,7 @@ def get_sentences_speaker_mapping(word_speaker_mapping, spk_ts):
         if spk != prev_spk or sentence_checker(snt["text"] + " " + wrd):
             snts.append(snt)
             snt = {
-                "speaker": f"Speaker {spk}",
+                "speaker": "Main Speaker" if spk == 0 else f"Speaker {spk}",
                 "start_time": s,
                 "end_time": e,
                 "text": "",
