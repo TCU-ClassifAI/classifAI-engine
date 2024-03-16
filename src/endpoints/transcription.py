@@ -14,7 +14,8 @@ transcription = Blueprint("transcription", __name__)
 
 @transcription.route("/transcribe_yt")
 def start_yt_transcription():
-    """Start the transcription process for a YouTube video by creating a new thread to run the process. Either a GET or POST request can be used.
+    """Start the transcription process for a YouTube video by creating a new thread to run the process. 
+    Either a GET or POST request can be used.
 
     Args:
         url: URL of the YouTube video to transcribe.

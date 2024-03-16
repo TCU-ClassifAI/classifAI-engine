@@ -1,9 +1,7 @@
 import json
-from services.categorize_gpt import categorize_question
+from utils.categorize.categorize_llama import categorize_question
 from flask import Blueprint, make_response, request, Flask
 import concurrent.futures
-
-# {"job_id": "b6fa585228a44b3f968e8fc52bee3c90", "model_type": "large-v3", "status": "completed", "progress": "completed", "start_time": "2024-02-19 09:48:03.139", "end_time": "2024-02-19 09:48:54.181", "duration": 51041, "result": [{"speaker": "Speaker 3", "start_time": 60, "end_time": 7458, "text": "We will hear argument this morning in Case Nineteen, Thirteen, Ninety-Two, Dobbs v. Jackson Women's Health Organization. "}]}
 
 
 questions = Blueprint("questions", __name__)
@@ -33,7 +31,8 @@ def extract_questions_in_context():
         transcript (str): the transcript JSON (format is on documenation)
 
     Returns:
-        list: list of dictionaries, each containing the question, speaker, start and end time, previous segment, next segment, previous speaker, and next speaker
+        list: list of dictionaries, each containing the question, speaker, start and end time, previous segment, 
+        next segment, previous speaker, and next speaker
 
     """
 
@@ -81,7 +80,8 @@ def categorize_all_questions() -> list:
         transcript (str): the transcript JSON (format is on documenation)
 
     Returns:
-        list: list of dictionaries, each containing the question, speaker, start and end time, previous segment, next segment, previous speaker, next speaker, question type, and Costa's level of reasoning
+        list: list of dictionaries, each containing the question, speaker, start and end time, previous segment, next segment, 
+        previous speaker, next speaker, question type, and Costa's level of reasoning
 
     """
     data = request.get_json()
