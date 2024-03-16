@@ -2,7 +2,6 @@ from flask import Blueprint, make_response, jsonify
 from openai import OpenAI
 from dotenv import load_dotenv
 import json
-import asyncio
 
 load_dotenv()
 client = OpenAI()
