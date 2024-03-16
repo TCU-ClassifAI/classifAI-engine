@@ -1,6 +1,16 @@
 import argparse
 import os
-from utils.transcription.helpers import *
+
+from utils.transcription.helpers import (
+    wav2vec2_langs,
+    filter_missing_timestamps,
+    get_words_speaker_mapping,
+    punct_model_langs,
+    get_realigned_ws_mapping_with_punctuation,
+    get_sentences_speaker_mapping,
+    cleanup
+)
+
 
 import whisperx
 import torch
@@ -163,8 +173,21 @@ def transcribe_and_diarize(job: Job):
             ending_puncts = ".?!"
             model_puncts = ".,;:!?"
 
-            # We don't want to punctuate U.S.A. with a period. Right?
-            is_acronym = lambda x: re.fullmatch(r"\b(?:[a-zA-Z]\.){2,}", x)
+            # Check if the word is an acronym
+
+            def is_acronym(x: str) -> bool:
+                """
+                Check if the word is an acronym.
+
+                Args:
+                    x (str): Word to check.
+
+                Returns:
+                    bool: True if the word is an acronym, False otherwise.
+                """
+                return re.fullmatch(r"\b(?:[a-zA-Z]\.){2,}", x)
+            
+
 
             for word_dict, labeled_tuple in zip(wsm, labled_words):
                 word = word_dict["word"]

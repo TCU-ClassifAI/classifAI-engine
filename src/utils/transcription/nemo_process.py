@@ -1,6 +1,6 @@
 import argparse
 import os
-from helpers import *
+from utils.transcription.helpers import create_config
 import torch
 from pydub import AudioSegment
 from nemo.collections.asr.models.msdd_models import NeuralDiarizer
