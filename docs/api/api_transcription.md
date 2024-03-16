@@ -28,9 +28,9 @@ file | file | This is the audio file. It can be in mp3, wav, etc. [FFMpeg suppor
 user_id | string | This is the user ID. It is used to identify the user that made the reqeust | Optional
 model_type| string| Model Type. Can be "large", "medium", "medium.en", "tiny.en", [more here](https://github.com/openai/whisper/blob/main/model-card.md) | Optional
 
-#### Example Request
+<!-- #### Example Request
 
-![localhost:5000/transcription/start_transcription](../assets/example_start_transcription.png?raw=true "Example Request")
+![localhost:5000/transcription/transcribe](../assets/example_start_transcription.png?raw=true "Example Request") -->
 
 #### Example Response
 
@@ -38,12 +38,8 @@ HTTP 200 OK
 
 ```json
 {
-  "job_id": "a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee", 
-  "model_type": "tiny.en",
-  "status": "in progress", 
-  "state": "loading model",
-  "start_time": 1698877559.0479097,
-  "duration": 0
+  "job_id":"73f22806-d904-448f-ae84-650bf6f5aa6a",
+  "message":"Job enqueued"
 }
 ```
 
