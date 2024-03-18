@@ -9,12 +9,22 @@ questions = Blueprint("questions", __name__)
 
 def extract_questions(transcript: str) -> list:
     questions = []
+    previous_text = ""  # The sentence before the question
+    two_previous_text = ""  # Two sentences before the question
+
     transcript = json.loads(transcript)
     for segment in transcript["result"]:
         if "?" in segment["text"]:
-            questions.append(segment["text"])
+            question = segment["text"]
+            if previous_text:
+                question = previous_text + question
+            if two_previous_text:
+                question = two_previous_text + question
+            questions.append(question)
+            two_previous_text = previous_text
+            previous_text = segment["text"]
     return questions
-
+            
 
 @questions.route("/healthcheck")
 def healthcheck():
@@ -69,7 +79,7 @@ def extract_questions_in_context():
     return questions
 
 
-@questions.route("/categorize_questions", methods=["POST"])
+
 def categorize_all_questions() -> list:
     """
     Return questions, their speaker, and the start and end time of the question
