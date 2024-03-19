@@ -31,7 +31,7 @@ def update_progress(progress, message):
     job.save_meta()
 
 
-def transcribe_and_diarize(job: Job):
+def transcribe_and_diarize(job: Job) -> list:
     """
     Transcribe and diarize an audio file.
 
@@ -39,7 +39,7 @@ def transcribe_and_diarize(job: Job):
         job (Job): Job object containing the audio file and job information.
 
     Returns:
-        result (str): Result of the transcription and diarization job. Speaker labels and timestamps.
+        result (list): Result of the transcription and diarization job. Speaker labels and timestamps.
     """
 
     logging.info(
@@ -166,6 +166,7 @@ def transcribe_and_diarize(job: Job):
                 " to generate word timestamps using whisper directly and fix this error."
             )
             word_timestamps = []
+            # A SingleSegment consists of start, end, text (str), avg_logprob (float)
             for segment in whisper_results:
                 for word in segment["words"]:
                     word_timestamps.append(
@@ -247,7 +248,7 @@ def transcribe_and_diarize(job: Job):
         print(ssm)
         
 
-        return str(ssm)
+        return ssm
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")
         print(f"An error occurred: {str(e)}")

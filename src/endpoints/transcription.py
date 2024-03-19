@@ -1,6 +1,12 @@
 from flask import Flask, request, jsonify, Blueprint, make_response
 import uuid
 import logging
+from pydub import AudioSegment
+import os
+
+# Manually add FFMPEG to the PATH
+os.environ["PATH"] += os.pathsep + "/usr/bin/"
+print(os.environ["PATH"])
 
 from utils.queue_manager import (
     enqueue_yt_transcription,
@@ -64,10 +70,24 @@ def start_transcription():
     logging.info(
         f"Starting transcription for audio file {file.filename} with model {model_name}"
     )
-
+    print(f"Starting transcription for audio file {file.filename} with model {model_name}")
     job_id = str(uuid.uuid4())  # Generate a job ID using uuid
 
-    job_info = {"audio_path": file, "model_id": model_name}
+    try:
+        audio = AudioSegment.from_file(file)
+        # save the file to the disk as mp3
+        file_path = f"audio_files/{job_id}.mp3"
+        # if the directory does not exist, create it
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+        audio.export(file_path, format="mp3")
+        print(f"File saved to {file_path}")
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+
+
+
+    job_info = {"audio_path": file_path, "model_id": model_name}
 
     return enqueue_transcription("transcription", job_id, job_info)
 

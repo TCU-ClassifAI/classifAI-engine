@@ -125,7 +125,7 @@ def get_job_status(job_id: str):
             jsonify(
                 {
                     "status": rqjob.get_status(),
-                    "result": str(rqjob.result),
+                    "result": rqjob.result,
                     "meta": rqjob.get_meta(),
                 }
             ),
