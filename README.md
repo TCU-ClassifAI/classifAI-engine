@@ -243,7 +243,7 @@ _For more examples, please refer to the [Documentation](https://tcu-classifai.gi
     - [x] Use Redis for better asynchronous processing
     - [x] Add support for YouTube videos
 - [x] Add Question Categorization Service
-    - [x] Open Source it - Using Gemma
+    - [x] Update service- Using Fine-Tuned version of Gemma
     - [ ] Generate summaries of the questions
     - [ ] Add support for more question types
     - [ ] Add support for more languages
@@ -281,7 +281,7 @@ Note that this license only applies *to the engine.* Please see the [classifAI p
 
 Project Link: [https://github.com/TCU-ClassifAI/classifAI](https://github.com/TCU-ClassifAI/classifAI)
 
-View the Portal: [http://classifai.tcu.edu/](http://classifai.tcu.edu/)
+View the Portal: [https://classifai.tcu.edu/](https://classifai.tcu.edu/)
 
 
 <!-- ACKNOWLEDGMENTS -->
