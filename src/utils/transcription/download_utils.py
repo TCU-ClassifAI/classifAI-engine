@@ -51,7 +51,7 @@ def download_and_convert_to_mp3(
         logging.info(
             f"Download and conversion successful. File saved at: {mp3_file_path}"
         )
-        return str(mp3_file_path)
+        return (str(mp3_file_path), yt.title, yt.publish_date)
 
     except Exception as e:
         logging.error(f"An error occurred: {e}")

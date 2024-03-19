@@ -32,10 +32,10 @@ def enqueue_yt_transcription(job_id, url, model_name):
         model_name (str): Name of the model to use for transcription (default: "large-v3")
     """
 
-    audio_path = download_and_convert_to_mp3(url)
+    audio_path, title, date = download_and_convert_to_mp3(url)
     if audio_path is None:
         return jsonify({"error": "Error downloading audio"}), 500
-    job_info = {"audio_path": audio_path, "model_id": model_name}
+    job_info = {"audio_path": audio_path, "model_id": model_name, "title": title, "date": date}
     return enqueue("transcription", job_id, job_info)
 
 

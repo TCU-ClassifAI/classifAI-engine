@@ -25,6 +25,23 @@ def process_job(job_pickle: str):
     job_queue.meta["job_id"] = job.job_id
     job_queue.meta["progress"] = "assigning_worker"
     job_queue.meta["message"] = "Job assigned to worker"
+    # try to get job info
+    try:
+        job_info = job.job_info
+    except Exception:
+        job.status = "error"
+        job.result = f"Error: {traceback.format_exc()}"
+        job_queue.meta["status"] = "error"
+        job_queue.meta["message"] = job.result
+        job_queue.save_meta()
+        raise Exception(f"Error: {traceback.format_exc()}")
+    
+    # if job info has title or data, save it to the job
+    if "title" in job_info:
+        job_queue.meta["title"] = job_info["title"]
+    if "data" in job_info:
+        job_queue.meta["data"] = job_info["data"]
+        
     job_queue.save_meta()
 
     try:
