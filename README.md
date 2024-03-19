@@ -146,9 +146,9 @@ For more instructions please see the [documentation
    ```sh
     sudo apt-get install redis-server
     redis-server
-   ```sh
+   ```
 
-3. Install Python packages
+3. Install Python packages (it is reccomended you use a [venv](https://docs.python.org/3/library/venv.html))
   ```sh
   pip install -r src/requirements.txt -r src/requirements-dev.txt
   ```
@@ -174,26 +174,26 @@ For more instructions please see the [documentation
 
 #### start_transcription
 
-* **URL:** `/transcription/start_transcription`
+* **URL:** `/transcription/transcribe`
 * **Method:** `POST`
 * **Data Params:** (Request with file)
 
 #### start_yt
 
-* **URL:** `/transcription/start_yt`
+* **URL:** `/transcription/transcribe_yt`
 * **Method:** `POST` or `GET`
 * **Data Params:** 
   - `url` (string)
 
 * Example:
   ```sh
-  curl http://localhost:5000/transcription/start_yt?url=https://www.youtube.com/watch?v=M7nCITD1HpY
+  curl http://localhost:5000/transcription/transcrube_yt?url=https://www.youtube.com/watch?v=M7nCITD1HpY
   ```
 
 
-#### get_transcription
+#### get_transcription_status
 
-* **URL:** `/transcription/get_transcription`
+* **URL:** `/transcription/get_transcription_status`
 * **Method:** `GET`
 * **Data Params:** 
   - `job_id` (string)
@@ -201,9 +201,21 @@ For more instructions please see the [documentation
   - **Content:**
     ```json
     {
-      "status": "completed",
-      "transcription_link": "https://example.com/transcription-file"
-    }
+    "meta": {
+      "job_id": "0bc133cb-f519-40a1-96c6-46d2cfe9e4ad",
+      "job_type": "transcription",
+      "message": "Transcription and diarization finished",
+      "progress": "finished",
+      "title": "General Relativity Explained in 7 Levels of Difficulty"
+    },
+    "result": [
+      {
+        "end_time": 11149,
+        "speaker": "Speaker 0",
+        "start_time": 7740,
+        "text": "General relativity is a physics theory invented by Albert Einstein. "
+      },
+    .......
     ```
 * **Error Response:** 404 Not Found
   - **Content:**
@@ -230,7 +242,8 @@ _For more examples, please refer to the [Documentation](https://tcu-classifai.gi
     - [x] Integrate WhisperX for faster transcription and diarization
     - [x] Use Redis for better asynchronous processing
     - [x] Add support for YouTube videos
-- [] Add Question Categorization Service
+- [x] Add Question Categorization Service
+    - [x] Open Source it - Using Gemma
     - [ ] Generate summaries of the questions
     - [ ] Add support for more question types
     - [ ] Add support for more languages
