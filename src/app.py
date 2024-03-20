@@ -6,6 +6,7 @@ from utils.auth import api_key_required
 # from utils.transcribe import transcription # update with
 # endpoints.transcription once the file is created
 from endpoints.transcription import transcription
+from endpoints.categorize import categorize
 from config import config as settings
 
 load_dotenv()  # Load environment variables from .env file
@@ -15,6 +16,7 @@ load_dotenv()  # Load environment variables from .env file
 app = Flask(__name__)
 # app.register_blueprint(profile, url_prefix="/profile")
 app.register_blueprint(transcription, url_prefix="/transcription")
+app.register_blueprint(categorize, url_prefix="/categorize")
 
 
 @app.route("/", methods=["GET"])
@@ -22,7 +24,7 @@ def index():
     """Gives a brief description of the API, version, config, and healthcheck. Welcome page"""
 
     description = "ClassifAI Engine"
-    version = "1.0.0"
+    version = "2.0.4"
     config = settings.SETTINGS_TYPE
     healthcheck = "OK"
     documentation = "https://tcu-classifai.github.io/classifAI-engine/"

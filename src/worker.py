@@ -3,9 +3,13 @@ from redis import Redis
 from rq import Worker
 import os
 from dotenv import load_dotenv
+import sys
 
 load_dotenv()
 REDIS_PORT = os.getenv("REDIS_PORT")
+
+# add the src directory to the path
+sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
 # Preload libraries
 from utils.worker_manager import process_job # noqa: F401

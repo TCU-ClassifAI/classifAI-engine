@@ -1,13 +1,27 @@
 #!/bin/bash
 
-# Generate a unique tag for the Docker image based on current timestamp
-TAG="my_image_$(date +"%Y%m%d_%H%M%S")"
+# Make sure we're in the right directory
+cd /home/classgpu/classifAI-engine/src
 
-# Build the Docker image with the generated tag
-docker build --tag "$TAG" .
+# make sure we're in the right virtual environment
+source /home/classgpu/classifAI-engine/venv-3.10/bin/activate
 
-# Run the Docker container with the generated tag
-docker run -d -p 5000:5000 --name my_container "$TAG"
+function is_running() {
+  ps aux | grep "$1" | grep -v grep > /dev/null
+}
 
-# Display information about the running container
-docker ps --filter "name=my_container"
+# see if there is already a gunicorn process running
+if ! is_running gunicorn; then
+  echo "Starting gunicorn..."
+  gunicorn -w 3 --bind 0.0.0.0:5000 app:app &
+fi
+
+# see if there is already a RQ worker process running
+if ! is_running rq; then
+  echo "Starting RQ worker..."
+  rq worker jobs &
+fi
+
+# run the startup script for the web server
+/home/classgpu/gemma-classification-1/run.sh
+
