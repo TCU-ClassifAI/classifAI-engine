@@ -1,7 +1,10 @@
 import requests
 from dotenv import load_dotenv
+import os
+
+
 load_dotenv()
-def categorize_question(str: question) -> int:
+def categorize_question(question: str) -> int:
     """
     Categorize the question using GEMMA
     """

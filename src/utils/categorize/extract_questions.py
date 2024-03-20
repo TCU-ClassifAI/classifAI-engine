@@ -2,9 +2,20 @@ import json
 from utils.categorize.categorize_llama import categorize_question
 from flask import Blueprint, make_response, request, Flask
 import concurrent.futures
+from dataclasses import dataclass
 
 
 questions = Blueprint("questions", __name__)
+
+@dataclass
+class Question:
+    question: str 
+    speaker: str = None
+    start_time: float = None
+    end_time: float = None
+    previous_sentence: str = None
+    two_previous_sentence: str = None
+    level: int = None
 
 
 def extract_questions(transcript: str) -> list:
@@ -15,11 +26,13 @@ def extract_questions(transcript: str) -> list:
     transcript = json.loads(transcript)
     for segment in transcript["result"]:
         if "?" in segment["text"]:
-            question = segment["text"]
+            question = Question(question=segment["text"], speaker=segment["speaker"], start_time=segment["start_time"], end_time=segment["end_time"])
             if previous_text:
-                question = previous_text + question
+                question.previous_sentence = previous_text
+
             if two_previous_text:
-                question = two_previous_text + question
+                question.two_previous_sentence = two_previous_text
+
             questions.append(question)
             two_previous_text = previous_text
             previous_text = segment["text"]
