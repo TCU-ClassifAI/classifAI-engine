@@ -12,4 +12,4 @@ def categorize_question(question: str) -> int:
     response = requests.post(f"{os.getenv('GEMMA_API_URL')}/categorize", json={"question": question})
 
     # return the category
-    return response.json()
+    return int(response.json().get("response"))

@@ -1,14 +1,27 @@
 import json
-from utils.categorize.categorize_llama import categorize_question
+from utils.categorize.categorize_gemma import categorize_question
 from flask import Blueprint, make_response, request, Flask
 import concurrent.futures
 from dataclasses import dataclass
+from typing import List
 
 
 questions = Blueprint("questions", __name__)
 
 @dataclass
 class Question:
+    """
+    A dataclass to represent a question. 
+
+    Attributes:
+        question (str): the question
+        speaker (str): the speaker of the question (optional)
+        start_time (float): the start time of the question (optional)
+        end_time (float): the end time of the question (optional)
+        previous_sentence (str): the sentence before the question (optional)
+        two_previous_sentence (str): two sentences before the question (optional)
+        level (int): the level of the question (optional)
+    """
     question: str 
     speaker: str = None
     start_time: float = None
@@ -17,14 +30,32 @@ class Question:
     two_previous_sentence: str = None
     level: int = None
 
+    def get(self, key):
+        return getattr(self, key)
+    
+    def set_level(self, level):
+        self.level = level
+        return self
+    
+    def clear_previous_sentences(self):
+        self.previous_sentence = None
+        self.two_previous_sentence = None
+        return self
+    
+    def to_dict(self):
+        # if a value is None, don't include it in the dictionary
+        # if a value is null, don't include it in the dictionary
+        return {k: v for k, v in self.__dict__.items() if v is not None and v != "null"}
 
-def extract_questions(transcript: str) -> list:
+
+def extract_questions(transcript: dict) -> List[Question]:
     questions = []
     previous_text = ""  # The sentence before the question
     two_previous_text = ""  # Two sentences before the question
 
-    transcript = json.loads(transcript)
-    for segment in transcript["result"]:
+    print("transcript", transcript)
+    # transcript = json.loads(transcript)
+    for segment in transcript:
         if "?" in segment["text"]:
             question = Question(question=segment["text"], speaker=segment["speaker"], start_time=segment["start_time"], end_time=segment["end_time"])
             if previous_text:

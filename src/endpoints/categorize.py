@@ -1,6 +1,7 @@
 from flask import Blueprint, request, make_response
 from dotenv import load_dotenv
 import os
+import json
 
 
 load_dotenv()
@@ -33,19 +34,37 @@ def categorize_question_endpoint():
 from utils.categorize.categorize_transcript import categorize_transcript
 
 @categorize.route("/categorize_transcript", methods=["POST"])
-def categorize_transcript():
+def categorize_transcript_endpoint():
     """Categorize the transcript using GEMMA.
     Args:
         transcript: the transcript to categorize.
     Returns:
         Response object with the status code.
     """
-    if "transcript" not in request.form:
-        return make_response("No transcript provided", 400)
+    if "file" not in request.files:
+        return make_response("No file uploaded", 400)
 
-    transcript = request.form["transcript"]
+    file = request.files["file"]
+    # PRINT FILe
+    print(file)
+    transcript = file.read()
+
+    # Load the file into JSON
+    json_transcript = json.loads(transcript)
+    print(json_transcript)
+
+    # convert the JSON to a dictionary
+    transcript = json.loads(transcript)
+
 
     category_list = categorize_transcript(transcript)
 
     return category_list
+
+@categorize.route("/")
+def categorize_index():
+    """Categorize endpoint. Return list of categorization endpoints."""
+    return make_response(
+        "Categorize endpoints: /categorize_question, /categorize_transcript", 200
+    )
 
