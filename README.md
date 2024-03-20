@@ -178,6 +178,11 @@ For more instructions please see the [documentation
 * **Method:** `POST`
 * **Data Params:** (Request with file)
 
+* Example:
+  ```sh
+  curl -X POST -F "file=@path/to/your/audio.mp3" -F "model_name=large-v3" http://127.0.0.1:5000/transcription/transcribe 
+  ```
+
 #### start_yt
 
 * **URL:** `/transcription/transcribe_yt`
@@ -187,7 +192,7 @@ For more instructions please see the [documentation
 
 * Example:
   ```sh
-  curl http://localhost:5000/transcription/transcrube_yt?url=https://www.youtube.com/watch?v=M7nCITD1HpY
+  curl http://localhost:5000/transcription/transcribe_yt?url=https://www.youtube.com/watch?v=M7nCITD1HpY
   ```
 
 
