@@ -56,6 +56,9 @@ def extract_questions(transcript: dict) -> List[Question]:
     print("transcript", transcript)
     # transcript = json.loads(transcript)
     for segment in transcript:
+        # check if segment text exists
+        if "text" not in segment:
+            raise ValueError("Segment does not contain text. Please ensure that the transcript is in the correct format where each segment has ['text'].")
         if "?" in segment["text"]:
             question = Question(question=segment["text"], speaker=segment["speaker"], start_time=segment["start_time"], end_time=segment["end_time"])
             if previous_text:

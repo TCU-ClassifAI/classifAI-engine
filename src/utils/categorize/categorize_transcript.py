@@ -7,6 +7,7 @@ def categorize_transcript(transcript: dict) -> List[int]:
     """
     Categorize the transcript using GEMMA
     """
+    
     # Extract all questions from the transcript
     questions = extract_questions(transcript)
     for question in questions:

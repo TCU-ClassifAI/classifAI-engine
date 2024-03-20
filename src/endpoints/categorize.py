@@ -41,20 +41,27 @@ def categorize_transcript_endpoint():
     Returns:
         Response object with the status code.
     """
-    if "file" not in request.files:
+    if "file" not in request.files and not request.json:
         return make_response("No file uploaded", 400)
 
-    file = request.files["file"]
-    # PRINT FILe
-    print(file)
-    transcript = file.read()
+    file = request.files.get("file")
+    if file:
+        transcript = file.read()
+        transcript = json.loads(transcript)
+    else:
+        transcript = request.json
 
-    # Load the file into JSON
-    json_transcript = json.loads(transcript)
-    print(json_transcript)
+    print("=====================================")
+    print(transcript)
+    
+    # PRINT FILe
+    # print(file)
+    # transcript = file.read()
+
+
 
     # convert the JSON to a dictionary
-    transcript = json.loads(transcript)
+    
 
 
     category_list = categorize_transcript(transcript)
