@@ -247,7 +247,7 @@ _For more examples, please refer to the [Documentation](https://tcu-classifai.gi
 
 * Example:
   ```sh
-  curl -X POST -H "Content-Type: application/json" -d '{"text": "This is the transcript that I want to have summarized."}' http://localhost:5004/summarize/
+  curl -X POST -H "Content-Type: application/json" -d '{"text": "This is the transcript that I want to have summarized."}' http://localhost:5000/summarize/
   ```
 * **Success Response:** 200 OK
 
@@ -256,9 +256,9 @@ _For more examples, please refer to the [Documentation](https://tcu-classifai.gi
     "This is the summary of the text that was passed in.", 200
     ```
 
-    Alternatively, you can pass in a transcript like so: 
-    ```json
-    [
+  Alternatively, you can pass in a transcript like so: 
+  ```json
+  [
     {
       "end_time": 2301,
       "speaker": "Speaker 0",
@@ -272,12 +272,12 @@ _For more examples, please refer to the [Documentation](https://tcu-classifai.gi
       "text": "I dont like going out. "
     }
   ]
-    ```
+  ```
 
-    So the request would look like this:
-    ```sh
-    curl -X POST -H "Content-Type: application/json" -d '{"transcript": [{"end_time": 2301,"speaker": "Speaker 0","start_time": 1260,"text": "Why did you bring me here? "},{"end_time": 4263,"speaker": "Main Speaker","start_time": 3242,"text": "I dont like going out. "}]}' http://localhost:5004/summarize/
-    ```
+  So the request would look like this:
+  ```sh
+  curl -X POST -H "Content-Type: application/json" -d '{"transcript": [{"end_time": 2301,"speaker": "Speaker 0","start_time": 1260,"text": "Why did you bring me here? "},{"end_time": 4263,"speaker": "Main Speaker","start_time": 3242,"text": "I dont like going out. "}]}' http://localhost:5000/summarize/
+  ```
 
 
 <!-- ROADMAP -->
