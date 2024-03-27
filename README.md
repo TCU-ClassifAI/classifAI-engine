@@ -236,7 +236,27 @@ For more instructions please see the [documentation
 
 _For more examples, please refer to the [Documentation](https://tcu-classifai.github.io/classifAI-engine/)_
 
+### Summarization
 
+#### summarize
+
+* **URL:** `/summarize`
+* **Method:** `POST`
+* **Data Params:** 
+  - `text` (string)
+
+* Example:
+  ```sh
+  curl -X POST -H "Content-Type: application/json" -d '{"text": "This is the transcript that I want to have summarized."}' http://localhost:5004/summarize/
+  ```
+* **Success Response:** 200 OK
+
+  - **Content:**
+    ```json
+    {
+      "summary": "This is the summary of the text."
+    }
+    ```
 
 
 <!-- ROADMAP -->
