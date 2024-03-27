@@ -253,9 +253,30 @@ _For more examples, please refer to the [Documentation](https://tcu-classifai.gi
 
   - **Content:**
     ```json
+    "This is the summary of the text that was passed in.", 200
+    ```
+
+    Alternatively, you can pass in a transcript like so: 
+    ```json
+    [
     {
-      "summary": "This is the summary of the text."
+      "end_time": 2301,
+      "speaker": "Speaker 0",
+      "start_time": 1260,
+      "text": "Why did you bring me here? "
+    },
+    {
+      "end_time": 4263,
+      "speaker": "Main Speaker",
+      "start_time": 3242,
+      "text": "I dont like going out. "
     }
+  ]
+    ```
+
+    So the request would look like this:
+    ```sh
+    curl -X POST -H "Content-Type: application/json" -d '{"transcript": [{"end_time": 2301,"speaker": "Speaker 0","start_time": 1260,"text": "Why did you bring me here? "},{"end_time": 4263,"speaker": "Main Speaker","start_time": 3242,"text": "I dont like going out. "}]}' http://localhost:5004/summarize/
     ```
 
 
