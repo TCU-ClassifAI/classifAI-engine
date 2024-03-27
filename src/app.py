@@ -7,6 +7,7 @@ from utils.auth import api_key_required
 # endpoints.transcription once the file is created
 from endpoints.transcription import transcription
 from endpoints.categorize import categorize
+from endpoints.summarize import summarize
 from config import config as settings
 
 load_dotenv()  # Load environment variables from .env file
@@ -17,6 +18,7 @@ app = Flask(__name__)
 # app.register_blueprint(profile, url_prefix="/profile")
 app.register_blueprint(transcription, url_prefix="/transcription")
 app.register_blueprint(categorize, url_prefix="/categorize")
+app.register_blueprint(summarize, url_prefix="/summarize")
 
 
 @app.route("/", methods=["GET"])
