@@ -1,7 +1,18 @@
 from typing import List
 from utils.categorize.extract_questions import extract_questions, Question
 from utils.categorize.categorize_gemma import categorize_question
+import multiprocessing
 
+
+def process_question(question: Question) -> dict:
+    question_text = build_question_text(question)
+    print(question_text)
+    level = categorize_question(question_text)
+    question= question.set_level(level)
+    question = question.clear_previous_sentences()
+    # convert the question to a dictionary
+    question = question.to_dict()
+    return question
 
 def categorize_transcript(transcript: dict) -> List[int]:
     """
@@ -10,15 +21,17 @@ def categorize_transcript(transcript: dict) -> List[int]:
     
     # Extract all questions from the transcript
     questions = extract_questions(transcript)
-    for question in questions:
-        question_text = build_question_text(question)
-        print(question_text)
-        # Categorize each question using GEMMA
-        level = categorize_question(question_text)
-        question= question.set_level(level)
-        question = question.clear_previous_sentences()
-        # convert the question to a dictionary
-        question = question.to_dict()
+    with multiprocessing.Pool() as pool:  # Create a process pool
+        results = pool.map(process_question, questions)  # Map the function to the list of questions
+    # for question in questions:
+    #     question_text = build_question_text(question)
+    #     print(question_text)
+    #     # Categorize each question using GEMMA
+    #     level = categorize_question(question_text)
+    #     question= question.set_level(level)
+    #     question = question.clear_previous_sentences()
+    #     # convert the question to a dictionary
+    #     question = question.to_dict()
 
     return questions
 

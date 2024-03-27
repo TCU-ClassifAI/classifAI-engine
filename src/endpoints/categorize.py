@@ -29,7 +29,7 @@ def categorize_question_endpoint():
 
     category = categorize_question(question)
 
-    return category
+    return make_response(json.dumps({"category": category}), 200)
 
 from utils.categorize.categorize_transcript import categorize_transcript
 
