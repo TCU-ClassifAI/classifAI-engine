@@ -6,13 +6,13 @@ from utils.transcription.convert_utils import convert_to_mp3
 from utils.transcription.download_utils import download_and_convert_to_mp3
 from utils.analyze_audio import analyze_audio
 from utils.queue_manager import Job, enqueue
+import uuid
 
 from config import config as settings
 
 load_dotenv()
 
 analyze = Blueprint("analyze", __name__)
-
 
 
 @analyze.route("/analyze", methods=["POST"])
@@ -27,18 +27,19 @@ def analyze_endpoint():
     Returns:
         Response object with the status code.
     """
-    
 
     # Check if file or URL is in request
     if "file" not in request.files and not request.json:
-        return make_response("No file uploaded. Please provide either a YouTube URL or a file", 400)
-    
-    file = request.files.get("file") # Audio or video file
+        return make_response(
+            "No file uploaded. Please provide either a YouTube URL or a file", 400
+        )
+
+    file = request.files.get("file")  # Audio or video file
     if file:
         file = file.read()
         # Get file name
         title = file.filename
-        # Get publish date 
+        # Get publish date
         publish_date = request.json.get("publish_date")
 
         # Attempt to convert to MP3 using ffmpeg
@@ -52,19 +53,17 @@ def analyze_endpoint():
         audio_path, title, publish_date = download_and_convert_to_mp3(url)
         if audio_path is None:
             return make_response("Error downloading audio from YouTube", 500)
-        
+
     model_name = request.json.get("model_name")
     if not model_name:
         model_name = settings.TRANSCRIPTION_MODEL
     try:
         job = Job.initialize_analysis_job(audio_path, model_name, title, publish_date)
-        
-        job_queue = enqueue(job)
+
+        job_queue = enqueue("analyze", uuid.uuid4(), job)
         return make_response(f"Job {job_queue.id} enqueued for analysis", 200)
     except Exception as e:
         return make_response(str(e), 500)
-    
-
 
     # def enqueue(job_type: str, job_id: str, job_info: dict = None):
     """
@@ -84,8 +83,3 @@ def analyze_endpoint():
     Returns:
         str: A message confirming the job has been enqueued.
     """
-
-
-
-
-

@@ -8,11 +8,10 @@ from config import config as settings
 
 load_dotenv()
 
-server = Blueprint("server", __name__)
+server_info = Blueprint("server", __name__)
 
 
-
-@server.route("/", methods=["GET"])
+@server_info.route("/", methods=["GET"])
 def index():
     """Gives a brief description of the API, version, config, and healthcheck. Welcome page"""
 
@@ -23,10 +22,11 @@ def index():
     documentation = "https://tcu-classifai.github.io/classifAI-engine/"
 
     return "<h1>{}</h1><p>Version: {}</p><p>Config: {}</p><p>Healthcheck: {}</p><a href='{}'>Documentation</a>".format(
-        description, version, config, healthcheck, documentation)
+        description, version, config, healthcheck, documentation
+    )
 
 
-@server.route("/healthcheck", methods=["GET"])
+@server_info.route("/healthcheck", methods=["GET"])
 def healthcheck():
     """Healthcheck endpoint for API
 
@@ -35,12 +35,12 @@ def healthcheck():
     return make_response("OK", 200)
 
 
-@server.route("/config", methods=["GET"])
+@server_info.route("/config", methods=["GET"])
 def config():
     return make_response(str(settings.SETTINGS_TYPE), 200)
 
 
-@server.route("/auth", methods=["GET"])
+@server_info.route("/auth", methods=["GET"])
 @api_key_required
 def secure():
     return make_response("OK", 200)

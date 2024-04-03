@@ -41,8 +41,7 @@ def start_yt_transcription():
             return jsonify({"error": "No URL provided"}), 400
         model_name = request.form.get("model_name")
 
-    logging.info(
-        f"Starting transcription for YouTube video {url} with model large-v3")
+    logging.info(f"Starting transcription for YouTube video {url} with model large-v3")
 
     job_id = str(uuid.uuid4())  # Generate a job ID using uuid
 
@@ -70,7 +69,9 @@ def start_transcription():
     logging.info(
         f"Starting transcription for audio file {file.filename} with model {model_name}"
     )
-    print(f"Starting transcription for audio file {file.filename} with model {model_name}")
+    print(
+        f"Starting transcription for audio file {file.filename} with model {model_name}"
+    )
     job_id = str(uuid.uuid4())  # Generate a job ID using uuid
 
     try:
@@ -84,8 +85,6 @@ def start_transcription():
         print(f"File saved to {file_path}")
     except Exception as e:
         return jsonify({"error": str(e)}), 400
-
-
 
     job_info = {"audio_path": file_path, "model_id": model_name}
 

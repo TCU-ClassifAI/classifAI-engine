@@ -5,15 +5,14 @@ load_dotenv()
 
 if os.environ.get("ENV") == "production":
     # Production settings
-    TRANSCRIPTION_MODEL = "large-v3" 
-    CATEGORIZATION_MODEL = "gemma" # or "gpt" 
-    SUMMARIZATION_MODEL = "huggingface" # or "gpt"
+    TRANSCRIPTION_MODEL = "large-v3"
+    CATEGORIZATION_MODEL = "gemma"  # or "gpt"
+    SUMMARIZATION_MODEL = "huggingface"  # or "gpt"
     SETTINGS_TYPE = "prod"
 
 else:
     # Development settings
-    TRANSCRIPTION_MODEL = "large-v3" # or "tiny.en"
-    CATEGORIZATION_MODEL = "gemma" # or "gpt"
-    SUMMARIZATION_MODEL = "huggingface" # or "gpt"
+    TRANSCRIPTION_MODEL = "large-v3"  # or "tiny.en"
+    CATEGORIZATION_MODEL = "gemma"  # or "gpt"
+    SUMMARIZATION_MODEL = "huggingface"  # or "gpt"
     SETTINGS_TYPE = "dev"
-

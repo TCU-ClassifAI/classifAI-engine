@@ -7,10 +7,10 @@ import json
 load_dotenv()
 
 
-
 summarize = Blueprint("summarize", __name__)
 
 from utils.summarize.summarize_transcript import summarize_transcript
+
 
 @summarize.route("/", methods=["POST"])
 def summarize_transcript_endpoint():
@@ -28,12 +28,13 @@ def summarize_transcript_endpoint():
         transcript = ""
         for line in transcript_json:
             transcript += line["text"] + " "
-    
+
     print("=====================================")
     print(transcript)
     summary = summarize_transcript(transcript)
 
     return summary
+
 
 @summarize.route("/healthcheck", methods=["GET"])
 def healthcheck():
@@ -43,8 +44,8 @@ def healthcheck():
     """
     return make_response("OK", 200)
 
+
 if __name__ == "__main__":  # do not use this in production
     app = Flask(__name__)
     app.register_blueprint(summarize, url_prefix="/summarize")
     app.run(debug=True, port=5004)
-    

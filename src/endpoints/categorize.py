@@ -7,10 +7,10 @@ import json
 load_dotenv()
 
 
-
 categorize = Blueprint("categorize", __name__)
 
 from utils.categorize.categorize_gemma import categorize_question
+
 
 @categorize.route("/categorize_question", methods=["POST"])
 def categorize_question_endpoint():
@@ -22,7 +22,6 @@ def categorize_question_endpoint():
     """
     # See if question is in request JSON
 
-
     question = request.get_json()["question"]
     if not question:
         return make_response("No question provided", 400)
@@ -31,7 +30,9 @@ def categorize_question_endpoint():
 
     return make_response(json.dumps({"category": category}), 200)
 
+
 from utils.categorize.categorize_transcript import categorize_transcript
+
 
 @categorize.route("/categorize_transcript", methods=["POST"])
 def categorize_transcript_endpoint():
@@ -53,20 +54,17 @@ def categorize_transcript_endpoint():
 
     print("=====================================")
     print(transcript)
-    
+
     # PRINT FILe
     # print(file)
     # transcript = file.read()
 
-
-
     # convert the JSON to a dictionary
-    
-
 
     category_list = categorize_transcript(transcript)
 
     return category_list
+
 
 @categorize.route("/")
 def categorize_index():
@@ -74,4 +72,3 @@ def categorize_index():
     return make_response(
         "Categorize endpoints: /categorize_question, /categorize_transcript", 200
     )
-
