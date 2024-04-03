@@ -16,7 +16,7 @@ def index():
     """Gives a brief description of the API, version, config, and healthcheck. Welcome page"""
 
     description = "ClassifAI Engine"
-    version = "2.0.4"
+    version = settings.VERSION
     config = settings.SETTINGS_TYPE
     healthcheck = "OK"
     documentation = "https://tcu-classifai.github.io/classifAI-engine/"

@@ -16,3 +16,5 @@ else:
     CATEGORIZATION_MODEL = "gemma"  # or "gpt"
     SUMMARIZATION_MODEL = "huggingface"  # or "gpt"
     SETTINGS_TYPE = "dev"
+
+VERSION = "3.0.1"

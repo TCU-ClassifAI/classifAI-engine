@@ -4,7 +4,7 @@ import os
 import json
 from utils.transcription.convert_utils import convert_to_mp3
 from utils.transcription.download_utils import download_and_convert_to_mp3
-from utils.analyze_audio import analyze_audio
+# from utils.analyze_audio import analyze_audio
 from utils.queue_manager import Job, enqueue
 import uuid
 
