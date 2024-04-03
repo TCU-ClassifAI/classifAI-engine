@@ -20,20 +20,19 @@ app = Flask(__name__)
 
 # Register blueprints for endpoints
 
-# Transcription Blueprint
+# Transcription Blueprint (transcribe audio or video files)
 app.register_blueprint(transcription, url_prefix="/transcription")
 
-# Categorize Blueprint
+# Categorize Blueprint (categorize transcripts or questions by costa's level)
 app.register_blueprint(categorize, url_prefix="/categorize")
 
-# Summarize Blueprint
+# Summarize Blueprint (text summarization)
 app.register_blueprint(summarize, url_prefix="/summarize")
 
-# Analysis Blueprint
+# Analysis Blueprint (all-in-one transcription, categorization, and summarization)
 # app.register_blueprint(analyze) # run on index route
 
-# Server Blueprint
-# Server information, healthcheck, and configuration
+# Server Blueprint (server information, healthcheck, and configuration)
 app.register_blueprint(server_info)  # run on index route
 
 
