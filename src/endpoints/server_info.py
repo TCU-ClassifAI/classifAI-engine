@@ -1,9 +1,8 @@
-from flask import Blueprint, request, make_response, Flask
+from flask import Blueprint, request, make_response, Flask, jsonify
 from dotenv import load_dotenv
 import os
 import json
 from utils.auth import api_key_required
-
 from config import config as settings
 
 load_dotenv()
@@ -17,12 +16,12 @@ def index():
 
     description = "ClassifAI Engine"
     version = settings.VERSION
-    config = settings.SETTINGS_TYPE
+    env_type = settings.ENV_TYPE
     healthcheck = "OK"
     documentation = "https://tcu-classifai.github.io/classifAI-engine/"
 
-    return "<h1>{}</h1><p>Version: {}</p><p>Config: {}</p><p>Healthcheck: {}</p><a href='{}'>Documentation</a>".format(
-        description, version, config, healthcheck, documentation
+    return "<h1>{}</h1><p>Version: {}</p><p>Environment: {}</p><p>Healthcheck: {}</p><a href='{}'>Documentation</a>".format(
+        description, version, env_type, healthcheck, documentation
     )
 
 
@@ -37,7 +36,19 @@ def healthcheck():
 
 @server_info.route("/config", methods=["GET"])
 def config():
-    return make_response(str(settings.SETTINGS_TYPE), 200)
+    """Get the configuration settings for the API
+
+    Returns: JSON object with the configuration settings
+    """
+    config_settings = {}
+    for key in dir(settings):
+        # Skip over built-in attributes and private attributes (start with '_')
+        if key.isupper():
+            value = getattr(settings, key)
+            config_settings[key] = value
+    
+    # Return the settings as a JSON response
+    return make_response(jsonify(config_settings), 200)
 
 
 @server_info.route("/auth", methods=["GET"])
