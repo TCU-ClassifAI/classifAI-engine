@@ -3,12 +3,24 @@ import os
 from dotenv import load_dotenv
 from utils.auth import api_key_required
 
-# from utils.transcribe import transcription # update with
-# endpoints.transcription once the file is created
-from endpoints.transcription import transcription
-from endpoints.categorize import categorize
-from endpoints.summarize import summarize
 from config import config as settings
+
+
+# Import blueprints for endpoints
+# TO DO: Refactor to use settings dynamically
+if settings.CATEGORIZATION_MODEL == "gemma":
+    from endpoints.categorize import categorize as categorize
+elif settings.CATEGORIZATION_MODEL == "gpt":
+    from endpoints.categorize import categorize as categorize
+if settings.SUMMARIZATION_MODEL == "gpt":
+    from endpoints.summarize import summarize as summarize
+elif settings.SUMMARIZATION_MODEL == "huggingface":
+    from endpoints.summarize import summarize as summarize
+
+from endpoints.transcription import transcription as transcription
+# from endpoints.analyze import analyze
+from endpoints.server_info import server
+
 
 load_dotenv()  # Load environment variables from .env file
 
@@ -19,40 +31,9 @@ app = Flask(__name__)
 app.register_blueprint(transcription, url_prefix="/transcription")
 app.register_blueprint(categorize, url_prefix="/categorize")
 app.register_blueprint(summarize, url_prefix="/summarize")
+# app.register_blueprint(analyze)
+app.register_blueprint(server) # Server information, healthcheck, and config
 
-
-@app.route("/", methods=["GET"])
-def index():
-    """Gives a brief description of the API, version, config, and healthcheck. Welcome page"""
-
-    description = "ClassifAI Engine"
-    version = "2.0.4"
-    config = settings.SETTINGS_TYPE
-    healthcheck = "OK"
-    documentation = "https://tcu-classifai.github.io/classifAI-engine/"
-
-    return "<h1>{}</h1><p>Version: {}</p><p>Config: {}</p><p>Healthcheck: {}</p><a href='{}'>Documentation</a>".format(
-        description, version, config, healthcheck, documentation)
-
-
-@app.route("/healthcheck", methods=["GET"])
-def healthcheck():
-    """Healthcheck endpoint for API
-
-    Returns: OK
-    """
-    return make_response("OK", 200)
-
-
-@app.route("/config", methods=["GET"])
-def config():
-    return make_response(str(settings.SETTINGS_TYPE), 200)
-
-
-@app.route("/auth", methods=["GET"])
-@api_key_required
-def secure():
-    return make_response("OK", 200)
 
 
 def create_app():
