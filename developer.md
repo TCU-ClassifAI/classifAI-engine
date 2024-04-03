@@ -4,6 +4,10 @@ Please read the full deveper doccumentation at the site.
 
 ## Useful commands
 
+### Start up a worker
+
+`rq worker -c worker_config`
+
 ### General running commands
 
 ```bash
