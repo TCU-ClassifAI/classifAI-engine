@@ -42,9 +42,7 @@ def transcribe_and_diarize(job: Job) -> list:
         result (list): Result of the transcription and diarization job. Speaker labels and timestamps.
     """
 
-    logging.info(
-        "Transcribing and diarizing: ",
-        job.job_info.get("audio_path"))
+    logging.info("Transcribing and diarizing: ", job.job_info.get("audio_path"))
     print(f"Transcribing and diarizing: {job.job_info.get('audio_path')}")
 
     try:
@@ -113,7 +111,6 @@ def transcribe_and_diarize(job: Job) -> list:
         print("Transcribing audio file: ", vocal_target)
 
         if args.batch_size != 0:
-
             print("Batch size: ", args.batch_size)
             whisper_results, language = transcribe_batched(
                 vocal_target,
@@ -125,7 +122,6 @@ def transcribe_and_diarize(job: Job) -> list:
                 args.device,
             )
         else:
-
             whisper_results, language = transcribe(
                 vocal_target,
                 args.language,
@@ -144,11 +140,8 @@ def transcribe_and_diarize(job: Job) -> list:
             )
             update_progress("aligning", "Aligning audio")
             result_aligned = whisperx.align(
-                whisper_results,
-                alignment_model,
-                metadata,
-                vocal_target,
-                args.device)
+                whisper_results, alignment_model, metadata, vocal_target, args.device
+            )
             word_timestamps = filter_missing_timestamps(
                 result_aligned["word_segments"],
                 initial_timestamp=whisper_results[0].get("start"),
@@ -246,7 +239,6 @@ def transcribe_and_diarize(job: Job) -> list:
         update_progress("finished", "Transcription and diarization finished")
         print("Transcription and diarization finished")
         print(ssm)
-        
 
         return ssm
     except Exception as e:

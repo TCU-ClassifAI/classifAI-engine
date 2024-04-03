@@ -59,8 +59,7 @@ def validate_category_output(output):
         "Unknown",
     ]
     if output["question_type"] not in allowed_question_types:
-        return (
-            False, f"question_type must be one of {allowed_question_types}")
+        return (False, f"question_type must be one of {allowed_question_types}")
 
     return True, None
 
@@ -155,9 +154,7 @@ def categorize_question(data: dict) -> dict:
 
     # Validate the output JSON
     valid, error = validate_category_output(output)
-    if (
-        not valid
-    ):  # If the output JSON is not valid, return that we don't know the question type or level
+    if not valid:  # If the output JSON is not valid, return that we don't know the question type or level
         return {
             "question_type": "Unknown",
             "question_level": 0,

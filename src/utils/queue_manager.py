@@ -35,7 +35,12 @@ def enqueue_yt_transcription(job_id, url, model_name):
     audio_path, title, date = download_and_convert_to_mp3(url)
     if audio_path is None:
         return jsonify({"error": "Error downloading audio"}), 500
-    job_info = {"audio_path": audio_path, "model_id": model_name, "title": title, "date": date}
+    job_info = {
+        "audio_path": audio_path,
+        "model_id": model_name,
+        "title": title,
+        "date": date,
+    }
     return enqueue("transcription", job_id, job_info)
 
 
@@ -58,12 +63,15 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
         str: A message confirming the job has been enqueued.
     """
 
-
     if job_type is None:
         return jsonify({"error": "job_type is required"}), 400
-    
-    if job_type not in ["transcription", "summarization", "categorization"]:
-        return jsonify({"error": "Invalid job_type. Must be one of: transcription, summarization, categorization"}), 400
+
+    if job_type not in ["transcription", "summarization", "categorization", "analyze"]:
+        return jsonify(
+            {
+                "error": "Invalid job_type. Must be one of: transcription, summarization, categorization, analyze"
+            }
+        ), 400
 
     if job_id is None:
         job_id = str(uuid.uuid4())
@@ -93,7 +101,9 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
         result_ttl=-1,  # Keep the result in Redis indefinitely
         meta={"job_type": job.type, "job_id": job.job_id, "progress": "queued"},
     )
+
     logging.info(f"Job enqueued: {job.job_id}")
+
     return jsonify({"message": "Job enqueued", "job_id": str(job.job_id)}), 200
 
 
@@ -132,8 +142,7 @@ def get_job_status(job_id: str):
             200,
         )
 
-    return jsonify({"status": rqjob.get_status(),
-                   "meta": rqjob.get_meta()}), 200
+    return jsonify({"status": rqjob.get_status(), "meta": rqjob.get_meta()}), 200
 
 
 if __name__ == "__main__":

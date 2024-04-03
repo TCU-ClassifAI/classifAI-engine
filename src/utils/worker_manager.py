@@ -1,10 +1,8 @@
 from rq import get_current_job
 from utils.jobs import Job
 from utils.transcription.diarize_parallel import transcribe_and_diarize
-# from utils.summarize.summarize_transcript import summarize_transcript
-# from utils.categorize.categorize_transcript import categorize_transcript
-# from utils.analyze.analyze_transcript import analyze_transcript
 import traceback
+import logging
 
 
 def process_job(job_pickle: str):
@@ -20,6 +18,7 @@ def process_job(job_pickle: str):
 
     job_queue = get_current_job()
     print(f"Current job: {job_queue.id}")
+    logging.info(f"Processing job: {job_queue.id}")
 
     # unpickle the job
     job = Job.unpickle(job_pickle)
@@ -38,13 +37,13 @@ def process_job(job_pickle: str):
         job_queue.meta["message"] = job.result
         job_queue.save_meta()
         raise Exception(f"Error: {traceback.format_exc()}")
-    
+
     # if job info has title or data, save it to the job
     if "title" in job_info:
         job_queue.meta["title"] = job_info["title"]
     if "data" in job_info:
         job_queue.meta["data"] = job_info["data"]
-        
+
     job_queue.save_meta()
 
     try:
@@ -73,4 +72,3 @@ def process_job(job_pickle: str):
         job_queue.meta["message"] = job.result
         job_queue.save_meta()
         raise Exception(f"Error: {traceback.format_exc()}")
-

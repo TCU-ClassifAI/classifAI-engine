@@ -8,10 +8,11 @@ from typing import List
 
 questions = Blueprint("questions", __name__)
 
+
 @dataclass
 class Question:
     """
-    A dataclass to represent a question. 
+    A dataclass to represent a question.
 
     Attributes:
         question (str): the question
@@ -22,7 +23,8 @@ class Question:
         two_previous_sentence (str): two sentences before the question (optional)
         level (int): the level of the question (optional)
     """
-    question: str 
+
+    question: str
     speaker: str = None
     start_time: float = None
     end_time: float = None
@@ -32,16 +34,16 @@ class Question:
 
     def get(self, key):
         return getattr(self, key)
-    
+
     def set_level(self, level):
         self.level = level
         return self
-    
+
     def clear_previous_sentences(self):
         self.previous_sentence = None
         self.two_previous_sentence = None
         return self
-    
+
     def to_dict(self):
         # if a value is None, don't include it in the dictionary
         # if a value is null, don't include it in the dictionary
@@ -58,9 +60,16 @@ def extract_questions(transcript: dict) -> List[Question]:
     for segment in transcript:
         # check if segment text exists
         if "text" not in segment:
-            raise ValueError("Segment does not contain text. Please ensure that the transcript is in the correct format where each segment has ['text'].")
+            raise ValueError(
+                "Segment does not contain text. Please ensure that the transcript is in the correct format where each segment has ['text']."
+            )
         if "?" in segment["text"]:
-            question = Question(question=segment["text"], speaker=segment["speaker"], start_time=segment["start_time"], end_time=segment["end_time"])
+            question = Question(
+                question=segment["text"],
+                speaker=segment["speaker"],
+                start_time=segment["start_time"],
+                end_time=segment["end_time"],
+            )
             if previous_text:
                 question.previous_sentence = previous_text
 
@@ -71,7 +80,7 @@ def extract_questions(transcript: dict) -> List[Question]:
             two_previous_text = previous_text
             previous_text = segment["text"]
     return questions
-            
+
 
 @questions.route("/healthcheck")
 def healthcheck():
@@ -126,7 +135,6 @@ def extract_questions_in_context():
     return questions
 
 
-
 def categorize_all_questions() -> list:
     """
     Return questions, their speaker, and the start and end time of the question
@@ -153,9 +161,8 @@ def categorize_all_questions() -> list:
     # Extract questions from the transcript
 
     response = requests.post(
-        f"{server_url}/questions/extract_questions",
-        json={
-            "transcript": transcript})
+        f"{server_url}/questions/extract_questions", json={"transcript": transcript}
+    )
 
     questions = response.json()
 

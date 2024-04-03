@@ -40,9 +40,11 @@ def create_config(output_dir):
     MODEL_CONFIG_PATH = os.path.join(CONFIG_LOCAL_DIRECTORY, CONFIG_FILE_NAME)
     if not os.path.exists(MODEL_CONFIG_PATH):
         os.makedirs(CONFIG_LOCAL_DIRECTORY, exist_ok=True)
-        CONFIG_URL = f"https://raw.githubusercontent.com/NVIDIA/NeMo/main/" \
-            f"examples/speaker_tasks/diarization/conf/inference/" \
+        CONFIG_URL = (
+            f"https://raw.githubusercontent.com/NVIDIA/NeMo/main/"
+            f"examples/speaker_tasks/diarization/conf/inference/"
             f"{CONFIG_FILE_NAME}"
+        )
         MODEL_CONFIG_PATH = wget.download(CONFIG_URL, MODEL_CONFIG_PATH)
 
     config = OmegaConf.load(MODEL_CONFIG_PATH)
@@ -66,8 +68,7 @@ def create_config(output_dir):
     pretrained_vad = "vad_multilingual_marblenet"
     pretrained_speaker_model = "titanet_large"
     config.num_workers = 0
-    config.diarizer.manifest_filepath = os.path.join(
-        data_dir, "input_manifest.json")
+    config.diarizer.manifest_filepath = os.path.join(data_dir, "input_manifest.json")
     config.diarizer.out_dir = (
         output_dir  # Directory to store intermediate files and prediction outputs
     )
@@ -124,8 +125,7 @@ def get_words_speaker_mapping(wrd_ts, spk_ts, word_anchor_option="start"):
 sentence_ending_punctuations = ".?!"
 
 
-def get_first_word_idx_of_sentence(
-        word_idx, word_list, speaker_list, max_words):
+def get_first_word_idx_of_sentence(word_idx, word_list, speaker_list, max_words):
     def is_word_sentence_end(x):
         return x >= 0 and word_list[x][-1] in sentence_ending_punctuations
 
@@ -138,8 +138,7 @@ def get_first_word_idx_of_sentence(
     ):
         left_idx -= 1
 
-    return left_idx if left_idx == 0 or is_word_sentence_end(
-        left_idx - 1) else -1
+    return left_idx if left_idx == 0 or is_word_sentence_end(left_idx - 1) else -1
 
 
 def get_last_word_idx_of_sentence(word_idx, word_list, max_words):
@@ -200,13 +199,13 @@ def get_realigned_ws_mapping_with_punctuation(
                 k += 1
                 continue
 
-            spk_labels = speaker_list[left_idx: right_idx + 1]
+            spk_labels = speaker_list[left_idx : right_idx + 1]
             mod_speaker = max(set(spk_labels), key=spk_labels.count)
             if spk_labels.count(mod_speaker) < len(spk_labels) // 2:
                 k += 1
                 continue
 
-            speaker_list[left_idx: right_idx + 1] = [mod_speaker] * (
+            speaker_list[left_idx : right_idx + 1] = [mod_speaker] * (
                 right_idx - left_idx + 1
             )
             k = right_idx
@@ -229,11 +228,7 @@ def get_sentences_speaker_mapping(word_speaker_mapping, spk_ts):
     prev_spk = spk
 
     snts = []
-    snt = {
-        "speaker": f"Speaker {spk}",
-        "start_time": s,
-        "end_time": e,
-        "text": ""}
+    snt = {"speaker": f"Speaker {spk}", "start_time": s, "end_time": e, "text": ""}
 
     for wrd_dict in word_speaker_mapping:
         wrd, spk = wrd_dict["word"], wrd_dict["speaker"]
@@ -273,9 +268,8 @@ def get_speaker_aware_transcript(sentences_speaker_mapping, f):
 
 
 def format_timestamp(
-        milliseconds: float,
-        always_include_hours: bool = False,
-        decimal_marker: str = "."):
+    milliseconds: float, always_include_hours: bool = False, decimal_marker: str = "."
+):
     assert milliseconds >= 0, "non-negative timestamp expected"
 
     hours = milliseconds // 3_600_000
@@ -321,8 +315,7 @@ def find_numeral_symbol_tokens(tokenizer):
     return numeral_symbol_tokens
 
 
-def _get_next_start_timestamp(
-        word_timestamps, current_word_index, final_timestamp):
+def _get_next_start_timestamp(word_timestamps, current_word_index, final_timestamp):
     # if current word is the last word
     if current_word_index == len(word_timestamps) - 1:
         return word_timestamps[current_word_index]["start"]
@@ -366,8 +359,7 @@ def filter_missing_timestamps(
         # use the previous end as start and next start as end
         if ws.get("start") is None and ws.get("word") is not None:
             ws["start"] = word_timestamps[i - 1]["end"]
-            ws["end"] = _get_next_start_timestamp(
-                word_timestamps, i, final_timestamp)
+            ws["end"] = _get_next_start_timestamp(word_timestamps, i, final_timestamp)
 
         if ws["word"] is not None:
             result.append(ws)
