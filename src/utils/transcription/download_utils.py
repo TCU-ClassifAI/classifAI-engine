@@ -13,7 +13,7 @@ logging.basicConfig(
 
 def download_and_convert_to_mp3(
     url: str, output_path: str = "output", filename: str = "test"
-) -> Optional[str]:
+) -> Optional[tuple[str, str, str]]:
     """Downloads a YouTube video and converts it to an mp3 file.
 
     Args:
@@ -22,7 +22,7 @@ def download_and_convert_to_mp3(
         filename (str): The name of the mp3 file (default: "test")
 
     Returns:
-        str: The path to the downloaded mp3 file
+        Tuple[str, str, str]: A tuple containing the path to the mp3 file, the video title, and the video publish date.
     """
     try:
         yt = YouTube(url)

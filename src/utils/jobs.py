@@ -185,6 +185,26 @@ class Job:
             "transcript": transcript,  # Transcript of the audio file to be summarized
         }
 
+    def initialize_analysis_job(self, audio_path: str, model_type: str = "large-v3", title: str = None, publish_date: str = None):
+        """
+        Initialize an analysis job with the audio file path and model type.
+
+        Args:
+            audio_path (str): Path to the audio file.
+            model_type (str): Name of the model used for analysis (default: "large-v3").
+            title (str, optional): Title of Youtube or other video (default: None).
+            publish_date (str, optional): Publish date of the video (default: None).
+        Returns:
+            None
+        """
+        self.job_info = {
+            "audio_path": audio_path,  # Path to the audio file, downloaded before processing
+            "title": title,
+            "model_type": model_type,
+            "publish_date": publish_date
+        }
+
+
     def get_duration(self) -> float:
         """
         Get the duration of the job.

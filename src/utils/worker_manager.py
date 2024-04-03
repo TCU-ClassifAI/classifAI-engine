@@ -1,6 +1,9 @@
 from rq import get_current_job
 from utils.jobs import Job
 from utils.transcription.diarize_parallel import transcribe_and_diarize
+# from utils.summarize.summarize_transcript import summarize_transcript
+# from utils.categorize.categorize_transcript import categorize_transcript
+# from utils.analyze.analyze_transcript import analyze_transcript
 import traceback
 
 
@@ -50,11 +53,17 @@ def process_job(job_pickle: str):
             result = transcribe_and_diarize(job)
             return result
         if job.type == "summarization":
-            # Perform the summarization
+            # result = summarize_transcript(job)
+            # return result
             pass
 
         if job.type == "categorization":
-            # Perform the categorization
+            # result = categorize_transcript(job)
+            # return result
+            pass
+        if job.type == "analyze":
+            # # result = analyze_transcript(job)
+            # return result
             pass
 
     except Exception:
