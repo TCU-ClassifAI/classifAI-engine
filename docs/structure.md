@@ -17,8 +17,12 @@ C: ClassifAI-engine
 │   ├───contribution
 │   └─── # Documentation files. See docs/contribution/editing_docs.md for more information.
 └───src
-    ├───run.py # main file, this imports the services and runs the engine
-    ├───services # services that the engine provides. 
+    ├───app.py # main file, this imports the services and runs the engine
+    ├───utils # services that the engine provides. 
+        ├───transcription # Contains the transcription service
+        ├───classification # Contains the classification service
+        └───summarize # Contains the summarization service
+    ├───endpoints # Contains the API endpoints for the engine
     ├───config # settings for the engine (development, production, etc.)
     ├───requirements.txt and requirements-dev.txt # Python dependencies
     └───tests # Test suite
