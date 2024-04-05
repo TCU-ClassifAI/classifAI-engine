@@ -6,3 +6,6 @@ site/
 .ruff_cache/
 .pytest_cache/
 venv/
+raw_audio/
+output/
+audio_files/
