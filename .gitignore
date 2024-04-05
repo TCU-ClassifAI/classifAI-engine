@@ -9,3 +9,6 @@ venv/
 raw_audio/
 output/
 audio_files/
+tmp/
+temp_outputs/
+nemo_msdd_configs/
