@@ -7,7 +7,7 @@ from endpoints import (
     categorize,
     summarize,
     transcription,
-    # analyze,
+    analyze,
     server_info,
 )
 
@@ -30,7 +30,7 @@ app.register_blueprint(categorize, url_prefix="/categorize")
 app.register_blueprint(summarize, url_prefix="/summarize")
 
 # Analysis Blueprint (all-in-one transcription, categorization, and summarization)
-# app.register_blueprint(analyze) # run on index route
+app.register_blueprint(analyze)  # run on index route
 
 # Server Blueprint (server information, healthcheck, and configuration)
 app.register_blueprint(server_info)  # run on index route
