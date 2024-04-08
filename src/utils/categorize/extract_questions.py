@@ -45,6 +45,9 @@ class Question:
         return self
 
     def to_dict(self):
+        """
+        Convert the dataclass to a dictionary. Remove any keys with None values.
+        """
         # if a value is None, don't include it in the dictionary
         # if a value is null, don't include it in the dictionary
         return {k: v for k, v in self.__dict__.items() if v is not None and v != "null"}
