@@ -15,7 +15,4 @@ if os.environ.get("ENV") == "production":
     # Insert any overrides here!
 
 
-
 VERSION = "3.0.3"
-
-    

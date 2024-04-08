@@ -33,6 +33,7 @@ def healthcheck():
     """
     return make_response("OK", 200)
 
+
 @server_info.route("/help", methods=["GET"])
 def help():
     """Get the documentation for the API
@@ -55,7 +56,7 @@ def config():
         if key.isupper():
             value = getattr(settings, key)
             config_settings[key] = value
-    
+
     # Return the settings as a JSON response
     return make_response(jsonify(config_settings), 200)
 

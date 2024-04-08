@@ -4,6 +4,7 @@ import os
 import json
 from utils.transcription.convert_utils import convert_to_mp3
 from utils.transcription.download_utils import download_and_convert_to_mp3
+
 # from utils.analyze_audio import analyze_audio
 from utils.queue_manager import Job, enqueue
 import uuid
@@ -64,19 +65,19 @@ def analyze_endpoint():
             Job(job_id=str(uuid.uuid4()), type="analyze"),
             audio_path=audio_path,
             model_type=model_name,
-            title= title,
-            publish_date= publish_date,
+            title=title,
+            publish_date=publish_date,
             url=url,
         )
 
         print(job.job_info)
-
 
         job_queue = enqueue("analyze", job.job_id, job.job_info)
 
         return job_queue
     except Exception as e:
         return make_response(str(e), 500)
+
 
 @analyze.route("/analyze", methods=["GET"])
 def analyze_status():
