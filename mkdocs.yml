@@ -8,7 +8,7 @@ nav:
   - Installation: installation.md
   - 'API Reference':
     - 'API Reference': api/api.md
-    - Transcription: api/api_analyze.md
+    - Analysis: api/api_analyze.md
   - 'Contribution':
     - Contribute: contribution/contributing.md
     - Edit the Docs: contribution/editing_docs.md

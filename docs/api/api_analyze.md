@@ -18,14 +18,14 @@ Name | Type | Description | Required?
 ---- | ---- | ----------- | ---------
 file | file | The audio file to be analyzed. This is a local file that is uploaded to the server. | Required if `url` is not provided
 url | string | The URL of the audio file to be analyzed. This is a file that is accessible via a URL. | Required if `file` is not provided
-model_name | string | The name of the model to use for analysis. Default is system (large-v3) | Optional
+model_name | string | The name of the model to use for analysis. Default is (large-v3) (can edit in config) | Optional
 
 ### Example Request
 
 ```json
 {
   "file": "path/to/audio/file",
-  "model_name": "system"
+  "model_name": "large-v3"
 }
 ```
 
@@ -68,13 +68,17 @@ curl -X GET http://llm.cs.tcu.edu:5000/analyze?job_id=73f22806-d904-448f-ae84-65
 
 ```json
 {
-  "job_id":"73f22806-d904-448f-ae84-650bf6f5aa6a",
-  "status":"in progress",
-  "state":"loading model",
-  "start_time":1630512000.0,
-  "duration":0.0
+  "meta": {
+    "job_id": "e8017039-8a41-480e-b80f-3cb5233611a9",
+    "job_type": "analyze",
+    "message": "Downloading YouTube and converting to mp3",
+    "progress": "downloading",
+    "title": "Asking Questions in English | Question Structure | Fix Your Grammar Mistakes!"
+  },
+  "status": "started"
 }
 ```
+(Note: The title field will only update once the video has been downloaded, if it is a YouTube video. Otherwise, it will be the audio file name.)
 
 ## Final Analysis Results
 
