@@ -8,7 +8,7 @@ import logging
 import uuid
 import json
 from utils.worker_manager import process_job
-from utils.transcription.download_utils import download_and_convert_to_mp3
+from utils.transcription.download_utils import get_video_title
 from rq.job import Job as RQJob
 
 load_dotenv()
@@ -32,14 +32,13 @@ def enqueue_yt_transcription(job_id, url, model_name):
         model_name (str): Name of the model to use for transcription (default: "large-v3")
     """
 
-    audio_path, title, date = download_and_convert_to_mp3(url)
-    if audio_path is None:
-        return jsonify({"error": "Error downloading audio"}), 500
+    # audio_path, title, date = download_and_convert_to_mp3(url)
+    # if audio_path is None:
+    #     return jsonify({"error": "Error downloading audio"}), 500
     job_info = {
-        "audio_path": audio_path,
+        "url": url,  # URL of the YouTube video to transcribe
+        "title": get_video_title(url),
         "model_id": model_name,
-        "title": title,
-        "date": date,
     }
     return enqueue("transcription", job_id, job_info)
 
@@ -62,6 +61,10 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
     Returns:
         str: A message confirming the job has been enqueued.
     """
+    print("=====================================")
+    print(job_info)
+    print(job_type)
+    print(job_id)
 
     if job_type is None:
         return jsonify({"error": "job_type is required"}), 400
@@ -92,6 +95,8 @@ def enqueue(job_type: str, job_id: str, job_info: dict = None):
         "job_status": "queued",
     }
     description = json.dumps(description)
+
+    # Enqueue the job via RQ
     q.enqueue(
         process_job,
         job_pickle,

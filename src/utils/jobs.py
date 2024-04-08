@@ -157,6 +157,7 @@ class Job:
             # Name of the model used for transcription (default: "large-v3")
             "model_type": model_type,
             "title": title,
+            "url": None,
         }
 
     def initialize_categorization_job(self, transcript: str):
@@ -191,6 +192,7 @@ class Job:
         model_type: str = "large-v3",
         title: str = None,
         publish_date: str = None,
+        url: str = None,
     ):
         """
         Initialize an analysis job with the audio file path and model type.
@@ -203,12 +205,17 @@ class Job:
         Returns:
             None
         """
+
+        print("Initializing analysis job")
         self.job_info = {
             "audio_path": audio_path,  # Path to the audio file, downloaded before processing
+            "url": url,
             "title": title,
             "model_type": model_type,
             "publish_date": publish_date,
         }
+
+        return self
 
     def get_duration(self) -> float:
         """

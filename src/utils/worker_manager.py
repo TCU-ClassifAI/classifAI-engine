@@ -1,6 +1,8 @@
 from rq import get_current_job
 from utils.jobs import Job
 from utils.transcription.diarize_parallel import transcribe_and_diarize
+from utils.transcription.download_utils import download_and_convert_to_mp3
+from utils.analyze_audio import analyze_audio
 import traceback
 import logging
 
@@ -21,7 +23,8 @@ def process_job(job_pickle: str):
     logging.info(f"Processing job: {job_queue.id}")
 
     # unpickle the job
-    job = Job.unpickle(job_pickle)
+    job: Job = Job.unpickle(job_pickle)
+
 
     job_queue.meta["job_type"] = job.type
     job_queue.meta["job_id"] = job.job_id
@@ -49,8 +52,26 @@ def process_job(job_pickle: str):
     try:
         if job.type == "transcription":
             # Perform the transcription
+            if job_info.get("url"):
+
+                rq_job = get_current_job()
+                rq_job.meta["progress"] = "downloading"
+                rq_job.meta["message"] = "Downloading YouTube and converting to mp3"
+                rq_job.save_meta()
+
+                audio_path, title, date = download_and_convert_to_mp3(job_info["url"], "raw_audio", job.job_id)
+                job_info["audio_path"] = audio_path
+                job_info["title"] = title
+                job_info["date"] = date
+
+                rq_job.meta["progress"] = "transcribing"
+                rq_job.meta["message"] = "Transcribing audio"
+                rq_job.save_meta()
+
+                job.job_info = job_info
             result = transcribe_and_diarize(job)
             return result
+        
         if job.type == "summarization":
             # result = summarize_transcript(job)
             # return result
@@ -61,9 +82,8 @@ def process_job(job_pickle: str):
             # return result
             pass
         if job.type == "analyze":
-            # # result = analyze_transcript(job)
-            # return result
-            pass
+            result = analyze_audio(job)
+            return result
 
     except Exception:
         job.status = "error"
