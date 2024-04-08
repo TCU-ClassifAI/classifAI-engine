@@ -6,7 +6,6 @@ from utils.categorize.extract_questions import Question
 from collections import OrderedDict
 
 
-
 def get_audio_path_from_url_or_file(job: Job):
     """
     Get the audio path from either a URL or a file.
@@ -25,7 +24,6 @@ def get_audio_path_from_url_or_file(job: Job):
 
     print(job_info)
 
-
     if job_info.get("url"):
         rq_job = get_current_job()
         rq_job.meta["progress"] = "downloading"
@@ -33,7 +31,9 @@ def get_audio_path_from_url_or_file(job: Job):
         rq_job.save_meta()
 
         try:
-            audio_path, title, date = download_and_convert_to_mp3(job_info["url"], "raw_audio", job.job_id)
+            audio_path, title, date = download_and_convert_to_mp3(
+                job_info["url"], "raw_audio", job.job_id
+            )
         except Exception as e:
             job.status = "error"
             job.result = f"Error: {str(e)}"
@@ -41,7 +41,7 @@ def get_audio_path_from_url_or_file(job: Job):
             rq_job.meta["message"] = job.result
             rq_job.save_meta()
             raise Exception(str(e))
-        
+
         job_info["audio_path"] = audio_path
         job_info["title"] = title
         job_info["date"] = date
@@ -69,7 +69,9 @@ def get_raw_transcript(transcript: list) -> str:
     return " ".join([line["text"] for line in transcript])
 
 
-def combine_results(transcript: list, categories: List[Question], summary: str) -> OrderedDict:
+def combine_results(
+    transcript: list, categories: List[Question], summary: str
+) -> OrderedDict:
     """
     Combine the transcription, summary, and categories into a single result.
 

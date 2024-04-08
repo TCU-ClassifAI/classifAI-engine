@@ -6,7 +6,7 @@ import multiprocessing
 
 def process_question(question: Question) -> Question:
     question_text = build_question_text(question)
-    
+
     level = categorize_question(question_text)
     question = question.set_level(level)
     question = question.clear_previous_sentences()

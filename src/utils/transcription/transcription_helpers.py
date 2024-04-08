@@ -1,6 +1,7 @@
 import torch
 import gc
 
+
 def transcribe(
     audio_file: str,
     language: str,

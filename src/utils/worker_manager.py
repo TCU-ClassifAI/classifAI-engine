@@ -25,7 +25,6 @@ def process_job(job_pickle: str):
     # unpickle the job
     job: Job = Job.unpickle(job_pickle)
 
-
     job_queue.meta["job_type"] = job.type
     job_queue.meta["job_id"] = job.job_id
     job_queue.meta["progress"] = "assigning_worker"
@@ -53,13 +52,14 @@ def process_job(job_pickle: str):
         if job.type == "transcription":
             # Perform the transcription
             if job_info.get("url"):
-
                 rq_job = get_current_job()
                 rq_job.meta["progress"] = "downloading"
                 rq_job.meta["message"] = "Downloading YouTube and converting to mp3"
                 rq_job.save_meta()
 
-                audio_path, title, date = download_and_convert_to_mp3(job_info["url"], "raw_audio", job.job_id)
+                audio_path, title, date = download_and_convert_to_mp3(
+                    job_info["url"], "raw_audio", job.job_id
+                )
                 job_info["audio_path"] = audio_path
                 job_info["title"] = title
                 job_info["date"] = date
@@ -71,7 +71,7 @@ def process_job(job_pickle: str):
                 job.job_info = job_info
             result = transcribe_and_diarize(job)
             return result
-        
+
         if job.type == "summarization":
             # result = summarize_transcript(job)
             # return result

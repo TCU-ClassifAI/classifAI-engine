@@ -6,7 +6,6 @@ from flask import make_response
 load_dotenv()
 
 
-
 def summarize_transcript(text) -> str:
     """
     Summarize the transcript using Gemma Server

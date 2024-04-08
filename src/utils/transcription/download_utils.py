@@ -41,7 +41,7 @@ def download_and_convert_to_mp3(
 
     Returns:
         Tuple[str, str, str]: A tuple containing the path to the mp3 file, the video title, and the video publish date.
-        
+
     Raises:
         Exception: An error occurred during the download and conversion process
     """

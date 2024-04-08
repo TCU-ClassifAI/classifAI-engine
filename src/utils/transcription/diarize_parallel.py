@@ -77,8 +77,6 @@ def transcribe_and_diarize(job: Job) -> list:
         if args.stemming:
             # Isolate vocals from the rest of the audio
 
-            
-
             return_code = os.system(
                 f'python3 -m demucs.separate -n htdemucs --two-stems=vocals "{args.audio}" -o "temp_outputs"'
             )
@@ -117,7 +115,6 @@ def transcribe_and_diarize(job: Job) -> list:
         # clear gpu vram
         torch.cuda.empty_cache()
         gc.collect()
-
 
         update_progress("transcribing", "Transcribing audio")
         # logging.info("Transcribing audio file: ", vocal_target)
@@ -182,10 +179,8 @@ def transcribe_and_diarize(job: Job) -> list:
                         {"word": word[2], "start": word[0], "end": word[1]}
                     )
 
-
         torch.cuda.empty_cache()
         gc.collect()
-
 
         # Reading timestamps <> Speaker Labels mapping
         nemo_process.communicate()
@@ -201,11 +196,9 @@ def transcribe_and_diarize(job: Job) -> list:
                 e = s + int(float(line_list[8]) * 1000)
                 speaker_ts.append([s, e, int(line_list[11].split("_")[-1])])
 
-
-        del whisper_results # empty whisper results
+        del whisper_results  # empty whisper results
         torch.cuda.empty_cache()
         gc.collect()
-
 
         wsm = get_words_speaker_mapping(word_timestamps, speaker_ts, "start")
 

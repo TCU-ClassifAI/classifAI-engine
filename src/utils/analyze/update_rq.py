@@ -1,5 +1,6 @@
 from rq import get_current_job
 
+
 def update_job_status(progress: str, message: str) -> None:
     """
     Update the status of the current job.

@@ -6,13 +6,14 @@ from flask import make_response
 from utils.analyze.extraction_utils import (
     get_audio_path_from_url_or_file,
     get_raw_transcript,
-    combine_results
+    combine_results,
 )
 from utils.analyze.update_rq import update_job_status
 from utils.transcription.diarize_parallel import transcribe_and_diarize
 from utils.categorize.extract_questions import extract_questions
 from utils.categorize.categorize_transcript import categorize_list_of_questions
 from utils.summarize.summarize_transcript import summarize_transcript
+
 
 def analyze_audio(job: Job) -> dict:
     """
@@ -25,9 +26,9 @@ def analyze_audio(job: Job) -> dict:
 
     Returns:
         result (dict): Result
-        """
-    
-    # 1. Extract the file audio path. If it's URL, download and convert to mp3. 
+    """
+
+    # 1. Extract the file audio path. If it's URL, download and convert to mp3.
     job = get_audio_path_from_url_or_file(job)
 
     # 2. Transcribe the audio file.
