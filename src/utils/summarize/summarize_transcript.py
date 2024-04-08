@@ -6,6 +6,7 @@ from flask import make_response
 load_dotenv()
 
 
+
 def summarize_transcript(text) -> str:
     """
     Summarize the transcript using Gemma Server
@@ -19,10 +20,10 @@ def summarize_transcript(text) -> str:
         response_body = (
             response.json().get("response")
             if response.status_code == 200
-            else "Error Occured while accessing Gemma API"
+            else "Error Occured while accessing Gemma Summarization API"
         )
 
-        return make_response(response_body, response.status_code)
+        return response_body
 
     except Exception as e:
-        return f"Error Occured while accessing Gemma API: {str(e)}"
+        return f"Error Occured while accessing Gemma Summarization API: {str(e)}"
