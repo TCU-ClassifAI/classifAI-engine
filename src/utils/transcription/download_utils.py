@@ -5,14 +5,32 @@ from typing import Optional
 
 from moviepy.editor import AudioFileClip
 from pytube import YouTube
+import uuid
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
 
+def get_video_title(url: str) -> Optional[str]:
+    """Get the title of a YouTube video.
+
+    Args:
+        url (str): The YouTube video URL
+
+    Returns:
+        Optional[str]: The title of the video
+    """
+    try:
+        yt = YouTube(url)
+        return yt.title
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        return None
+
+
 def download_and_convert_to_mp3(
-    url: str, output_path: str = "output", filename: str = "test"
+    url: str, output_path: str = "output", filename: str = str(uuid.uuid4())
 ) -> Optional[tuple[str, str, str]]:
     """Downloads a YouTube video and converts it to an mp3 file.
 
@@ -23,6 +41,9 @@ def download_and_convert_to_mp3(
 
     Returns:
         Tuple[str, str, str]: A tuple containing the path to the mp3 file, the video title, and the video publish date.
+        
+    Raises:
+        Exception: An error occurred during the download and conversion process
     """
     try:
         yt = YouTube(url)
@@ -55,4 +76,4 @@ def download_and_convert_to_mp3(
 
     except Exception as e:
         logging.error(f"An error occurred: {e}")
-        return None
+        raise Exception(f"Error: {e}")

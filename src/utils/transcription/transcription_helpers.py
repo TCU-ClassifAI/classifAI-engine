@@ -1,5 +1,5 @@
 import torch
-
+import gc
 
 def transcribe(
     audio_file: str,
@@ -46,6 +46,7 @@ def transcribe(
     # clear gpu vram
     del whisper_model
     torch.cuda.empty_cache()
+    gc.collect()
     return whisper_results, info.language
 
 

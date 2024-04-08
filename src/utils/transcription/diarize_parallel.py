@@ -1,5 +1,6 @@
 import argparse
 import os
+import gc
 
 from utils.transcription.helpers import (
     wav2vec2_langs,
@@ -48,6 +49,11 @@ def transcribe_and_diarize(job: Job) -> list:
     try:
         mtypes = {"cpu": "int8", "cuda": "float16"}
 
+        torch.cuda.empty_cache()
+        gc.collect()
+
+        print("Clearing GPU memory and garbage collection")
+
         args = argparse.Namespace()
 
         # add the job info to the args
@@ -71,6 +77,8 @@ def transcribe_and_diarize(job: Job) -> list:
         if args.stemming:
             # Isolate vocals from the rest of the audio
 
+            
+
             return_code = os.system(
                 f'python3 -m demucs.separate -n htdemucs --two-stems=vocals "{args.audio}" -o "temp_outputs"'
             )
@@ -90,10 +98,10 @@ def transcribe_and_diarize(job: Job) -> list:
         else:
             vocal_target = args.audio
 
-        print("Vocal target: ", vocal_target)
+        # print("Vocal target: ", vocal_target)
 
         update_progress("loading-nemo", "Loading Nemo process")
-        logging.info("Starting Nemo process with vocal_target: ", vocal_target)
+        # logging.info("Starting Nemo process with vocal_target: ", vocal_target)
         nemo_process = subprocess.Popen(
             [
                 "python3",
@@ -106,9 +114,14 @@ def transcribe_and_diarize(job: Job) -> list:
         )
         # Transcribe the audio file
 
+        # clear gpu vram
+        torch.cuda.empty_cache()
+        gc.collect()
+
+
         update_progress("transcribing", "Transcribing audio")
-        logging.info("Transcribing audio file: ", vocal_target)
-        print("Transcribing audio file: ", vocal_target)
+        # logging.info("Transcribing audio file: ", vocal_target)
+        # print("Transcribing audio file: ", vocal_target)
 
         if args.batch_size != 0:
             print("Batch size: ", args.batch_size)
@@ -150,7 +163,10 @@ def transcribe_and_diarize(job: Job) -> list:
             # clear gpu vram
             del alignment_model
             torch.cuda.empty_cache()
+            gc.collect()
         else:
+            torch.cuda.empty_cache()
+            gc.collect()
             assert (
                 args.batch_size
                 == 0  # TODO: add a better check for word timestamps existence
@@ -166,6 +182,11 @@ def transcribe_and_diarize(job: Job) -> list:
                         {"word": word[2], "start": word[0], "end": word[1]}
                     )
 
+
+        torch.cuda.empty_cache()
+        gc.collect()
+
+
         # Reading timestamps <> Speaker Labels mapping
         nemo_process.communicate()
         ROOT = os.getcwd()
@@ -180,6 +201,12 @@ def transcribe_and_diarize(job: Job) -> list:
                 e = s + int(float(line_list[8]) * 1000)
                 speaker_ts.append([s, e, int(line_list[11].split("_")[-1])])
 
+
+        del whisper_results # empty whisper results
+        torch.cuda.empty_cache()
+        gc.collect()
+
+
         wsm = get_words_speaker_mapping(word_timestamps, speaker_ts, "start")
 
         if language in punct_model_langs:
@@ -190,6 +217,8 @@ def transcribe_and_diarize(job: Job) -> list:
             words_list = list(map(lambda x: x["word"], wsm))
 
             labled_words = punct_model.predict(words_list)
+
+            del punct_model
 
             ending_puncts = ".?!"
             model_puncts = ".,;:!?"
