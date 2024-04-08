@@ -33,6 +33,15 @@ def healthcheck():
     """
     return make_response("OK", 200)
 
+@server_info.route("/help", methods=["GET"])
+def help():
+    """Get the documentation for the API
+
+    Returns: JSON object with the documentation URL
+    """
+    documentation = "https://tcu-classifai.github.io/classifAI-engine/"
+    return make_response(jsonify({"documentation": documentation}), 200)
+
 
 @server_info.route("/config", methods=["GET"])
 def config():

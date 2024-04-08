@@ -9,6 +9,8 @@ from utils.queue_manager import Job, enqueue
 import uuid
 
 from config import config as settings
+from utils.queue_manager import get_job_status
+from flask import jsonify
 
 load_dotenv()
 
@@ -48,38 +50,38 @@ def analyze_endpoint():
             return make_response("Error converting file to MP3", 500)
     else:
         url = request.json.get("url")
+        audio_path = None
+        publish_date = request.json.get("publish_date")
         if not url:
-            return make_response("No URL provided", 400)
-        audio_path, title, publish_date = download_and_convert_to_mp3(url)
-        if audio_path is None:
-            return make_response("Error downloading audio from YouTube", 500)
+            return make_response("No URL or Audio File provided", 400)
+        title = url
 
     model_name = request.json.get("model_name")
     if not model_name:
         model_name = settings.TRANSCRIPTION_MODEL
     try:
-        job = Job.initialize_analysis_job(audio_path, model_name, title, publish_date)
+        job = Job.initialize_analysis_job(
+            Job(job_id=str(uuid.uuid4()), type="analyze"),
+            audio_path=audio_path,
+            model_type=model_name,
+            title= title,
+            publish_date= publish_date,
+            url=url,
+        )
 
-        job_queue = enqueue("analyze", uuid.uuid4(), job)
-        return make_response(f"Job {job_queue.id} enqueued for analysis", 200)
+        print(job.job_info)
+
+
+        job_queue = enqueue("analyze", job.job_id, job.job_info)
+
+        return job_queue
     except Exception as e:
         return make_response(str(e), 500)
 
-    # def enqueue(job_type: str, job_id: str, job_info: dict = None):
-    """
-    Enqueue a job in the job queue (redis) according to the job type.
+@analyze.route("/analyze", methods=["GET"])
+def analyze_status():
+    job_id = request.args.get("job_id")
+    if not job_id:
+        return jsonify({"error": "job_id parameter is required"}), 400
 
-    Args:
-        job_type (str): Type of the job. Required.
-        job_id (str): ID of the job. If not provided, a random UUID will be generated.
-        job_info (str): Information about the job in JSON format. (default: None)
-            - Job info can contain the following fields:
-                for transcription: {"audio_path": "path/to/audio/file",
-                  "model_id": "model_id"}
-                for summarization: {"text": "text to summarize"}
-                for categorization: {"text": "text to categorize"}
-                for other jobs: {"key": "value"}
-
-    Returns:
-        str: A message confirming the job has been enqueued.
-    """
+    return get_job_status(job_id)
