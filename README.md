@@ -170,69 +170,73 @@ For more instructions please see the [documentation
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-### Transcription
+### Analyze an Audio File
 
-#### start_transcription
+### analyze
 
-* **URL:** `/transcription/transcribe`
+* **URL:** `/analyze`
 * **Method:** `POST`
-* **Data Params:** (Request with file)
-
-* Example:
-  ```sh
-  curl -X POST -F "file=@path/to/your/audio.mp3" -F "model_name=large-v3" http://127.0.0.1:5000/transcription/transcribe 
-  ```
-
-#### start_yt
-
-* **URL:** `/transcription/transcribe_yt`
-* **Method:** `POST` or `GET`
 * **Data Params:** 
+  - `file` (file)
   - `url` (string)
 
 * Example:
   ```sh
-  curl http://localhost:5000/transcription/transcribe_yt?url=https://www.youtube.com/watch?v=M7nCITD1HpY
+  curl -X POST -H "Content-Type: application/json" -d '{"url": "https://www.youtube.com/watch?v=t4yWEt0OSpg"}' http://localhost:5000/analyze
+  curl -X POST -F "file=@<path_to_your_audio_file>" http://localhost:5000/analyze
   ```
 
+* **Success Response:** 200 
+```json
+{
+  job_id: "0bc133cb-f519-40a1-96c6-46d2cfe9e4ad",
+  message: "Analysis started"
+}
+```
 
-#### get_transcription_status
+### Get Analysis Status
 
-* **URL:** `/transcription/get_transcription_status`
+* **URL:** `/analyze`
 * **Method:** `GET`
 * **Data Params:** 
   - `job_id` (string)
-* **Success Response:** 200 OK
-  - **Content:**
-    ```json
-    {
-    "meta": {
-      "job_id": "0bc133cb-f519-40a1-96c6-46d2cfe9e4ad",
-      "job_type": "transcription",
-      "message": "Transcription and diarization finished",
-      "progress": "finished",
-      "title": "General Relativity Explained in 7 Levels of Difficulty"
-    },
-    "result": [
+
+* Example:
+  ```sh
+  curl http://localhost:5000/analyze?job_id=0bc133cb-f519-40a1-96c6-46d2cfe9e4ad
+  ```
+
+* **Success Response:** 200
+
+```json
+{
+  "meta": {
+    "job_id": "0bc133cb-f519-40a1-96c6-46d2cfe9e4ad",
+    "job_type": "analyze",
+    "message": "Analysis finished",
+    "progress": "finished",
+    "title": "General Relativity Explained in 7 Levels of Difficulty"
+  },
+  "result": {
+    "transcript": [
       {
         "end_time": 11149,
         "speaker": "Speaker 0",
         "start_time": 7740,
         "text": "General relativity is a physics theory invented by Albert Einstein. "
       },
-    .......
-    ```
-* **Error Response:** 404 Not Found
-  - **Content:**
-    ```json
-    {
-      "status": "error",
-      "message": "Transcription job not found"
-    }
-    ```
+    ],
+    "questions": [
+      {
+        "question": "What is general relativity?",
+        "level": 1,
+      },
+    ],
+    "summary": "General relativity is a physics theory invented by Albert Einstein. It describes how gravity works in the universe. "
+  }
+}
+```
 
-
-<!-- Get request to /get_transcription with job_id should return a status and a link to the transcription file (if relevant) -->
 
 _For more examples, please refer to the [Documentation](https://tcu-classifai.github.io/classifAI-engine/)_
 
