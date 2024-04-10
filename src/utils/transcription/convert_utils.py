@@ -10,6 +10,8 @@ from tempfile import mkdtemp
 
 def convert_to_mp3(file_storage):
     # Create a temporary directory to store files
+    print("Hello world")
+
     temp_dir = mkdtemp()
 
     # Get a secure filename and save the uploaded file to the temp directory
@@ -21,12 +23,21 @@ def convert_to_mp3(file_storage):
     output_filename = os.path.splitext(filename)[0] + ".mp3"
     output_filepath = os.path.join(temp_dir, output_filename)
 
+    print(output_filepath)
+
     # Convert the file to mp3
     try:
-        # Load the file with pydub, which uses ffmpeg to decode
-        audio = AudioSegment.from_file(filepath)
-        # Export the file as an mp3
-        audio.export(output_filepath, format="mp3")
+
+
+        # check to see if file is already mp3. If it is, skip conversion
+
+        if filename.endswith(".mp3"):
+            return filepath
+
+        # # Load the file with pydub, which uses ffmpeg to decode
+        # audio = AudioSegment.from_file(filepath)
+        # # Export the file as an mp3
+        # audio.export(output_filepath, format="mp3")
     except Exception as e:
         # Handle exceptions, such as the wrong file type
         print(f"An error occurred: {e}")

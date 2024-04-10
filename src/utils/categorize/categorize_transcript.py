@@ -14,11 +14,14 @@ def process_question(question: Question) -> Question:
 
 
 def categorize_list_of_questions(questions: List[Question]) -> List[Question]:
-    with multiprocessing.Pool() as pool:  # Create a process pool
-        results = pool.map(
-            process_question, questions
-        )  # Map the function to the list of questions
-    return results
+    try:
+        with multiprocessing.Pool() as pool:  # Create a process pool
+            results = pool.map(
+                process_question, questions
+            )  # Map the function to the list of questions
+        return results
+    except Exception as e:
+        raise "Could not categorize questions. Error: " + str(e)
 
 
 def categorize_transcript(transcript: dict) -> List[int]:

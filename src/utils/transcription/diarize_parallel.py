@@ -43,7 +43,7 @@ def transcribe_and_diarize(job: Job) -> list:
         result (list): Result of the transcription and diarization job. Speaker labels and timestamps.
     """
 
-    logging.info("Transcribing and diarizing: ", job.job_info.get("audio_path"))
+    logging.info(f"Transcribing and diarizing: {job.job_info.get('audio_path')}")
     print(f"Transcribing and diarizing: {job.job_info.get('audio_path')}")
 
     try:

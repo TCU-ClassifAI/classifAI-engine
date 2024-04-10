@@ -32,7 +32,7 @@ def analyze_audio(job: Job) -> dict:
     job = get_audio_path_from_url_or_file(job)
 
     # 2. Transcribe the audio file.
-    update_job_status("transcribing", "Transcribing audio")
+    update_job_status("start_transcribing", "Transcribing audio")
     transcription = transcribe_and_diarize(job)
 
     # 3. Extract the transcription questions from the transcription.
@@ -42,15 +42,11 @@ def analyze_audio(job: Job) -> dict:
     # 4. Categorize the transcription questions by Costa's level.
     update_job_status("categorizing_questions", "Categorizing questions")
     categorized_questions = categorize_list_of_questions(questions_with_context)
-    print("Categorized questions: ", categorized_questions)
-    print(type(categorized_questions[0]))
 
     # 5. Summarize the transcription.
     update_job_status("summarizing", "Summarizing transcription")
     raw_transcript = get_raw_transcript(transcription)
     summary = summarize_transcript(raw_transcript)
-
-    print("Summary: ", summary)
 
     # 5. Combine the results into a single dictionary.
     update_job_status("combining_results", "Combining results")
