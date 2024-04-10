@@ -189,8 +189,8 @@ For more instructions please see the [documentation
 * **Success Response:** 200 
 ```json
 {
-  job_id: "0bc133cb-f519-40a1-96c6-46d2cfe9e4ad",
-  message: "Analysis started"
+  "job_id": "0bc133cb-f519-40a1-96c6-46d2cfe9e4ad",
+  "message": "Analysis started"
 }
 ```
 
