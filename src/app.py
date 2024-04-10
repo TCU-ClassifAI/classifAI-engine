@@ -2,7 +2,6 @@ from flask import Flask
 import os
 from dotenv import load_dotenv
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"  # Set GPU device to use
 
 # Import blueprints for endpoints
 from endpoints import (
