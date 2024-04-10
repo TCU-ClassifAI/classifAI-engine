@@ -158,9 +158,9 @@ For more instructions please see the [documentation
     python src/app.py
    ```
 
-5. Launch your worker
+5. Launch your worker (for asynchronous tasks)
    ```sh
-    rq worker jobs
+    rq worker -c worker_config
    ```
 
 #### Testing
