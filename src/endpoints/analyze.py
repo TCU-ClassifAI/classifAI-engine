@@ -12,6 +12,8 @@ import uuid
 from config import config as settings
 from utils.queue_manager import get_job_status
 from flask import jsonify
+import logging
+import tempfile
 
 load_dotenv()
 
@@ -39,16 +41,29 @@ def analyze_endpoint():
 
     file = request.files.get("file")  # Audio or video file
     if file:
-        file = file.read()
-        # Get file name
+        print("Hi")
         title = file.filename
-        # Get publish date
-        publish_date = request.json.get("publish_date")
+        publish_date = None
+        url = None
+        print(title)
+        print("Bue")
 
-        # Attempt to convert to MP3 using ffmpeg
-        audio_path = convert_to_mp3(file)
-        if audio_path is None:
-            return make_response("Error converting file to MP3", 500)
+        # Save the file to the server - Convert to MP3 Later - using temp file
+
+        file_suffix = title.split(".")[-1]
+        file_descriptor, audio_path = tempfile.mkstemp(suffix=f".{file_suffix}")
+        # save the file to the server
+
+        print(audio_path)
+
+        try:
+            file.save(audio_path)
+        except Exception as e:
+            return make_response(
+                f"Could not save file to server: {str(e)}. Audio path is {audio_path}",
+                500,
+            )
+
     else:
         url = request.json.get("url")
         audio_path = None
@@ -57,9 +72,7 @@ def analyze_endpoint():
             return make_response("No URL or Audio File provided", 400)
         title = url
 
-    model_name = request.json.get("model_name")
-    if not model_name:
-        model_name = settings.TRANSCRIPTION_MODEL
+    model_name = settings.TRANSCRIPTION_MODEL
     try:
         job = Job.initialize_analysis_job(
             Job(job_id=str(uuid.uuid4()), type="analyze"),

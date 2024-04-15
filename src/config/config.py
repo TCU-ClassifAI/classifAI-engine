@@ -8,6 +8,7 @@ TRANSCRIPTION_MODEL = "large-v3"
 CATEGORIZATION_MODEL = "gemma"
 SUMMARIZATION_MODEL = "huggingface"
 ENV_TYPE = "dev"
+UPLOAD_FOLDER = "raw_audio/"
 
 
 if os.environ.get("ENV") == "production":
