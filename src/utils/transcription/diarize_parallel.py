@@ -107,7 +107,7 @@ def transcribe_and_diarize(job: Job) -> list:
 
         # print("Vocal target: ", vocal_target)
 
-        update_progress("loading-nemo", "Loading Nemo process")
+        update_progress("loading_nemo", "Loading Nemo process")
         # logging.info("Starting Nemo process with vocal_target: ", vocal_target)
         nemo_process = subprocess.Popen(
             [
@@ -153,7 +153,7 @@ def transcribe_and_diarize(job: Job) -> list:
         print("Aligning audio file: ", vocal_target)
 
         if language in wav2vec2_langs:
-            update_progress("loading-align-model", "Loading alignment model")
+            update_progress("loading_align_model", "Loading alignment model")
             alignment_model, metadata = whisperx.load_align_model(
                 language_code=language, device=args.device
             )
