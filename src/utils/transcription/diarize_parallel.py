@@ -22,6 +22,7 @@ import logging
 from rq import get_current_job
 from utils.jobs import Job
 from utils.transcription.transcription_helpers import transcribe, transcribe_batched
+from utils.transcription.convert_utils import convert_to_mp3_force
 
 
 def update_progress(progress, message):
@@ -56,6 +57,16 @@ def transcribe_and_diarize(job: Job) -> list:
 
         args = argparse.Namespace()
 
+        print("HELLO WORLD")
+
+        # convert the audio file to mp3
+        if not job.job_info.get("audio_path").endswith(".mp3"):
+            print("FILE NOT MP3- CONVERTING USING FFMPEG")
+            update_progress("converting", "Converting audio file to mp3")
+
+            # load the audio file
+            print(job.job_info.get("audio_path"))
+
         # add the job info to the args
         args.audio = job.job_info.get("audio_path", None)
         args.language = job.job_info.get("language", None)
@@ -67,7 +78,7 @@ def transcribe_and_diarize(job: Job) -> list:
         args.batch_size = job.job_info.get("batch_size", 6)
         args.suppress_numerals = job.job_info.get("suppress_numerals", False)
 
-        print(args.audio)
+
 
         update_progress(
             "splitting",
@@ -182,20 +193,28 @@ def transcribe_and_diarize(job: Job) -> list:
         torch.cuda.empty_cache()
         gc.collect()
 
+        update_progress("diarizing", "Diarizing audio")
         # Reading timestamps <> Speaker Labels mapping
         nemo_process.communicate()
         ROOT = os.getcwd()
         temp_path = os.path.join(ROOT, "temp_outputs")
 
         speaker_ts = []
-        with open(os.path.join(temp_path, "pred_rttms", "mono_file.rttm"), "r") as f:
-            lines = f.readlines()
-            for line in lines:
-                line_list = line.split(" ")
-                s = int(float(line_list[5]) * 1000)
-                e = s + int(float(line_list[8]) * 1000)
-                speaker_ts.append([s, e, int(line_list[11].split("_")[-1])])
-
+        try:
+            # create temp path if it doesn't exist
+            if not os.path.exists(temp_path):
+                os.makedirs(temp_path)
+                os.makedirs(os.path.join(temp_path, "pred_rttms"))
+            with open(os.path.join(temp_path, "pred_rttms", "mono_file.rttm"), "r") as f:
+                lines = f.readlines()
+                for line in lines:
+                    line_list = line.split(" ")
+                    s = int(float(line_list[5]) * 1000)
+                    e = s + int(float(line_list[8]) * 1000)
+                    speaker_ts.append([s, e, int(line_list[11].split("_")[-1])])
+        except FileNotFoundError:
+            logging.warning("Speaker diarization failed, using single speaker")
+            speaker_ts = [[0, int(whisper_results[-1]["end"] * 1000), 0]]
         del whisper_results  # empty whisper results
         torch.cuda.empty_cache()
         gc.collect()
@@ -256,9 +275,13 @@ def transcribe_and_diarize(job: Job) -> list:
         # with open(f"{os.path.splitext(args.audio)[0]}.srt", "w", encoding="utf-8-sig") as srt:
         #     write_srt(ssm, srt)
 
-        cleanup(temp_path)
+        try:
+            cleanup(temp_path)
+        except Exception as e:
+            logging.warning(f"An error occurred during cleanup: {str(e)}")
 
-        update_progress("finished", "Transcription and diarization finished")
+
+        update_progress("transcription_finished", "Transcription and diarization finished")
         print("Transcription and diarization finished")
         print(ssm)
 

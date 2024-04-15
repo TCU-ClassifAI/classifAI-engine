@@ -230,6 +230,10 @@ def get_sentences_speaker_mapping(word_speaker_mapping, spk_ts):
     snts = []
     snt = {"speaker": f"Speaker {spk}", "start_time": s, "end_time": e, "text": ""}
 
+    # if spk is 0, then it's the main speaker
+    if spk == 0:
+        snt["speaker"] = "Main Speaker"
+
     for wrd_dict in word_speaker_mapping:
         wrd, spk = wrd_dict["word"], wrd_dict["speaker"]
         s, e = wrd_dict["start_time"], wrd_dict["end_time"]
@@ -243,10 +247,15 @@ def get_sentences_speaker_mapping(word_speaker_mapping, spk_ts):
             }
         else:
             snt["end_time"] = e
+
         snt["text"] += wrd + " "
         prev_spk = spk
 
     snts.append(snt)
+
+    # if 1st sentence has speaker 0, then it's the main speaker
+    if snts[0]["speaker"] == "Speaker 0":
+        snts[0]["speaker"] = "Main Speaker"
     return snts
 
 

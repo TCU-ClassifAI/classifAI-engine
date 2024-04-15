@@ -5,6 +5,7 @@ from typing import Optional
 
 from moviepy.editor import AudioFileClip
 from pytube import YouTube
+from pytube.exceptions import AgeRestrictedError, VideoRegionBlocked, VideoUnavailable
 import uuid
 
 logging.basicConfig(
@@ -74,6 +75,19 @@ def download_and_convert_to_mp3(
         )
         return (str(mp3_file_path), yt.title, yt.publish_date)
 
+    except AgeRestrictedError as e:
+        logging.error(f"Age restricted video: {e}")
+        raise AgeRestrictedError(f"Unable to download age restricted video through pytube. Please try downloading the video manually.")
+    except VideoRegionBlocked as e:
+        logging.error(f"Video region blocked: {e}")
+        raise VideoRegionBlocked(f"Unable to download video due to region restrictions.")
+    except VideoUnavailable as e:
+        logging.error(f"Video unavailable: {e}")
+        raise VideoUnavailable(f"Unable to download video as it is unavailable.")
+    
+    
     except Exception as e:
         logging.error(f"An error occurred: {e}")
-        raise Exception(f"Error: {e}")
+        # print specific error type
+
+        raise Exception("An unknown error occurred while downloading and converting the video.")

@@ -4,6 +4,7 @@ from utils.transcription.download_utils import download_and_convert_to_mp3
 from typing import List
 from utils.categorize.extract_questions import Question
 from collections import OrderedDict
+from pytube.exceptions import AgeRestrictedError, VideoRegionBlocked, VideoUnavailable
 
 
 def get_audio_path_from_url_or_file(job: Job):
@@ -34,6 +35,28 @@ def get_audio_path_from_url_or_file(job: Job):
             audio_path, title, date = download_and_convert_to_mp3(
                 job_info["url"], "raw_audio", job.job_id
             )
+        except AgeRestrictedError:
+            job.status = "error"
+            job.result = "Error: Age-restricted video"
+            rq_job.meta["status"] = "error"
+            rq_job.meta["message"] = job.result
+            rq_job.save_meta()
+            raise Exception("Age-restricted video")
+        except VideoRegionBlocked:
+            job.status = "error"
+            job.result = "Error: Video region blocked"
+            rq_job.meta["status"] = "error"
+            rq_job.meta["message"] = job.result
+            rq_job.save_meta()
+            raise Exception("Video region blocked")
+        except VideoUnavailable:
+            job.status = "error"
+            job.result = "Error: Video unavailable"
+            rq_job.meta["status"] = "error"
+            rq_job.meta["message"] = job.result
+            rq_job.save_meta()
+            raise Exception("Video unavailable")
+        
         except Exception as e:
             job.status = "error"
             job.result = f"Error: {str(e)}"

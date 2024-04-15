@@ -28,8 +28,11 @@ def analyze_audio(job: Job) -> dict:
         result (dict): Result
     """
 
-    # 1. Extract the file audio path. If it's URL, download and convert to mp3.
-    job = get_audio_path_from_url_or_file(job)
+    try:
+        # 1. Extract the file audio path. If it's URL, download and convert to mp3.
+        job = get_audio_path_from_url_or_file(job)
+    except Exception as e:
+        return "Error: Unable to download and convert the audio file: " + str(e)
 
     # 2. Transcribe the audio file.
     update_job_status("start_transcribing", "Transcribing audio")
