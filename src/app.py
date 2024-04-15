@@ -16,7 +16,6 @@ from endpoints import (
 load_dotenv()  # Load environment variables from .env file
 
 
-
 # Initialize Flask app
 app = Flask(__name__)
 
