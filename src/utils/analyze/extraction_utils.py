@@ -56,7 +56,7 @@ def get_audio_path_from_url_or_file(job: Job):
             rq_job.meta["message"] = job.result
             rq_job.save_meta()
             raise Exception("Video unavailable")
-        
+
         except Exception as e:
             job.status = "error"
             job.result = f"Error: {str(e)}"

@@ -78,8 +78,6 @@ def transcribe_and_diarize(job: Job) -> list:
         args.batch_size = job.job_info.get("batch_size", 6)
         args.suppress_numerals = job.job_info.get("suppress_numerals", False)
 
-
-
         update_progress(
             "splitting",
             "Splitting audio into vocals and accompaniment for faster processing",
@@ -205,7 +203,9 @@ def transcribe_and_diarize(job: Job) -> list:
             if not os.path.exists(temp_path):
                 os.makedirs(temp_path)
                 os.makedirs(os.path.join(temp_path, "pred_rttms"))
-            with open(os.path.join(temp_path, "pred_rttms", "mono_file.rttm"), "r") as f:
+            with open(
+                os.path.join(temp_path, "pred_rttms", "mono_file.rttm"), "r"
+            ) as f:
                 lines = f.readlines()
                 for line in lines:
                     line_list = line.split(" ")
@@ -280,8 +280,9 @@ def transcribe_and_diarize(job: Job) -> list:
         except Exception as e:
             logging.warning(f"An error occurred during cleanup: {str(e)}")
 
-
-        update_progress("transcription_finished", "Transcription and diarization finished")
+        update_progress(
+            "transcription_finished", "Transcription and diarization finished"
+        )
         print("Transcription and diarization finished")
         print(ssm)
 

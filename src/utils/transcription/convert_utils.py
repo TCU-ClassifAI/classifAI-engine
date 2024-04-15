@@ -27,8 +27,6 @@ def convert_to_mp3(file_storage):
 
     # Convert the file to mp3
     try:
-
-
         # check to see if file is already mp3. If it is, skip conversion
 
         if filename.endswith(".mp3"):
