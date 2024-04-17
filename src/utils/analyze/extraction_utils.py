@@ -69,7 +69,7 @@ def get_audio_path_from_url_or_file(job: Job):
         job_info["title"] = title
         job_info["date"] = date
 
-        rq_job.meta["progress"] = "transcribing"
+        rq_job.meta["progress"] = "start_transcribing"
         rq_job.meta["message"] = "Transcribing audio"
         rq_job.meta["title"] = title
         rq_job.save_meta()

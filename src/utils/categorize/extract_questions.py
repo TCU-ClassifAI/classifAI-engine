@@ -169,7 +169,8 @@ def categorize_all_questions() -> list:
 
     questions = response.json()
 
-    print(questions)
+    # print(questions)
+    print("Got questions")
 
     # for the first question, categorize the question type and Costa's level
     # of reasoning

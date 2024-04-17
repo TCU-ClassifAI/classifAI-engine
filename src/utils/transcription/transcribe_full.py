@@ -23,6 +23,7 @@ from rq import get_current_job
 from utils.jobs import Job
 from utils.transcription.transcription_helpers import transcribe, transcribe_batched
 from utils.transcription.convert_utils import convert_to_mp3_force
+from utils.transcription.hf_diarize import diarize_audio
 
 
 def update_progress(progress, message):
@@ -53,11 +54,9 @@ def transcribe_and_diarize(job: Job) -> list:
         torch.cuda.empty_cache()
         gc.collect()
 
-        print("Clearing GPU memory and garbage collection")
+        print("Cleared GPU memory and garbage collection before starting job...")
 
         args = argparse.Namespace()
-
-        print("HELLO WORLD")
 
         # convert the audio file to mp3
         if not job.job_info.get("audio_path").endswith(".mp3"):
@@ -107,18 +106,22 @@ def transcribe_and_diarize(job: Job) -> list:
 
         # print("Vocal target: ", vocal_target)
 
-        update_progress("loading_nemo", "Loading Nemo process")
-        # logging.info("Starting Nemo process with vocal_target: ", vocal_target)
-        nemo_process = subprocess.Popen(
-            [
-                "python3",
-                "src/utils/transcription/nemo_process.py",
-                "-a",
-                vocal_target,
-                "--device",
-                args.device,
-            ],
-        )
+        # update_progress("loading_nemo", "Loading Nemo process")
+        # # logging.info("Starting Nemo process with vocal_target: ", vocal_target)
+
+        # print("Starting Nemo process with vocal_target: ", vocal_target)
+        # nemo_process = subprocess.Popen(
+        #     [
+        #         "python3",
+        #         "src/utils/transcription/nemo_process.py",
+        #         "-a",
+        #         vocal_target,
+        #         "--device",
+        #         args.device,
+        #     ],
+        # )
+
+        # print("Started Nemo process.")
         # Transcribe the audio file
 
         # clear gpu vram
@@ -193,31 +196,50 @@ def transcribe_and_diarize(job: Job) -> list:
 
         update_progress("diarizing", "Diarizing audio")
         # Reading timestamps <> Speaker Labels mapping
-        nemo_process.communicate()
+        # nemo_process.communicate()
         ROOT = os.getcwd()
+
+        # if we're in src/ directory, move to the root directory
+        if os.path.basename(ROOT) == "src":
+            os.chdir("..")
+            ROOT = os.getcwd()
+
+
+    
         temp_path = os.path.join(ROOT, "temp_outputs")
 
+        audio_diarization_rttm_path = os.path.join(temp_path, "pred_rttms", job.job_id + "_diarized.rttm")
+
+        diarize_audio(vocal_target, audio_diarization_rttm_path)
+
+
         speaker_ts = []
+
+        
         try:
-            # create temp path if it doesn't exist
-            if not os.path.exists(temp_path):
-                os.makedirs(temp_path)
-                os.makedirs(os.path.join(temp_path, "pred_rttms"))
-            with open(
-                os.path.join(temp_path, "pred_rttms", "mono_file.rttm"), "r"
-            ) as f:
+            with open(audio_diarization_rttm_path, "r") as f:
+                # Example RTTM line:
+                # SPEAKER waveform 1 13.998 1.647 <NA> <NA> SPEAKER_07 <NA> <NA>
                 lines = f.readlines()
                 for line in lines:
                     line_list = line.split(" ")
-                    s = int(float(line_list[5]) * 1000)
-                    e = s + int(float(line_list[8]) * 1000)
-                    speaker_ts.append([s, e, int(line_list[11].split("_")[-1])])
-        except FileNotFoundError:
+                    # start time = float(line_list[3]) * 1000
+                    # end time = start time + float(line_list[4]) * 1000
+                    # speaker label = int(line_list[7].split("_")[-1])
+
+                    s = int(float(line_list[3]) * 1000)
+                    e = s + int(float(line_list[4]) * 1000)
+                    speaker_ts.append([s, e, int(line_list[7].split("_")[-1])])
+
+        except FileNotFoundError as e:
+            print(f"Speaker diarization failed, using single speaker: {str(e)}")
             logging.warning("Speaker diarization failed, using single speaker")
             speaker_ts = [[0, int(whisper_results[-1]["end"] * 1000), 0]]
         del whisper_results  # empty whisper results
         torch.cuda.empty_cache()
         gc.collect()
+
+        print("Speaker timestamps: ", speaker_ts)
 
         wsm = get_words_speaker_mapping(word_timestamps, speaker_ts, "start")
 
@@ -275,16 +297,16 @@ def transcribe_and_diarize(job: Job) -> list:
         # with open(f"{os.path.splitext(args.audio)[0]}.srt", "w", encoding="utf-8-sig") as srt:
         #     write_srt(ssm, srt)
 
-        try:
-            cleanup(temp_path)
-        except Exception as e:
-            logging.warning(f"An error occurred during cleanup: {str(e)}")
+        # try:
+        #     cleanup(temp_path)
+        # except Exception as e:
+        #     logging.warning(f"An error occurred during cleanup: {str(e)}")
 
         update_progress(
             "transcription_finished", "Transcription and diarization finished"
         )
         print("Transcription and diarization finished")
-        print(ssm)
+        # print(ssm)
 
         return ssm
     except Exception as e:
