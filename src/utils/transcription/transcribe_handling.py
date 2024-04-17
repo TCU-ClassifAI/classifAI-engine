@@ -10,3 +10,6 @@ def youtube_transcribe_and_diarize(url: str, model_id: str = "large-v3"):
         return result
     except Exception as e:
         return {"error": str(e)}
+
+
+# I'm pretty sure this is unused code. 

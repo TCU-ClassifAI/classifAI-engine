@@ -1,5 +1,5 @@
 from rq import get_current_job
-from utils.jobs import Job
+from utils.queueing.jobs import Job
 from utils.transcription.download_utils import download_and_convert_to_mp3
 from typing import List
 from utils.categorize.extract_questions import Question

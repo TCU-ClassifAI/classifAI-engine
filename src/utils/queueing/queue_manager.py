@@ -7,7 +7,7 @@ import os
 import logging
 import uuid
 import json
-from utils.worker_manager import process_job
+from utils.queueing.worker_manager import process_job
 from utils.transcription.download_utils import get_video_title
 from rq.job import Job as RQJob
 

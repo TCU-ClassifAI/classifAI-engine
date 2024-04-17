@@ -1,5 +1,5 @@
 from flask import Response
-from utils.jobs import Job
+from utils.queueing.jobs import Job
 import logging
 from rq import get_current_job
 from flask import make_response
@@ -9,7 +9,7 @@ from utils.analyze.extraction_utils import (
     combine_results,
 )
 from utils.analyze.update_rq import update_job_status
-from utils.transcription.diarize_parallel import transcribe_and_diarize
+from utils.transcription.transcribe_full import transcribe_and_diarize
 from utils.categorize.extract_questions import extract_questions
 from utils.categorize.categorize_transcript import categorize_list_of_questions
 from utils.summarize.summarize_transcript import summarize_transcript

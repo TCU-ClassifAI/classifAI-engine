@@ -1,8 +1,8 @@
 from rq import get_current_job
-from utils.jobs import Job
-from utils.transcription.diarize_parallel import transcribe_and_diarize
+from utils.queueing.jobs import Job
+from utils.transcription.transcribe_full import transcribe_and_diarize
 from utils.transcription.download_utils import download_and_convert_to_mp3
-from utils.analyze_audio import analyze_audio
+from utils.analyze.analyze_audio import analyze_audio
 import traceback
 import logging
 
