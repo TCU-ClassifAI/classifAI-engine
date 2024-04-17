@@ -6,7 +6,8 @@ from utils.transcription.convert_utils import convert_to_mp3
 from utils.transcription.download_utils import download_and_convert_to_mp3
 
 # from utils.analyze_audio import analyze_audio
-from utils.queue_manager import Job, enqueue
+from utils.queueing.queue_manager import enqueue
+from utils.queueing.jobs import Job
 import uuid
 
 from config import config as settings

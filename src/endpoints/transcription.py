@@ -8,7 +8,7 @@ import os
 os.environ["PATH"] += os.pathsep + "/usr/bin/"
 print(os.environ["PATH"])
 
-from utils.queue_manager import (
+from utils.queueing.queue_manager import (
     enqueue_yt_transcription,
     enqueue as enqueue_transcription,
     get_job_status as get_transcription_status,
