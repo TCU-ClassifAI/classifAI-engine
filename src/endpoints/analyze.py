@@ -1,17 +1,12 @@
-from flask import Blueprint, request, make_response, Flask
+from flask import Blueprint, request, make_response
 from dotenv import load_dotenv
-import os
-import json
-from utils.transcription.convert_utils import convert_to_mp3
-from utils.transcription.download_utils import download_and_convert_to_mp3
 
 # from utils.analyze_audio import analyze_audio
-from utils.queueing.queue_manager import enqueue
+from utils.queueing.queue_manager import enqueue, get_job_status
 from utils.queueing.jobs import Job
 import uuid
 
 from config import config as settings
-from utils.queue_manager import get_job_status
 from flask import jsonify
 import logging
 import tempfile
@@ -42,20 +37,14 @@ def analyze_endpoint():
 
     file = request.files.get("file")  # Audio or video file
     if file:
-        print("Hi")
         title = file.filename
         publish_date = None
         url = None
-        print(title)
-        print("Bue")
 
-        # Save the file to the server - Convert to MP3 Later - using temp file
+        # Write the file to a temporary file - convert to mp3, if necessary, later
 
         file_suffix = title.split(".")[-1]
         file_descriptor, audio_path = tempfile.mkstemp(suffix=f".{file_suffix}")
-        # save the file to the server
-
-        print(audio_path)
 
         try:
             file.save(audio_path)
@@ -65,7 +54,7 @@ def analyze_endpoint():
                 500,
             )
 
-    else:
+    else:  # URL
         url = request.json.get("url")
         audio_path = None
         publish_date = request.json.get("publish_date")
@@ -83,8 +72,6 @@ def analyze_endpoint():
             publish_date=publish_date,
             url=url,
         )
-
-        print(job.job_info)
 
         job_queue = enqueue("analyze", job.job_id, job.job_info)
 
