@@ -12,5 +12,5 @@ REDIS_URL = f'redis://localhost:{os.getenv("REDIS_PORT")}/0'
 QUEUES = ["jobs"]
 
 
-# If you want custom worker name
-# su
+# To start a worker up from the terminal:
+# rq worker -c config.worker_config
