@@ -58,14 +58,6 @@ def transcribe_and_diarize(job: Job) -> list:
 
         args = argparse.Namespace()
 
-        # convert the audio file to mp3
-        if not job.job_info.get("audio_path").endswith(".mp3"):
-            print("FILE NOT MP3- CONVERTING USING FFMPEG")
-            update_progress("converting", "Converting audio file to mp3")
-
-            # load the audio file
-            print(job.job_info.get("audio_path"))
-
         # add the job info to the args
         args.audio = job.job_info.get("audio_path", None)
         args.language = job.job_info.get("language", None)
@@ -104,25 +96,7 @@ def transcribe_and_diarize(job: Job) -> list:
         else:
             vocal_target = args.audio
 
-        # print("Vocal target: ", vocal_target)
-
-        # update_progress("loading_nemo", "Loading Nemo process")
-        # # logging.info("Starting Nemo process with vocal_target: ", vocal_target)
-
-        # print("Starting Nemo process with vocal_target: ", vocal_target)
-        # nemo_process = subprocess.Popen(
-        #     [
-        #         "python3",
-        #         "src/utils/transcription/nemo_process.py",
-        #         "-a",
-        #         vocal_target,
-        #         "--device",
-        #         args.device,
-        #     ],
-        # )
-
-        # print("Started Nemo process.")
-        # Transcribe the audio file
+        # Async: Start Diarization
 
         # clear gpu vram
         torch.cuda.empty_cache()
@@ -204,18 +178,16 @@ def transcribe_and_diarize(job: Job) -> list:
             os.chdir("..")
             ROOT = os.getcwd()
 
-
-    
         temp_path = os.path.join(ROOT, "temp_outputs")
 
-        audio_diarization_rttm_path = os.path.join(temp_path, "pred_rttms", job.job_id + "_diarized.rttm")
+        audio_diarization_rttm_path = os.path.join(
+            temp_path, "pred_rttms", job.job_id + "_diarized.rttm"
+        )
 
         diarize_audio(vocal_target, audio_diarization_rttm_path)
 
-
         speaker_ts = []
 
-        
         try:
             with open(audio_diarization_rttm_path, "r") as f:
                 # Example RTTM line:

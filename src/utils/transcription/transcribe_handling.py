@@ -12,4 +12,4 @@ def youtube_transcribe_and_diarize(url: str, model_id: str = "large-v3"):
         return {"error": str(e)}
 
 
-# I'm pretty sure this is unused code. 
+# I'm pretty sure this is unused code.

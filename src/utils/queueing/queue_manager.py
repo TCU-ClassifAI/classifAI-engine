@@ -1,4 +1,4 @@
-from utils.jobs import Job
+from utils.queueing.jobs import Job
 import redis
 from rq import Queue
 from flask import Flask, jsonify, Blueprint

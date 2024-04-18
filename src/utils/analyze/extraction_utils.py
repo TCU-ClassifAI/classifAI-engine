@@ -5,7 +5,17 @@ from typing import List
 from utils.categorize.extract_questions import Question
 from collections import OrderedDict
 from pytube.exceptions import AgeRestrictedError, VideoRegionBlocked, VideoUnavailable
+from config import config
+from utils.queueing.update_rq import update_job_status
+import os
 
+
+def handle_yt_exception(job: Job, message: str, exception: Exception):
+    """ Handle YouTube exceptions """
+    job.status = "error"
+    job.result = f"Error: {message}"
+    update_job_status("error", message)
+    raise Exception(message)
 
 def get_audio_path_from_url_or_file(job: Job):
     """
@@ -23,56 +33,41 @@ def get_audio_path_from_url_or_file(job: Job):
     """
     job_info = job.job_info
 
-    print(job_info)
+    # URL handling
 
     if job_info.get("url"):
-        rq_job = get_current_job()
-        rq_job.meta["progress"] = "downloading"
-        rq_job.meta["message"] = "Downloading YouTube and converting to mp3"
-        rq_job.save_meta()
+        update_job_status("downloading", "Downloading YouTube and converting to mp3")
+
 
         try:
-            audio_path, title, date = download_and_convert_to_mp3(
-                job_info["url"], "raw_audio", job.job_id
-            )
-        except AgeRestrictedError:
-            job.status = "error"
-            job.result = "Error: Age-restricted video"
-            rq_job.meta["status"] = "error"
-            rq_job.meta["message"] = job.result
-            rq_job.save_meta()
-            raise Exception("Age-restricted video")
-        except VideoRegionBlocked:
-            job.status = "error"
-            job.result = "Error: Video region blocked"
-            rq_job.meta["status"] = "error"
-            rq_job.meta["message"] = job.result
-            rq_job.save_meta()
-            raise Exception("Video region blocked")
-        except VideoUnavailable:
-            job.status = "error"
-            job.result = "Error: Video unavailable"
-            rq_job.meta["status"] = "error"
-            rq_job.meta["message"] = job.result
-            rq_job.save_meta()
-            raise Exception("Video unavailable")
+            # if we are in the src folder, we need to go up one level
+            if os.path.basename(os.getcwd()) == "src":
+                os.chdir("..")
 
+            audio_path, title, date = download_and_convert_to_mp3(
+                url= job_info["url"],
+                output_path= config.UPLOAD_FOLDER, 
+                filename= job.job_id
+            )
+
+
+        except AgeRestrictedError as e:
+            handle_yt_exception(job, "Age-restricted video", e)
+        except VideoRegionBlocked as e:
+            handle_yt_exception(job, "Video region blocked", e)
+        except VideoUnavailable as e:
+            handle_yt_exception(job, "Video unavailable", e)
         except Exception as e:
-            job.status = "error"
-            job.result = f"Error: {str(e)}"
-            rq_job.meta["status"] = "error"
-            rq_job.meta["message"] = job.result
-            rq_job.save_meta()
-            raise Exception(str(e))
+            handle_yt_exception(job, f"Error downloading and converting to mp3: {str(e)}", e)
 
         job_info["audio_path"] = audio_path
         job_info["title"] = title
         job_info["date"] = date
 
-        rq_job.meta["progress"] = "start_transcribing"
-        rq_job.meta["message"] = "Transcribing audio"
-        rq_job.meta["title"] = title
-        rq_job.save_meta()
+        rq_job = get_current_job()
+        if rq_job:
+            rq_job.meta["title"] = title
+        update_job_status("start_transcribing", "Starting transcription")
 
         job.job_info = job_info
 
