@@ -7,6 +7,7 @@ nav:
     - Changelog: about/changelog.md
   - Installation: installation.md
     - 'Configuration': configuration.md
+  - 'Getting Started': developer.md
   - 'API Reference':
     - 'API Reference': api/api.md
     - Analysis: api/api_analyze.md
