@@ -2,7 +2,7 @@ import argparse
 import os
 import gc
 
-from utils.transcription.helpers import (
+from utils.transcription.alignment_helpers import (
     wav2vec2_langs,
     filter_missing_timestamps,
     get_words_speaker_mapping,
