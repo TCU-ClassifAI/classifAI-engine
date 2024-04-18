@@ -153,14 +153,19 @@ For more instructions please see the [documentation
   pip install -r src/requirements.txt -r src/requirements-dev.txt
   ```
 
-4. Launch the API 
+4. Include your [huggingface API key](https://huggingface.co/docs/api-inference/en/quicktour) in either your environment variables or in a `.env` file in the root directory
+   ```sh
+   HF_TOKEN=your_key_here
+   ```
+
+5. Launch the API 
    ```sh
     python src/app.py
    ```
 
-5. Launch your worker (for asynchronous tasks)
+6. Launch your worker (for asynchronous tasks)
    ```sh
-    rq worker -c worker_config
+    rq worker -c config.worker_config
    ```
 
 #### Testing
