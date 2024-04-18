@@ -8,7 +8,7 @@ from utils.analyze.extraction_utils import (
     get_raw_transcript,
     combine_results,
 )
-from utils.analyze.update_rq import update_job_status
+from utils.queueing.update_rq import update_job_status
 from utils.transcription.transcribe_full import transcribe_and_diarize
 from utils.categorize.extract_questions import extract_questions
 from utils.categorize.categorize_transcript import categorize_list_of_questions
