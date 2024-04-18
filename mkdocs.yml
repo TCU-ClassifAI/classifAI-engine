@@ -5,8 +5,8 @@ nav:
   - About: 
     - About: about/about.md
     - Changelog: about/changelog.md
+    - Configuration: configuration.md
   - Installation: installation.md
-    - 'Configuration': configuration.md
   - 'Getting Started': developer.md
   - 'API Reference':
     - 'API Reference': api/api.md
