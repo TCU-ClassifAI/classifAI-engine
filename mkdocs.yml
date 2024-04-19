@@ -43,7 +43,7 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/TCU-Instructional-AI/classifAI-engine
-copyright: Copyright &copy; 2023 ClassifAI
+copyright: Copyright &copy; 2024 ClassifAI
 repo_url: https://github.com/TCU-Instructional-AI/classifAI-engine
 repo_name: ClassifAI-engine
 markdown_extensions:
