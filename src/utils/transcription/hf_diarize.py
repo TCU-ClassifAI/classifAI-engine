@@ -1,6 +1,8 @@
 import torch
 import torchaudio
 from pyannote.audio.pipelines.utils.hook import ProgressHook
+import pydub
+import uuid
 
 # instantiate the pipeline
 from pyannote.audio import Pipeline
@@ -27,12 +29,30 @@ def diarize_audio(audio_path: str, output_path: str) -> bytes:
 
     """
 
+
+
     # confirm the audio file exists
     try:
         with open(audio_path, "rb") as f:
             pass
     except FileNotFoundError:
         raise FileNotFoundError(f"File {audio_path} not found.")
+
+
+
+    # Torchaudio does not support m4a files, so convert them to wav
+
+    # If audio path is not mp3 or wav, convert it to wav
+
+    # get ending of the audio file
+    audio_ending = audio_path.split(".")[-1]
+
+    # if the audio file is not mp3 or wav, convert it to wav
+    if audio_ending not in ["mp3", "wav"]:
+        audio = pydub.AudioSegment.from_file(audio_path)
+        audio_base_path = audio_path.split(".")[0]
+        audio_path = f"{audio_base_path}.wav"
+        audio.export(audio_path, format="wav")
 
     waveform, sample_rate = torchaudio.load(audio_path)
 
