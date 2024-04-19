@@ -39,7 +39,13 @@ less /etc/supervisor/supervisord.conf
 ```
 
 ### Start up a worker without supervisor:
-`rq worker -c config.worker_config`
+    
+```bash
+# from classifAI-engine/
+source PATH_TO_VENV/bin/activate # try venv-3.10
+rq worker -c config.worker_config
+```
+
 
 ### General running commands
 
