@@ -73,3 +73,22 @@ sudo journalctl -u classifai
 - The third command will show the logs of the classifai service.
 
 
+## Run the Flask server without service
+
+```bash
+# from classifAI-engine/
+sudo systemctl stop classifai # stop the service
+source PATH_TO_VENV/bin/activate # try venv-3.10
+python3 src/app.py
+```
+
+## Run the GEMMA server without service
+
+```bash
+# from gemma-classification-1
+sudo systemctl stop gemma # stop the service
+source PATH_TO_VENV/bin/activate # try .venv
+# do other installation steps if needed (see gemma README.md)
+python3 src/app.py
+```
+
