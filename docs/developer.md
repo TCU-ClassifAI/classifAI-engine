@@ -4,8 +4,41 @@ Please read the full developer doccumentation at the site.
 
 ## Useful commands
 
-### Start up a worker
 
+## Check services!!!
+
+```bash
+sudo systemctl status classifai
+sudo systemctl status gemma
+sudo supervisorctl status all
+```
+
+## Restart services
+
+```bash
+sudo systemctl restart classifai
+sudo systemctl restart gemma
+sudo supervisorctl restart all
+```
+
+## Read logs
+
+```bash
+sudo journalctl -u classifai
+sudo journalctl -u gemma
+sudo supervisorctl tail -5000 <procname> stderr
+sudo supervisorctl tail -f <procname> stdout # to follow the logs in real time
+```
+
+## View configuration files for services
+
+```bash
+sudo systemctl cat classifai
+sudo systemctl cat gemma
+less /etc/supervisor/supervisord.conf
+```
+
+### Start up a worker without supervisor:
 `rq worker -c config.worker_config`
 
 ### General running commands
@@ -33,13 +66,10 @@ pip install -r requirements.txt
 ```bash
 sudo systemctl status classifai
 sudo systemctl restart classifai
-sudo systemctl start rqworker@1
 sudo journalctl -u classifai
 ```
 - The first command will check the status of the classifai service.
 - The second command will restart the classifai service.
-- The third command will start the rqworker service.
-- You can 'spawn' multiple rqworker services by changing the number at the end of the command. For example, `rqworker@1`, `rqworker@2`, `rqworker@3`, etc.
-- The fourth command will check the logs of the classifai service.
+- The third command will show the logs of the classifai service.
 
 
