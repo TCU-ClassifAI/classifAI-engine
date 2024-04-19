@@ -1,6 +1,6 @@
 # Developer quickstart
 
-Please read the full deveper doccumentation at the site. 
+Please read the full developer doccumentation at the site. 
 
 ## Useful commands
 
