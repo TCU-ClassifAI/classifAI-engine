@@ -22,10 +22,10 @@ app = Flask(__name__)
 # Register blueprints for endpoints
 
 # Transcription Blueprint (transcribe audio or video files)
-app.register_blueprint(transcription, url_prefix="/transcription")
+app.register_blueprint(transcription)
 
 # Categorize Blueprint (categorize transcripts or questions by costa's level)
-app.register_blueprint(categorize, url_prefix="/categorize")
+app.register_blueprint(categorize)
 
 # Summarize Blueprint (text summarization)
 app.register_blueprint(summarize, url_prefix="/summarize")
