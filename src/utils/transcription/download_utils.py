@@ -59,9 +59,13 @@ def download_and_convert_to_mp3(
         mp3_file_path = os.path.join(output_path, filename + ".mp3")
         logging.info(f"Downloading started... {mp3_file_path}")
 
-        downloaded_file_path = audio_stream.download(output_path)
+        downloaded_file_path = audio_stream.download(output_path, filename=f"{filename}_temp")
+
+        logging.info(f"Downloaded file at: {downloaded_file_path}")
 
         audio_clip = AudioFileClip(downloaded_file_path)
+
+        print(f"Converting to mp3... {mp3_file_path}")
         audio_clip.write_audiofile(
             mp3_file_path, codec="libmp3lame", verbose=False, logger=None
         )

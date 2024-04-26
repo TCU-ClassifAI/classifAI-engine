@@ -22,7 +22,7 @@ def summarize_llama(text):
     """
     try:
         response = requests.post(
-            f"{os.getenv('SUMMARY_API_URL')}/summarize", json={"text": text}
+            f"{API_URL}/summarize", json={"text": text}
         )
 
         response_body = (

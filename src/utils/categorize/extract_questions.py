@@ -80,8 +80,10 @@ def extract_questions(transcript: dict) -> List[Question]:
                 question.two_previous_sentence = two_previous_text
 
             questions.append(question)
-            two_previous_text = previous_text
-            previous_text = segment["text"]
+    
+        # set the previous and two previous sentences regardless of whether the segment is a question
+        two_previous_text = previous_text
+        previous_text = segment["text"]
     return questions
 
 

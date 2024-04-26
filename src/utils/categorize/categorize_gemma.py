@@ -12,7 +12,7 @@ def categorize_question(question: str) -> int:
     """
     # call GEMMA API
     response = requests.post(
-        f"{os.getenv('GEMMA_API_URL')}/categorize", json={"question": question}
+        f"{os.getenv('LLAMA_API_URL')}/categorize", json={"question": question}
     )
 
     print(response.json())
