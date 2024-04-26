@@ -4,16 +4,17 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-TRANSCRIPTION_MODEL = "large-v3"
-CATEGORIZATION_MODEL = "gemma"  # or gpt
-SUMMARIZATION_MODEL = "huggingface"  # or gpt
-ENV_TYPE = "dev"
+# Engine settings
+VERSION = "4.4.5"
 
-# File upload settings
+# Model settings
+TRANSCRIPTION_MODEL = "large-v3"
+CATEGORIZATION_MODEL = "llama"  # or gpt
+SUMMARIZATION_MODEL = "llama"  # or gpt # or huggingface
 
 # Audio file upload settings
 UPLOAD_FOLDER = "raw_audio/"
-
+TEMP_FOLDER = "temp_outputs/" # Includes vocal separation outputs and rttm files
 ALLOWED_EXTENSIONS = {
     "wav",
     "mp3",
@@ -26,10 +27,11 @@ ALLOWED_EXTENSIONS = {
     "oga",
     "webm",
     "mov",
-} # Others are probably supported as well but not tested.
+} # Others are (probably) supported as well but not tested.
 
-# Includes vocal separation outputs and diarization rich transcription time marked (rttm) files
-TEMP_FOLDER = "temp_outputs/"  
+# Environment settings 
+
+ENV_TYPE = "dev"
 
 if os.environ.get("ENV") == "production":
     ENV_TYPE = "prod"
@@ -37,4 +39,4 @@ if os.environ.get("ENV") == "production":
 
 # You can override .env variables here
 
-VERSION = "4.1.4"
+
