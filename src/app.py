@@ -28,7 +28,7 @@ app.register_blueprint(transcription)
 app.register_blueprint(categorize)
 
 # Summarize Blueprint (text summarization)
-app.register_blueprint(summarize, url_prefix="/summarize")
+app.register_blueprint(summarize)
 
 # Analysis Blueprint (all-in-one transcription, categorization, and summarization)
 app.register_blueprint(analyze)  # run on index route
@@ -43,4 +43,4 @@ def create_app():
 
 if __name__ == "__main__":  # DO NOT RUN IN PRODUCTION
     local = True if os.environ.get("ENV") == "development" else False
-    app.run(debug=True, port=5000, host="0.0.0.0")
+    app.run(debug=True, port=5001, host="0.0.0.0")
