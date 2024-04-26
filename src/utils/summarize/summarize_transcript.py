@@ -1,28 +1,34 @@
 import os
-import requests
-from dotenv import load_dotenv
-from flask import make_response
+import logging
+from config.config import SUMMARIZATION_MODEL
 
-load_dotenv()
+from utils.summarize.summarize_llama import summarize_llama
 
 
-def summarize_transcript(text) -> str:
+
+def summarize_transcript(text: str) -> str:
     """
-    Summarize the transcript using Gemma Server
+    Summarize the transcript using a custom summarization API.
+
+    Args:
+        text: the transcript to summarize.
+
+    Returns:
+        str: The summarized transcript.
     """
-    # call custom GEMMA API
+    
     try:
-        response = requests.post(
-            f"{os.getenv('GEMMA_API_URL')}/summarize", json={"text": text}
-        )
-
-        response_body = (
-            response.json().get("response")
-            if response.status_code == 200
-            else "Error Occured while accessing Gemma Summarization API"
-        )
-
-        return response_body
-
+        if SUMMARIZATION_MODEL == "gpt":
+            # TODO: Implement GPT summarization model
+            return "GPT summarization model is not supported yet."
+        elif SUMMARIZATION_MODEL == "huggingface":
+            # TODO: Implement Huggingface summarization model
+            return "Huggingface summarization model is not supported yet."
+        elif SUMMARIZATION_MODEL == "llama":
+            return summarize_llama(text)
+        else:
+            return "Invalid summarization model selected, please check config.py"
     except Exception as e:
-        return f"Error Occured while accessing Gemma Summarization API: {str(e)}"
+        logging.error(f"Error Occured while accessing Summarization API: {str(e)}")
+        return f"Error Occured while accessing Summarization API: {str(e)}"
+
