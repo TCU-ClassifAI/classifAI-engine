@@ -1,5 +1,16 @@
 import torch
 import gc
+import os
+from pathlib import Path
+
+
+def get_root_directory():
+    """Navigate to the project root directory if in 'src/'."""
+    current_dir = Path.cwd()
+    if current_dir.name == "src":
+        # Navigate one level up if in 'src' directory
+        os.chdir(current_dir.parent)
+    return Path.cwd()
 
 
 def transcribe(

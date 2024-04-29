@@ -222,41 +222,100 @@ def get_realigned_ws_mapping_with_punctuation(
     return realigned_list
 
 
-def get_sentences_speaker_mapping(word_speaker_mapping, spk_ts):
+
+
+
+# def get_sentences_speaker_mapping(word_speaker_mapping, spk_ts):
+#     sentence_checker = nltk.tokenize.PunktSentenceTokenizer().text_contains_sentbreak
+#     s, e, spk = spk_ts[0]
+#     prev_spk = spk
+
+#     snts = []
+#     snt = {"speaker": f"Speaker {spk}", "start_time": s, "end_time": e, "text": ""}
+
+#     # if spk is 0, then it's the main speaker
+#     if spk == 0:
+#         snt["speaker"] = "Main Speaker"
+
+#     for wrd_dict in word_speaker_mapping:
+#         wrd, spk = wrd_dict["word"], wrd_dict["speaker"]
+#         s, e = wrd_dict["start_time"], wrd_dict["end_time"]
+#         if spk != prev_spk or sentence_checker(snt["text"] + " " + wrd):
+#             snts.append(snt)
+#             snt = {
+#                 "speaker": "Main Speaker" if spk == 0 else f"Speaker {spk}",
+#                 "start_time": s,
+#                 "end_time": e,
+#                 "text": "",
+#             }
+#         else:
+#             snt["end_time"] = e
+
+#         snt["text"] += wrd + " "
+#         prev_spk = spk
+
+#     snts.append(snt)
+
+#     # if 1st sentence has speaker 0, then it's the main speaker
+#     if snts[0]["speaker"] == "Speaker 0":
+#         snts[0]["speaker"] = "Main Speaker"
+#     return snts
+
+def get_sentences_speaker_mapping(word_speaker_mapping, speaker_timestamps):
+    """
+    Group the words into sentences based on the speaker and the sentence boundaries.
+
+    Args:
+        word_speaker_mapping: A list of dictionaries, each containing the word, start time, end time, and speaker.
+        speaker_timestamps: A list of tuples, each containing the start time, end time, and speaker.
+
+    Returns:
+        A list of dictionaries, each containing the speaker, start time, end time, and text of a sentence.
+    """
     sentence_checker = nltk.tokenize.PunktSentenceTokenizer().text_contains_sentbreak
-    s, e, spk = spk_ts[0]
-    prev_spk = spk
+    sentences = []
+    current_sentence = {
+        "speaker": speaker_timestamps[0][2],
+        "start_time": speaker_timestamps[0][0],
+        "end_time": speaker_timestamps[0][1],
+        "text": "",
+    }
 
-    snts = []
-    snt = {"speaker": f"Speaker {spk}", "start_time": s, "end_time": e, "text": ""}
+    for word_dict in word_speaker_mapping:
+        word = word_dict["word"]
+        speaker = word_dict["speaker"]
+        start_time = word_dict["start_time"]
+        end_time = word_dict["end_time"]
 
-    # if spk is 0, then it's the main speaker
-    if spk == 0:
-        snt["speaker"] = "Main Speaker"
-
-    for wrd_dict in word_speaker_mapping:
-        wrd, spk = wrd_dict["word"], wrd_dict["speaker"]
-        s, e = wrd_dict["start_time"], wrd_dict["end_time"]
-        if spk != prev_spk or sentence_checker(snt["text"] + " " + wrd):
-            snts.append(snt)
-            snt = {
-                "speaker": "Main Speaker" if spk == 0 else f"Speaker {spk}",
-                "start_time": s,
-                "end_time": e,
+        if speaker != current_sentence["speaker"] or sentence_checker(
+            current_sentence["text"] + " " + word
+        ):
+            sentences.append(current_sentence)
+            current_sentence = {
+                "speaker": speaker,
+                "start_time": start_time,
+                "end_time": end_time,
                 "text": "",
             }
         else:
-            snt["end_time"] = e
+            current_sentence["end_time"] = end_time
 
-        snt["text"] += wrd + " "
-        prev_spk = spk
+        current_sentence["text"] += word + " "
 
-    snts.append(snt)
+    sentences.append(current_sentence)
+    
+    sentences = replace_speaker_0_with_main_speaker(sentences)
 
-    # if 1st sentence has speaker 0, then it's the main speaker
-    if snts[0]["speaker"] == "Speaker 0":
-        snts[0]["speaker"] = "Main Speaker"
-    return snts
+    return sentences
+
+
+def replace_speaker_0_with_main_speaker(sentences_speaker_mapping):
+    """Replace 'Speaker 0' with 'Main Speaker' in the sentences."""
+    for sentence_dict in sentences_speaker_mapping:
+        if sentence_dict["speaker"] == "Speaker 0":
+            sentence_dict["speaker"] = "Main Speaker"
+
+    return sentences_speaker_mapping
 
 
 def get_speaker_aware_transcript(sentences_speaker_mapping, f):
@@ -407,3 +466,16 @@ def process_language_arg(language: str, model_name: str):
             )
         language = "en"
     return language
+
+
+if __name__ == "__main__":
+    print("Hello, World!")
+    # Test get_sentences_speaker_mapping
+    word_speaker_mapping = [
+        {"word": "Hello", "start_time": 0, "end_time": 1000, "speaker": 0},
+        {"word": "world", "start_time": 1000, "end_time": 2000, "speaker": 1},
+        {"word": "!", "start_time": 2000, "end_time": 3000, "speaker": 0},
+    ]
+    speaker_timestamps = [(0, 3000, 0), (0, 3000, 1)]
+    print(get_sentences_speaker_mapping(word_speaker_mapping, speaker_timestamps))
+    
