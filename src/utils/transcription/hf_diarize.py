@@ -115,15 +115,21 @@ def update_speaker_names_rttm(rttm_path):
     sorted_speakers = sorted(speaker_durations, key=speaker_durations.get, reverse=True)
 
     # Update the speaker names, overwrite the original RTTM file
+    
+    # The main speaker should be named 'SPEAKER_00', the second most frequent speaker should be named 'SPEAKER_01', etc.
 
-
-    with open(rttm_path, "w") as f:
+    for i, speaker_name in enumerate(sorted_speakers):
         for line in rttm_lines:
-            speaker_name = line.split(" ")[7]
-            speaker_index = sorted_speakers.index(speaker_name)
-            updated_speaker_name = f"SPEAKER_{str(speaker_index).zfill(2)}"
-            updated_line = line.replace(speaker_name, updated_speaker_name)
-            f.write(updated_line)
+            if speaker_name in line:
+                new_speaker_name = f"SPEAKER_{str(i).zfill(2)}"
+                line = line.replace(speaker_name, new_speaker_name)
+                rttm_lines[rttm_lines.index(line)] = line
+
+    # Write the updated RTTM file
+    with open(rttm_path, "w") as f:
+        f.writelines(rttm_lines)
+
+        
 
     logging.info(f"Updated RTTM file saved to {rttm_path}")
 
