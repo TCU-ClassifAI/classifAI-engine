@@ -84,54 +84,44 @@ def update_speaker_names_rttm(rttm_path):
         str: The original RTTM file path (overwritten with updated speaker names)
     """
 
-    # read the RTTM file
+
+    # Example RTTM line:
+    # Type file channel beginning duration ortho spktype name conf
+    # SPEAKER audio_000000 1 0.00 0.50 <NA> <NA> SPEAKER_00 <NA>
+
+
+    # Read the RTTM file
     with open(rttm_path, "r") as f:
         rttm_lines = f.readlines()
 
-
-
-    # Example of RTTM line: 
-    # Type File Channel Start Duration <NA> <NA> Speaker_Name Confidence <NA>
-    # SPEAKER waveform 1 295.390 0.543 <NA> <NA> SPEAKER_00 <NA> <NA>
-
-    # Get the speaker names
     speaker_names = []
     for line in rttm_lines:
         speaker_name = line.split(" ")[7]
         if speaker_name not in speaker_names:
             speaker_names.append(speaker_name)
 
-    # Get the total duration of each speaker
-    speaker_durations = {}
-    for speaker_name in speaker_names:
-        speaker_durations[speaker_name] = 0
-
+    # Get the total duration spoken by each speaker
+    speaker_durations = {name: 0 for name in speaker_names}
     for line in rttm_lines:
-        speaker_name = line.split(" ")[7]
-        duration = float(line.split(" ")[4])
+        parts = line.split(" ")
+        speaker_name = parts[7]
+        duration = float(parts[4])
         speaker_durations[speaker_name] += duration
 
-    # Sort the speakers by duration
     sorted_speakers = sorted(speaker_durations, key=speaker_durations.get, reverse=True)
+    speaker_map = {name: f"SPEAKER_{str(i).zfill(2)}" for i, name in enumerate(sorted_speakers)}
 
-    # Update the speaker names, overwrite the original RTTM file
-    
-    # The main speaker should be named 'SPEAKER_00', the second most frequent speaker should be named 'SPEAKER_01', etc.
+    # Update the speaker names in the RTTM file
+    updated_rttm_lines = []
+    for line in rttm_lines:
+        parts = line.split(" ")
+        parts[7] = speaker_map[parts[7]]
+        updated_rttm_lines.append(" ".join(parts))
 
-    for i, speaker_name in enumerate(sorted_speakers):
-        for line in rttm_lines:
-            if speaker_name in line:
-                new_speaker_name = f"SPEAKER_{str(i).zfill(2)}"
-                line = line.replace(speaker_name, new_speaker_name)
-                rttm_lines[rttm_lines.index(line)] = line
-
-    # Write the updated RTTM file
     with open(rttm_path, "w") as f:
-        f.writelines(rttm_lines)
+        f.writelines(updated_rttm_lines)
 
-        
-
-    logging.info(f"Updated RTTM file saved to {rttm_path}")
+    logging.info(f"Updated speaker names in {rttm_path}")
 
     return rttm_path
 
@@ -144,7 +134,7 @@ def update_speaker_names_rttm(rttm_path):
 # Test
 if __name__ == "__main__":
     print(diarize_audio("D601 Day 1 Audio Only.wav", "audio.rttm"))
-    update_speaker_names_rttm("audio.rttm")
+    # update_speaker_names_rttm("audio.rttm")
 
 
 
