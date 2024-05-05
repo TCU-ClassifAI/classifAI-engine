@@ -48,16 +48,46 @@ When the job is completed, the status will look like this:
 
 The different statuses, and their respective messages within the `meta` object are, in order:
 
-#### 1. splitting
-    "Splitting audio into vocals and accompaniment for faster processing"
-#### 2. loading-nemo
-    "Loading NeMo process for diarization"
-#### 3. transcribing
-    "Transcribing audio"
-#### 4. aligning
-    "Aligning audio"
-#### 5. completed
-    "Transcription and diarization completed"
+1. queued
+   - "Job is queued"
+2. downloading
+    - "Downloading MP3 file from URL"
+    - Note: This status is only applicable if the audio file is being downloaded from a URL.
+3. start_transcribing
+    - "Transcribing audio"
+4. splitting
+    - "Splitting audio into vocals and accompaniment for faster processing"
+5. loading_nemo
+    - "Loading NeMo process for diarization"
+6. transcribing
+    - "Transcribing audio with Whisper"
+7. loading_align_model
+    - "Loading align model"
+8. aligning
+    - "Aligning audio"
+9. diarizing
+    - "Diarizing audio"
+    - Note: Diarization happens in parallel with transcription. This only shows if transcription is completed before diarization.
+10. transcription_finished
+    - "Transcription completed"
+11. extracting_questions
+    - "Extracting questions"
+12. categorizing_questions
+    - "Categorizing questions using LLaMA"
+13. summarizing
+    - "Summarizing the transcription"
+14. combining_results
+    - "Combining results"
+15. completed
+    - "Transcription and diarization completed"
+
+Other possible statuses are:
+failed
+error
+
+### Once a job is completed, the status will be `finished`. The `meta` object will contain the `job_id`, `job_type`, `message`, and `status`, and the `result` object will contain the `job_id`, `type`, `status`, `submit_time`, `duration`, `result`, and `job_info`.
+
+
 ---
 
 If an error occurs, the status will be `error`, and the `message` will be:
