@@ -192,7 +192,6 @@ def get_realigned_ws_mapping_with_punctuation(
         list: List of dictionaries containing the word, speaker, start_time, and end_time.
     """
 
-
     def is_word_sentence_end(x):
         return (
             x >= 0
@@ -268,7 +267,7 @@ def get_sentences_speaker_mapping(word_speaker_mapping, speaker_timestamps):
     Args:
         word_speaker_mapping (list): List of dictionaries containing the word, speaker, start_time, and end_time.
         speaker_timestamps (list): List of tuples containing the start_time, end_time, and speaker.
-        
+
     Returns:
         list: List of dictionaries containing the speaker, start_time, end_time, and text.
     """
@@ -463,4 +462,3 @@ def process_language_arg(language: str, model_name: str):
             )
         language = "en"
     return language
-
