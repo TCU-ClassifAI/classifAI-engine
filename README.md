@@ -23,10 +23,13 @@
 [Celery-url]: https://docs.celeryproject.org/en/stable/index.html
 [Redis-shield]: https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white
 [Redis-url]: https://redis.io/
-[MongoDB-shield]: https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white
-[MongoDB-url]: https://www.mongodb.com/
-[Pydantic-shield]: https://img.shields.io/badge/Pydantic-2B7AFD?style=for-the-badge&logo=pydantic&logoColor=white
-[Pydantic-url]: https://pydantic-docs.helpmanual.io/
+[Gemma-shield]: https://img.shields.io/badge/Gemma-8E75B2?style=for-the-badge&logo=Google-Gemini&logoColor=white
+[Gemma-url]: https://ai.google.dev/gemma
+[Pegasus-shield]: https://img.shields.io/badge/Pegasus-000000?style=for-the-badge&logo=google&logoColor=white
+[Pegasus-url]: https://ai.googleblog.com/2020/06/pegasus-state-of-art-model-for.html
+
+[Build-shield]: https://img.shields.io/github/workflow/status/TCU-ClassifAI/classifAI-engine/deploy_docs.yml?style=for-the-badge
+[Build-url]: https://github.com/TCU-ClassifAI/classifAI-engine/actions/workflows/deploy_docs.yml
 
 
 <a name="readme-top"></a>
@@ -60,11 +63,16 @@
 </div>
 
 
+
+
+
+
 [![GitHub contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+
 
 
 ***    
@@ -115,10 +123,9 @@ ClassifAI engine provides the heavy lifting for classifAI. It is a RESTful API t
 [![Flask][Flask-shield]][Flask-url]
 [![Torch][Torch-shield]][Torch-url]
 [![OpenAI][OpenAI-shield]][OpenAI-url]
-[![Celery][Celery-shield]][Celery-url]
 [![Redis][Redis-shield]][Redis-url]
-[![MongoDB for Python][MongoDB-shield]][MongoDB-url]
-[![Pydantic][Pydantic-shield]][Pydantic-url]
+[![Gemma][Gemma-shield]][Gemma-url]
+
   
 
 
@@ -129,10 +136,12 @@ To get a local copy up and running follow these simple steps.
 
 For more instructions please see the [documentation 
 ](https://tcu-classifai.github.io/classifAI-engine/)
+
 ### Prerequisites
 
 * Python 3.10 (can probably work with 3.9+ but not tested)
 * Redis
+* Huggingface API key token
 
 ### Installation 
 
