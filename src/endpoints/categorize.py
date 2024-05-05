@@ -1,13 +1,14 @@
 from flask import Blueprint, request, make_response
 from dotenv import load_dotenv
 import json
+from utils.categorize.categorize_gemma import categorize_question
+from utils.categorize.categorize_transcript import categorize_transcript
 
 load_dotenv()
 
 categorize = Blueprint("categorize", __name__)
 
-from utils.categorize.categorize_gemma import categorize_question
-from utils.categorize.categorize_transcript import categorize_transcript
+
 
 
 @categorize.route("/categorize/question", methods=["POST"])

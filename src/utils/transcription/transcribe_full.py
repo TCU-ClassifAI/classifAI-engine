@@ -9,7 +9,6 @@ from utils.transcription.alignment_helpers import (
     punct_model_langs,
     get_realigned_ws_mapping_with_punctuation,
     get_sentences_speaker_mapping,
-    cleanup,
 )
 
 
@@ -17,7 +16,6 @@ import whisperx
 import torch
 from deepmultilingualpunctuation import PunctuationModel
 import re
-import subprocess
 import logging
 from rq import get_current_job
 from utils.queueing.jobs import Job
@@ -26,7 +24,6 @@ from utils.transcription.transcription_helpers import (
     transcribe_batched,
     get_root_directory,
 )
-from utils.transcription.convert_utils import convert_to_mp3_force
 from utils.transcription.hf_diarize import diarize_audio
 from concurrent.futures import ThreadPoolExecutor
 

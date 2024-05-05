@@ -8,7 +8,6 @@ import uuid
 
 from config import config as settings
 from flask import jsonify
-import logging
 import tempfile
 
 load_dotenv()

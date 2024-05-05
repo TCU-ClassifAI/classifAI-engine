@@ -1,7 +1,5 @@
-from flask import Blueprint, request, make_response, Flask, jsonify
+from flask import Blueprint, make_response, jsonify
 from dotenv import load_dotenv
-import os
-import json
 from utils.auth import api_key_required
 from config import config as settings
 
