@@ -162,9 +162,9 @@ For more instructions please see the [documentation
    ```
 
 3. Install Python packages (it is reccomended you use a [venv](https://docs.python.org/3/library/venv.html))
-  ```sh
-  pip install -r src/requirements.txt -r src/requirements-dev.txt
-  ```
+    ```sh
+    pip install -r src/requirements.txt -r src/requirements-dev.txt
+    ```
 
 4. Include your [huggingface API key](https://huggingface.co/docs/api-inference/en/quicktour) in either your environment variables or in a `.env` file in the root directory
    ```sh
