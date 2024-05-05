@@ -69,13 +69,9 @@
 
 
 
-
-
-[![GitHub contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![GPL-License][license-shield]][license-url]
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TCU-ClassifAI/classifAI-engine/main.yml?branch=main&style=for-the-badge)
 ![Website](https://img.shields.io/website?url=https%3A%2F%2Fclassifai.tcu.edu%2F&style=for-the-badge&label=ClassifAI%20Website)
 
