@@ -25,12 +25,16 @@
 [Redis-url]: https://redis.io/
 [Gemma-shield]: https://img.shields.io/badge/Gemma-8E75B2?style=for-the-badge&logo=Google-Gemini&logoColor=white
 [Gemma-url]: https://ai.google.dev/gemma
+
+[Llama-shield]: https://img.shields.io/badge/Llama-FFFFFF?style=for-the-badge&logo=meta&logoColor=0081FB
+[Llama-url]: https://ai.googleblog.com/2020/06/pegasus-state-of-art-model-for.html
+
 [Pegasus-shield]: https://img.shields.io/badge/Pegasus-000000?style=for-the-badge&logo=google&logoColor=white
 [Pegasus-url]: https://ai.googleblog.com/2020/06/pegasus-state-of-art-model-for.html
 
 [Build-shield]: https://img.shields.io/github/workflow/status/TCU-ClassifAI/classifAI-engine/deploy_docs.yml?style=for-the-badge
 [Build-url]: https://github.com/TCU-ClassifAI/classifAI-engine/actions/workflows/deploy_docs.yml
-
+[Build-shield]: https://img.shields.io/github/actions/workflow/status/TCU-ClassifAI/classifAI-engine/main.yml?branch=main&style=for-the-badge
 
 <a name="readme-top"></a>
 
@@ -72,6 +76,10 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/TCU-ClassifAI/classifAI-engine/main.yml?branch=main&style=for-the-badge)
+![Website](https://img.shields.io/website?url=https%3A%2F%2Fclassifai.tcu.edu%2F&style=for-the-badge&label=ClassifAI%20Website)
+
+
 
 
 
@@ -124,7 +132,7 @@ ClassifAI engine provides the heavy lifting for classifAI. It is a RESTful API t
 [![Torch][Torch-shield]][Torch-url]
 [![OpenAI][OpenAI-shield]][OpenAI-url]
 [![Redis][Redis-shield]][Redis-url]
-[![Gemma][Gemma-shield]][Gemma-url]
+[![LLaMA][Llama-shield]][Llama-url]
 
   
 
