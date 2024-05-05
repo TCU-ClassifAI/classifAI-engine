@@ -170,6 +170,9 @@ For more instructions please see the [documentation
    ```sh
    HF_TOKEN=your_key_here
    ```
+    You must also accept the Hugging Face terms and conditions:
+    - visit hf.co/pyannote/speaker-diarization-3.1 and accept user conditions
+    - visit hf.co/pyannote/segmentation-3.0 and accept user conditions
 
 5. Launch the API 
    ```sh

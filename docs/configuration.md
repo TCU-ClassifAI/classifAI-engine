@@ -20,8 +20,7 @@ UPLOAD_FOLDER = "raw_audio/"
 More information about how to set up your API key for the GPT models can be found in the [OpenAI documentation](https://github.com/openai/openai-python)
 Note that using GPT requires MONEYS.
 
-Note that `UPLOAD_FOLDER` is the directory where the raw audio files are stored. This is relative to `src/` so the default is `src/raw_audio/`.
-
+Note that `UPLOAD_FOLDER` is the directory where the raw audio files are stored. This is relative to `root` so the default is `classifAI-engine/raw_audio/`.
 
 ## Server configuration
 
@@ -58,7 +57,13 @@ Here is an example of the `.env` file:
 ENV=development # This overrides whatever is in src/config/config.py. You can delete this line if you want to use the config.py file
 REDIS_PORT=6379 # This is the default port for Redis
 GEMMA_API_URL=http://localhost:5001 # Notice that the ClassifAI-engine Flask app is running on port 5000 by default, so the GEMMA API is running on port 5001
+LLAMA_API_URL=http://localhost:5003 # This is the URL for the LLAMA API
+HF_TOKEN=YOUR_HUGGINGFACE_API_KEY # This is the API key for the HuggingFace API
+OPENAI_API_KEY=YOUR_OPENAI_API_KEY # This is the API key for the OpenAI API (Optional)
 ```
+Recall that a the ENV variable is set in the `config.py` file, so if you set it in the `.env` file, it will override the `config.py` file. 
+
+Furthermore, if you are using the GPT models, you will need to set the `OPENAI_API_KEY` variable in the `.env` file. Otherwise, it will not work.
 
 ## Cronjobs
 
@@ -73,3 +78,9 @@ sudo crontab -e
 5 3 * * * find /home/classgpu/classifAI-engine/src/raw_audio/ -mtime +3 -type f -delete
 # This will delete all files in the raw_audio directory that are older than 3 days, every day at 3:05 AM
 ```
+
+## Supervisor
+
+The server uses Supervisor to manage the Redis queue worker. The configuration file is located at `/etc/supervisor/supervisord.conf`.
+
+More information about Supervisor can be found in the [Supervisor documentation](http://supervisord.org/).
