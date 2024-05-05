@@ -14,10 +14,10 @@ jobs:
         with:
           python-version: "3.11"
       - name: flake8 Lint
-        uses: py-actions/flake8@v2
+        uses: py-actions/flake8@v2.3.0
         with:
             max-line-length: "128"
-            ignore: "E203", "W503"
+            ignore: "E203, W503"
   ruff:
     runs-on: ubuntu-latest
     steps:
