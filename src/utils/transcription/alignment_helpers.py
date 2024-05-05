@@ -221,15 +221,15 @@ def get_realigned_ws_mapping_with_punctuation(
 
     return realigned_list
 
+
 def initialize_sentence(speaker, start_time, end_time):
     speaker_name = "Main Speaker" if speaker == 0 else f"Speaker {speaker}"
     return {
         "speaker": speaker_name,
         "start_time": start_time,
         "end_time": end_time,
-        "text": ""
+        "text": "",
     }
-
 
 
 def get_sentences_speaker_mapping(word_speaker_mapping, speaker_timestamps):
@@ -251,7 +251,7 @@ def get_sentences_speaker_mapping(word_speaker_mapping, speaker_timestamps):
         if speaker != prev_speaker or sentence_checker(snt["text"] + " " + wrd):
             snts.append(snt)
             snt = initialize_sentence(speaker, start, end)
-            
+
         else:
             snt["end_time"] = end
 
@@ -264,7 +264,6 @@ def get_sentences_speaker_mapping(word_speaker_mapping, speaker_timestamps):
     if snts[0]["speaker"] == "Speaker 0":
         snts[0]["speaker"] = "Main Speaker"
     return snts
-
 
 
 def replace_speaker_0_with_main_speaker(sentences_speaker_mapping):
@@ -436,4 +435,3 @@ if __name__ == "__main__":
     ]
     speaker_timestamps = [(0, 3000, 0), (0, 3000, 1)]
     print(get_sentences_speaker_mapping(word_speaker_mapping, speaker_timestamps))
-    

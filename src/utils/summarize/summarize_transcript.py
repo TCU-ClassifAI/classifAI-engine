@@ -5,7 +5,6 @@ from config.config import SUMMARIZATION_MODEL
 from utils.summarize.summarize_llama import summarize_llama
 
 
-
 def summarize_transcript(text: str) -> str:
     """
     Summarize the transcript using a custom summarization API.
@@ -16,7 +15,7 @@ def summarize_transcript(text: str) -> str:
     Returns:
         str: The summarized transcript.
     """
-    
+
     try:
         if SUMMARIZATION_MODEL == "gpt":
             # TODO: Implement GPT summarization model
@@ -33,4 +32,3 @@ def summarize_transcript(text: str) -> str:
     except Exception as e:
         logging.error(f"Error Occured while accessing Summarization API: {str(e)}")
         return f"Error Occured while accessing Summarization API: {str(e)}"
-

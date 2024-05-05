@@ -12,7 +12,6 @@ else:
     raise ValueError("Invalid categorization model selected, please check config.py")
 
 
-
 def process_question(question: Question) -> Question:
     question_text = build_question_text(question)
 

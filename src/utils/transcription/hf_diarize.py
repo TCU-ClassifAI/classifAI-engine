@@ -30,16 +30,12 @@ def diarize_audio(audio_path: str, output_path: str) -> bytes:
 
     """
 
-
-
     # confirm the audio file exists
     try:
         with open(audio_path, "rb") as f:
             pass
     except FileNotFoundError:
         raise FileNotFoundError(f"File {audio_path} not found.")
-
-
 
     # Torchaudio does not support m4a files, so convert them to wav
 
@@ -66,12 +62,10 @@ def diarize_audio(audio_path: str, output_path: str) -> bytes:
     with open(output_path, "w") as rttm:
         diarization.write_rttm(rttm)
 
-        
     # Update the speaker names in the RTTM file
     update_speaker_names_rttm(output_path)
 
     return output_path
-    
 
 
 def update_speaker_names_rttm(rttm_path):
@@ -84,11 +78,9 @@ def update_speaker_names_rttm(rttm_path):
         str: The original RTTM file path (overwritten with updated speaker names)
     """
 
-
     # Example RTTM line:
     # Type file channel beginning duration ortho spktype name conf
     # SPEAKER audio_000000 1 0.00 0.50 <NA> <NA> SPEAKER_00 <NA>
-
 
     # Read the RTTM file
     with open(rttm_path, "r") as f:
@@ -109,7 +101,9 @@ def update_speaker_names_rttm(rttm_path):
         speaker_durations[speaker_name] += duration
 
     sorted_speakers = sorted(speaker_durations, key=speaker_durations.get, reverse=True)
-    speaker_map = {name: f"SPEAKER_{str(i).zfill(2)}" for i, name in enumerate(sorted_speakers)}
+    speaker_map = {
+        name: f"SPEAKER_{str(i).zfill(2)}" for i, name in enumerate(sorted_speakers)
+    }
 
     # Update the speaker names in the RTTM file
     updated_rttm_lines = []
@@ -125,16 +119,8 @@ def update_speaker_names_rttm(rttm_path):
 
     return rttm_path
 
-        
-
-
-
-
 
 # Test
 if __name__ == "__main__":
     print(diarize_audio("D601 Day 1 Audio Only.wav", "audio.rttm"))
     # update_speaker_names_rttm("audio.rttm")
-
-
-

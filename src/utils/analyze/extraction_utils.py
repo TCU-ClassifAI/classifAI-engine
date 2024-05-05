@@ -11,11 +11,12 @@ import os
 
 
 def handle_yt_exception(job: Job, message: str, exception: Exception):
-    """ Handle YouTube exceptions """
+    """Handle YouTube exceptions"""
     job.status = "error"
     job.result = f"Error: {message}"
     update_job_status("error", message)
     raise Exception(message)
+
 
 def get_audio_path_from_url_or_file(job: Job):
     """
@@ -38,18 +39,16 @@ def get_audio_path_from_url_or_file(job: Job):
     if job_info.get("url"):
         update_job_status("downloading", "Downloading YouTube and converting to mp3")
 
-
         try:
             # if we are in the src folder, we need to go up one level
             if os.path.basename(os.getcwd()) == "src":
                 os.chdir("..")
 
             audio_path, title, date = download_and_convert_to_mp3(
-                url= job_info["url"],
-                output_path= config.UPLOAD_FOLDER, 
-                filename= job.job_id
+                url=job_info["url"],
+                output_path=config.UPLOAD_FOLDER,
+                filename=job.job_id,
             )
-
 
         except AgeRestrictedError as e:
             handle_yt_exception(job, "Age-restricted video", e)
@@ -58,7 +57,9 @@ def get_audio_path_from_url_or_file(job: Job):
         except VideoUnavailable as e:
             handle_yt_exception(job, "Video unavailable", e)
         except Exception as e:
-            handle_yt_exception(job, f"Error downloading and converting to mp3: {str(e)}", e)
+            handle_yt_exception(
+                job, f"Error downloading and converting to mp3: {str(e)}", e
+            )
 
         job_info["audio_path"] = audio_path
         job_info["title"] = title

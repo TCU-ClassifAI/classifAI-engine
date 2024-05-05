@@ -21,7 +21,6 @@ def categorize_question(question: str) -> int:
     except Exception as e:
         # return random category
         return rand.randint(0, 3)
-    
 
     print(f"Response for question: {question} is {response.json().get('response')}")
 

@@ -21,7 +21,11 @@ import subprocess
 import logging
 from rq import get_current_job
 from utils.queueing.jobs import Job
-from utils.transcription.transcription_helpers import transcribe, transcribe_batched, get_root_directory
+from utils.transcription.transcription_helpers import (
+    transcribe,
+    transcribe_batched,
+    get_root_directory,
+)
 from utils.transcription.convert_utils import convert_to_mp3_force
 from utils.transcription.hf_diarize import diarize_audio
 from concurrent.futures import ThreadPoolExecutor
@@ -75,7 +79,6 @@ def transcribe_and_diarize(job: Job) -> list:
             "Splitting audio into vocals and accompaniment for faster processing",
         )
 
-
         # TODO: Move into separate file
 
         if args.stemming:
@@ -111,7 +114,9 @@ def transcribe_and_diarize(job: Job) -> list:
             temp_path, "pred_rttms", job.job_id + "_diarized.rttm"
         )
 
-        logging.info(f"Diarization file will be saved to: {audio_diarization_rttm_path}")
+        logging.info(
+            f"Diarization file will be saved to: {audio_diarization_rttm_path}"
+        )
 
         # start diarization in a separate thread
         with ThreadPoolExecutor() as executor:
@@ -119,14 +124,11 @@ def transcribe_and_diarize(job: Job) -> list:
                 diarize_audio, vocal_target, audio_diarization_rttm_path
             )
 
-
-
         # clear gpu vram
         torch.cuda.empty_cache()
         gc.collect()
 
         update_progress("transcribing", "Transcribing audio")
-
 
         if args.batch_size != 0:
             print("Batch size: ", args.batch_size)
@@ -190,7 +192,6 @@ def transcribe_and_diarize(job: Job) -> list:
         torch.cuda.empty_cache()
         gc.collect()
 
-        
         update_progress("diarizing", "Diarizing audio")
 
         # # TODO: Make the getcwd() and chdir() calls more robust/less clunky
@@ -229,8 +230,6 @@ def transcribe_and_diarize(job: Job) -> list:
                     s = int(float(line_list[3]) * 1000)
                     e = s + int(float(line_list[4]) * 1000)
                     speaker_ts.append([s, e, int(line_list[7].split("_")[-1])])
-
-
 
         except FileNotFoundError as e:
             print(f"Speaker diarization failed, using single speaker: {str(e)}")

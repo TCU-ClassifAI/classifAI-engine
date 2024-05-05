@@ -18,20 +18,19 @@ def get_transcript_from_request():
 
     Returns:
         str: The extracted transcript.
-        tuple: Error response if no transcript is provided.    
+        tuple: Error response if no transcript is provided.
     """
     # Extract the transcript data from the request
     data = request.get_json()
     transcript = data.get("text")
-    
+
     # Check if the transcript text is not provided
     if not transcript:
         transcript_json = data.get("transcript")
-        
+
         # If transcript details are also not provided, return an error response
         if not transcript_json:
             return make_response("No transcript provided", 400)
-        
 
         # Concatenate text entries from transcript details
         transcript = ""
@@ -41,7 +40,7 @@ def get_transcript_from_request():
                 transcript += line["text"] + " "
         except:
             return make_response("Invalid transcript format", 400)
-    
+
     return transcript.strip()
 
 
@@ -49,22 +48,22 @@ def get_transcript_from_request():
 def summarize_endpoint():
     """Summarize the transcript using a pre-trained model (see config)
     Args:
-        text: the transcript to summarize. json={"text": raw_text} 
+        text: the transcript to summarize. json={"text": raw_text}
         OR json = {"transcript": [{"text": "line1"}, {"text": "line2"}]} (gets concatenated)
     Returns:
         Response object with the status code.
     """
 
-    transcript = get_transcript_from_request() # extract the transcript from the request
+    transcript = (
+        get_transcript_from_request()
+    )  # extract the transcript from the request
 
-    if isinstance(transcript, Response): #Check for error response
+    if isinstance(transcript, Response):  # Check for error response
         return transcript
 
     summary = summarize_transcript(transcript)
-    
-    
-    return summary
 
+    return summary
 
 
 if __name__ == "__main__":  # do not use this in production

@@ -14,7 +14,7 @@ SUMMARIZATION_MODEL = "llama"  # or gpt # or huggingface
 
 # Audio file upload settings
 UPLOAD_FOLDER = "raw_audio/"
-TEMP_FOLDER = "temp_outputs/" # Includes vocal separation outputs and rttm files
+TEMP_FOLDER = "temp_outputs/"  # Includes vocal separation outputs and rttm files
 ALLOWED_EXTENSIONS = {
     "wav",
     "mp3",
@@ -27,9 +27,9 @@ ALLOWED_EXTENSIONS = {
     "oga",
     "webm",
     "mov",
-} # Others are (probably) supported as well but not tested.
+}  # Others are (probably) supported as well but not tested.
 
-# Environment settings 
+# Environment settings
 
 ENV_TYPE = "dev"
 
@@ -38,5 +38,3 @@ if os.environ.get("ENV") == "production":
     # Insert any overrides here!
 
 # You can override .env variables here
-
-

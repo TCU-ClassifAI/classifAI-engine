@@ -49,7 +49,6 @@ def categorize_transcript_endpoint():
     else:
         transcript = request.json
 
-
     category_list = categorize_transcript(transcript)
 
     return make_response(json.dumps({"categories": category_list}), 200)

@@ -1,4 +1,3 @@
-
 import requests
 from dotenv import load_dotenv
 import os
@@ -21,9 +20,7 @@ def summarize_llama(text):
         str: The summarized transcript.
     """
     try:
-        response = requests.post(
-            f"{API_URL}/summarize", json={"text": text}
-        )
+        response = requests.post(f"{API_URL}/summarize", json={"text": text})
 
         response_body = (
             response.json().get("response")
@@ -35,4 +32,3 @@ def summarize_llama(text):
 
     except Exception as e:
         return f"Error Occured while accessing Summarization API: {str(e)}"
-
