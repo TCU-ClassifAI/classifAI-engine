@@ -1,5 +1,0 @@
-flask
-pytest
-mkdocstrings[python]
-requests
-flask
