@@ -2,6 +2,7 @@ import requests
 from dotenv import load_dotenv
 import os
 import random as rand
+import logging
 
 
 load_dotenv()
@@ -19,6 +20,7 @@ def categorize_question(question: str) -> int:
         )
 
     except Exception as e:
+        logging.error(f"Error Occured while accessing LLAMA API: {str(e)}")
         # return random category
         return rand.randint(0, 3)
 

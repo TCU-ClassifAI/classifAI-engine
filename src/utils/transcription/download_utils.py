@@ -88,12 +88,10 @@ def download_and_convert_to_mp3(
         )
     except VideoRegionBlocked as e:
         logging.error(f"Video region blocked: {e}")
-        raise VideoRegionBlocked(
-            f"Unable to download video due to region restrictions."
-        )
+        raise VideoRegionBlocked("Unable to download video due to region restrictions.")
     except VideoUnavailable as e:
         logging.error(f"Video unavailable: {e}")
-        raise VideoUnavailable(f"Unable to download video as it is unavailable.")
+        raise VideoUnavailable("Unable to download video as it is unavailable.")
 
     except Exception as e:
         logging.error(f"An error occurred: {e}")

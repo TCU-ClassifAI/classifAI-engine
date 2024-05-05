@@ -196,13 +196,13 @@ def get_realigned_ws_mapping_with_punctuation(
                 k += 1
                 continue
 
-            spk_labels = speaker_list[left_idx: right_idx + 1]
+            spk_labels = speaker_list[left_idx : right_idx + 1]
             mod_speaker = max(set(spk_labels), key=spk_labels.count)
             if spk_labels.count(mod_speaker) < len(spk_labels) // 2:
                 k += 1
                 continue
 
-            speaker_list[left_idx: right_idx + 1] = [mod_speaker] * (
+            speaker_list[left_idx : right_idx + 1] = [mod_speaker] * (
                 right_idx - left_idx + 1
             )
             k = right_idx

@@ -4,11 +4,9 @@ import json
 from utils.categorize.categorize_gemma import categorize_question
 from utils.categorize.categorize_transcript import categorize_transcript
 
+# Set up the blueprint
 load_dotenv()
-
 categorize = Blueprint("categorize", __name__)
-
-
 
 
 @categorize.route("/categorize/question", methods=["POST"])

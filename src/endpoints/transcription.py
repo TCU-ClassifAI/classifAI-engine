@@ -4,15 +4,17 @@ import logging
 from pydub import AudioSegment
 import os
 
-# Manually add FFMPEG to the PATH
-os.environ["PATH"] += os.pathsep + "/usr/bin/"
-print(os.environ["PATH"])
 
 from utils.queueing.queue_manager import (
     enqueue_yt_transcription,
     enqueue as enqueue_transcription,
     get_job_status as get_transcription_status,
 )
+
+
+# Manually add FFMPEG to the PATH
+os.environ["PATH"] += os.pathsep + "/usr/bin/"
+print(os.environ["PATH"])
 
 
 transcription = Blueprint("transcription", __name__)

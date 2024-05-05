@@ -64,7 +64,8 @@ def extract_questions(transcript: dict) -> List[Question]:
         # check if segment text exists
         if "text" not in segment:
             raise ValueError(
-                "Segment does not contain text. Please ensure that the transcript is in the correct format where each segment has ['text']."
+                "Segment does not contain text. Please ensure that the transcript \
+                is in the correct format where each segment has ['text']. "
             )
         if "?" in segment["text"]:
             question = Question(

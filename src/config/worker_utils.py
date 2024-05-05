@@ -3,15 +3,9 @@
 #    --restart: Kill all workers and restart them
 
 
-# activate the virtual environment
 import os
-
-os.system("source /home/classgpu/classifAI-engine/venv-3.10/bin/activate")
-
-#!/usr/bin/env python
 from redis import Redis
 from rq import Worker, Queue
-import os
 from dotenv import load_dotenv
 import sys
 import argparse

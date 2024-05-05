@@ -1,6 +1,7 @@
 from typing import List
 from utils.categorize.extract_questions import extract_questions, Question
 import multiprocessing
+import logging
 
 from config.config import CATEGORIZATION_MODEL
 
@@ -46,6 +47,8 @@ def categorize_transcript(transcript: dict) -> List[int]:
         results = pool.map(
             process_question, questions
         )  # Map the function to the list of questions
+
+    logging.info(f"Response for questions: {results}")
     # for question in questions:
     #     question_text = build_question_text(question)
     #     print(question_text)

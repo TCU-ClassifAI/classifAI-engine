@@ -1,15 +1,11 @@
 from flask import Blueprint, request, make_response, Flask, Response
 from dotenv import load_dotenv
-import os
-import json
-
+from utils.summarize.summarize_transcript import summarize_transcript
+import logging
 
 load_dotenv()
 
-
 summarize = Blueprint("summarize", __name__)
-
-from utils.summarize.summarize_transcript import summarize_transcript
 
 
 def get_transcript_from_request():
@@ -38,7 +34,8 @@ def get_transcript_from_request():
         try:
             for line in transcript_json:
                 transcript += line["text"] + " "
-        except:
+        except Exception as e:
+            logging.error(f"Error Occured while extracting transcript: {str(e)}")
             return make_response("Invalid transcript format", 400)
 
     return transcript.strip()
