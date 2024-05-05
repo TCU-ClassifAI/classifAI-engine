@@ -140,8 +140,8 @@ For more instructions please see the [documentation
 ### Prerequisites
 
 * Python 3.10 (can probably work with 3.9+ but not tested)
-* Redis
-* Huggingface API key token
+* [Redis](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-linux/)
+* [Huggingface API key token](https://huggingface.co/docs/api-inference/en/quicktour)
 
 ### Installation 
 
@@ -151,9 +151,9 @@ For more instructions please see the [documentation
    cd classifAI-engine
    ```
 
-2. Install and run Redis
+2. [Install and run Redis](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/install-redis-on-linux/)
    ```sh
-    sudo apt-get install redis-server
+    sudo apt-get install redis-server 
     redis-server
    ```
 
@@ -176,6 +176,18 @@ For more instructions please see the [documentation
    ```sh
     rq worker -c config.worker_config
    ```
+   (More information on [RQ](https://python-rq.org/docs/))
+
+7. Include your preferred summarization/categorization model through `config.py` (optional)
+   ```python
+    SUMMARIZATION_MODEL = "gpt4"
+    CATEGORIZATION_MODEL = "gemma"
+   ```
+   You must launch your own model separely and include the API endpoint in your .env file
+   ```sh
+    LLAMA_API=your_model_endpoint
+   ``` 
+  For Llama, please see the repository [here](https://github.com/TCU-ClassifAI/llama-classification)
 
 #### Testing
 `curl http://localhost:5000/healthcheck` should return `OK`
@@ -210,18 +222,22 @@ For more instructions please see the [documentation
 
 ### Get Analysis Status
 
-* **URL:** `/analyze`
+* **URL:** `/analyze/<job_id>`
 * **Method:** `GET`
-* **Data Params:** 
-  - `job_id` (string)
 
-* Example:
+* Example (preferred):
   ```sh
-  curl http://localhost:5000/analyze?job_id=0bc133cb-f519-40a1-96c6-46d2cfe9e4ad
+  curl http://localhost:5000/analyze/0bc133cb-f519-40a1-96c6-46d2cfe9e4ad
+  ```
+
+* Alternative Example (legacy support):
+  ```sh
+  curl http://localhost:5000/analyze/?job_id=0bc133cb-f519-40a1-96c6-46d2cfe9e4ad
   ```
 
 * **Success Response:** 200
 
+* **Example Content:**
 ```json
 {
   "meta": {
@@ -250,7 +266,6 @@ For more instructions please see the [documentation
   }
 }
 ```
-
 
 _For more examples, please refer to the [Documentation](https://tcu-classifai.github.io/classifAI-engine/)_
 
@@ -306,20 +321,19 @@ _For more examples, please refer to the [Documentation](https://tcu-classifai.gi
     - [x] Integrate WhisperX for faster transcription and diarization
     - [x] Use Redis for better asynchronous processing
     - [x] Add support for YouTube videos
+    - [ ] Add support for more languages (unofficial)
+
+- [x] Add Summarization Service
 - [x] Add Question Categorization Service
-    - [x] Update service- Using Fine-Tuned version of Gemma
-    - [ ] Generate summaries of the questions
+    - [x] Update service- Using Fine-Tuned version of Llama
+    - [x] Generate summaries of the transcript
     - [ ] Add support for more question types
-    - [ ] Add support for more languages
+    - [ ] Add support for more languages (works for summaries, not categorization..)
 - [ ] Add Engagement Insights Service
     - [ ] Add support for more languages
     
 
-
-
 See the [open issues](https://github.com/TCU-ClassifAI/classifAI/issues) for a full list of proposed features (and known issues).
-
-
 
 
 <!-- CONTRIBUTING -->
@@ -352,12 +366,7 @@ View the Portal: [https://classifai.tcu.edu/](https://classifai.tcu.edu/)
 ## Acknowledgments
 
 * [TCU Computer Science Department](https://cs.tcu.edu/), for funding this project
-* [Our Clients](https://ai.tcu.edu/#/ai4edu), for providing us with the opportunity to work on this project and continued support
+* [Our Clients](https://ai.tcu.edu/classifai), for providing us with the opportunity to work on this project and continued support
 * [Dr. Bingyang Wei](https://personal.tcu.edu/bwei/), for being our faculty advisor
-* [Dr. Michael Denkowski](https://www.mjdenkowski.com/), for advising us on our NLP models
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-
