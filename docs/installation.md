@@ -6,6 +6,8 @@
 * [Python 3.10 or higher](https://www.python.org/downloads/)
 * Docker is required to run this project. You can download it [here](https://www.docker.com/products/docker-desktop).
 * [ffmpeg](https://ffmpeg.org/download.html) is required to run this project. You can download it [here](https://ffmpeg.org/download.html).
+* [Redis](https://redis.io/download) is required to run this project. You can download it with `sudo apt install redis`.
+* [Hugging Face token](https://hf.co/settings/tokens) is required to use the Hugging Face models. You can get a token [here](https://hf.co/settings/tokens). You must also accept the terms and conditions for the models you want to use ([here](https://hf.co/pyannote/speaker-diarization-3.1) and [here](https://hf.co/pyannote/segmentation-3.0)).
 
 ## Installation
 
@@ -16,10 +18,10 @@ git clone https://github.com/TCU-ClassifAI/classifAI-engine.git
 cd classifAI-engine
 ```
 
-2. Install Python packages
+2. Install Python packages (it is recommended to use a [virtual environment](https://docs.python.org/3/library/venv.html))
 
 ```sh
-pip install -r src/requirements.txt -r src/requirements-dev.txt
+pip install -r src/requirements.txt
 ```
 
 3. Install required system packages 
@@ -40,27 +42,32 @@ sudo redis-server # Ubuntu
 - 3. visit hf.co/settings/tokens to create an access token
 
 
-5. Set up the environment variables and ins
+5. Set up the environment variables
+
+- For a full list of environment variables, see the [Configuration](configuration.md) documentation. This guide will cover a minimal set of environment variables to get the server running.
 
 - Create a `.env` file in the root directory of the project. The `.env` file should contain the following environment variables:
 
 ```sh
 # .env
 HF_TOKEN=your_hugging_face_token # Get a token from https://hf.co/settings/tokens
-REDIS_PORT=6379 #(default port for Redis, can be changed)
-REDIS_HOST=localhost #(default host for Redis, can be changed)
-REDIS_DB=0 #(default db for Redis, can be changed)
-OPENAI_API_KEY=your_openai_api_key # Get a token from https://platform.openai.com/account/api-keys
-ENV=development # Set to production when deploying to production
+REDIS_PORT=6379 #(default port for Redis, can be changed), the URL can also be changed (see config)
+LLAMA_API_URL=http://localhost:5003 # URL for the LLAMA API
 ```
 5. (Optional) Set up configuration for the API
 
-- Edit values in `src/config/config.py` to match your environment. The default values are:
+- Edit values in `src/config/config.py` to match your environment.
 
 6. Launch the API
 
 ```sh
 python src/app.py
+```
+
+7. Run your RQ worker (you can do this through [supervisor](https://python-rq.org/patterns/supervisor/) or [another process manager](https://python-rq.org/patterns/systemd/))
+
+```sh
+rq worker -c config.worker_config
 ```
 
 
@@ -69,6 +76,8 @@ python src/app.py
 
 
 More usage can be found in the [API Documentation](api/api_transcription.md).
+
+
 
 
 ## Installation on the GPU Server
@@ -85,24 +94,4 @@ The logs can be viewed using the following command:
 
 ```sh
 sudo journalctl -u classifai
-```
-
-Below is the startup script that is used to start the server. It is located at `/home/classgpu/classifAI-engine/startup.sh`.
-```sh
-#!/bin/bash
-
-# change to the directory where the script is located
-cd /home/classgpu/classifAI-engine
-
-# if there is a nohup.out file, remove it
-if [ -f nohup.out ]; then
-    rm nohup.out
-fi
-
-
-# activate the virtual environment (in /home/classgpu/classifAI-engine)
-source bin/activate
-
-# Start the server
-gunicorn --bind 0.0.0.0:5000 --chdir src/ wsgi:app
 ```
