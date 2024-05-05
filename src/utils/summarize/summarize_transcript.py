@@ -1,4 +1,3 @@
-import os
 import logging
 from config.config import SUMMARIZATION_MODEL
 

@@ -84,7 +84,7 @@ def download_and_convert_to_mp3(
     except AgeRestrictedError as e:
         logging.error(f"Age restricted video: {e}")
         raise AgeRestrictedError(
-            f"Unable to download age restricted video through pytube. Please try downloading the video manually."
+            "Unable to download age restricted video through pytube. Please try downloading the video manually."
         )
     except VideoRegionBlocked as e:
         logging.error(f"Video region blocked: {e}")

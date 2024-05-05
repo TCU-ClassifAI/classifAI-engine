@@ -2,7 +2,6 @@ import torch
 import torchaudio
 from pyannote.audio.pipelines.utils.hook import ProgressHook
 import pydub
-import uuid
 import logging
 
 # instantiate the pipeline
@@ -32,7 +31,7 @@ def diarize_audio(audio_path: str, output_path: str) -> bytes:
 
     # confirm the audio file exists
     try:
-        with open(audio_path, "rb") as f:
+        with open(audio_path, "rb") as _:
             pass
     except FileNotFoundError:
         raise FileNotFoundError(f"File {audio_path} not found.")

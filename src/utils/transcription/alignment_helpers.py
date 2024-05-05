@@ -1,7 +1,4 @@
 import os
-import wget
-from omegaconf import OmegaConf
-import json
 import shutil
 import nltk
 from whisperx.alignment import DEFAULT_ALIGN_MODELS_HF, DEFAULT_ALIGN_MODELS_TORCH
@@ -199,13 +196,13 @@ def get_realigned_ws_mapping_with_punctuation(
                 k += 1
                 continue
 
-            spk_labels = speaker_list[left_idx : right_idx + 1]
+            spk_labels = speaker_list[left_idx: right_idx + 1]
             mod_speaker = max(set(spk_labels), key=spk_labels.count)
             if spk_labels.count(mod_speaker) < len(spk_labels) // 2:
                 k += 1
                 continue
 
-            speaker_list[left_idx : right_idx + 1] = [mod_speaker] * (
+            speaker_list[left_idx: right_idx + 1] = [mod_speaker] * (
                 right_idx - left_idx + 1
             )
             k = right_idx

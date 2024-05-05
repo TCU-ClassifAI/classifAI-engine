@@ -1,8 +1,4 @@
-from flask import Response
 from utils.queueing.jobs import Job
-import logging
-from rq import get_current_job
-from flask import make_response
 from utils.analyze.extraction_utils import (
     get_audio_path_from_url_or_file,
     get_raw_transcript,
