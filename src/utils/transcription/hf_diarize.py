@@ -68,7 +68,7 @@ def diarize_audio(audio_path: str, output_path: str) -> bytes:
 
 
 def update_speaker_names_rttm(rttm_path):
-    """Update the speaker names in an RTTM file, so that 'SPEAKER_00' is the person speaking most, 'SPEAKER_01' is the next, etc.
+    """Update the speaker names in an RTTM file, so 'SPEAKER_00' is the person speaking most, 'SPEAKER_01' is the next, etc.
 
     Args:
         rttm_path (str): Path to the RTTM file.
