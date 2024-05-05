@@ -123,6 +123,17 @@ sentence_ending_punctuations = ".?!"
 
 
 def get_first_word_idx_of_sentence(word_idx, word_list, speaker_list, max_words):
+    """This function returns the index of the first word of the sentence that contains the word at word_index.
+
+    Args:
+        word_idx (int): Index of the word in the word_list.
+        word_list (list): List of words.
+        speaker_list (list): List of speakers.
+        max_words (int): Maximum number of words in a sentence.
+
+    Returns:
+        int: Index of the first word of the sentence that contains the word at word_index.
+    """
     def is_word_sentence_end(x):
         return x >= 0 and word_list[x][-1] in sentence_ending_punctuations
 
@@ -139,6 +150,17 @@ def get_first_word_idx_of_sentence(word_idx, word_list, speaker_list, max_words)
 
 
 def get_last_word_idx_of_sentence(word_idx, word_list, max_words):
+    """This function returns the index of the last word of the sentence that contains the word at word_index.
+
+    Args:
+        word_idx (int): Index of the word in the word_list.
+        word_list (list): List of words.
+        max_words (int): Maximum number of words in a sentence.
+
+    Returns:
+        int: Index of the last word of the sentence that contains the word at word_index.
+    """
+
     def is_word_sentence_end(x):
         return x >= 0 and word_list[x][-1] in sentence_ending_punctuations
 
@@ -160,6 +182,17 @@ def get_last_word_idx_of_sentence(word_idx, word_list, max_words):
 def get_realigned_ws_mapping_with_punctuation(
     word_speaker_mapping, max_words_in_sentence=50
 ):
+    """This function realigns the speaker labels in the word_speaker_mapping based on the punctuation marks.
+
+    Args:
+        word_speaker_mapping (list): List of dictionaries containing the word, speaker, start_time, and end_time.
+        max_words_in_sentence (int): Maximum number of words in a sentence. Default is 50.
+
+    Returns:
+        list: List of dictionaries containing the word, speaker, start_time, and end_time.
+    """
+
+
     def is_word_sentence_end(x):
         return (
             x >= 0
@@ -230,6 +263,16 @@ def initialize_sentence(speaker, start_time, end_time):
 
 
 def get_sentences_speaker_mapping(word_speaker_mapping, speaker_timestamps):
+    """Get the sentences with their respective speakers.
+
+    Args:
+        word_speaker_mapping (list): List of dictionaries containing the word, speaker, start_time, and end_time.
+        speaker_timestamps (list): List of tuples containing the start_time, end_time, and speaker.
+        
+    Returns:
+        list: List of dictionaries containing the speaker, start_time, end_time, and text.
+    """
+
     sentence_checker = nltk.tokenize.PunktSentenceTokenizer().text_contains_sentbreak
     start, end, speaker = speaker_timestamps[0]
     prev_speaker = speaker
@@ -311,7 +354,7 @@ def format_timestamp(
 
 def write_srt(transcript, file):
     """
-    Write a transcript to a file in SRT format.
+    Write a transcript to a file in SRT format. (unused as of now)
 
     """
     for i, segment in enumerate(transcript, start=1):
@@ -389,7 +432,7 @@ def filter_missing_timestamps(
 
 
 def cleanup(path: str):
-    """path could either be relative or absolute."""
+    """Clean up a file or directory. Path can be either relative or absolute."""
     # check if file or directory exists
     if os.path.isfile(path) or os.path.islink(path):
         # remove file
@@ -421,14 +464,3 @@ def process_language_arg(language: str, model_name: str):
         language = "en"
     return language
 
-
-if __name__ == "__main__":
-    print("Hello, World!")
-    # Test get_sentences_speaker_mapping
-    word_speaker_mapping = [
-        {"word": "Hello", "start_time": 0, "end_time": 1000, "speaker": 0},
-        {"word": "world", "start_time": 1000, "end_time": 2000, "speaker": 1},
-        {"word": "!", "start_time": 2000, "end_time": 3000, "speaker": 0},
-    ]
-    speaker_timestamps = [(0, 3000, 0), (0, 3000, 1)]
-    print(get_sentences_speaker_mapping(word_speaker_mapping, speaker_timestamps))

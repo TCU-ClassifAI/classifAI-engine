@@ -17,7 +17,7 @@ jobs:
         uses: py-actions/flake8@v2
         with:
             max-line-length: "128"
-            ignore: "E203"
+            ignore: "E203", "W503"
   ruff:
     runs-on: ubuntu-latest
     steps:
