@@ -1,4 +1,4 @@
-from .categorize import categorize 
+from .categorize import categorize
 from .summarize import summarize
 from .transcription import transcription
 from .analyze import analyze
