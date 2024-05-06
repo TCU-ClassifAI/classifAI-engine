@@ -1,0 +1,1301 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://classifai.github.io/classifai-engine/api/api_summarization/">
+      
+      
+      
+      <link rel="icon" href="../../assets/gears.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+    
+    
+      
+        <title>API Reference - ClassifAI Engine Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="ClassifAI Engine Documentation" class="md-header__button md-logo" aria-label="ClassifAI Engine Documentation" data-md-component="logo">
+      
+  <img src="../../assets/gears.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ClassifAI Engine Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/TCU-Instructional-AI/classifAI-engine" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ClassifAI-engine
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../about/about/" class="md-tabs__link">
+        About
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../installation/" class="md-tabs__link">
+      Installation
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../developer/" class="md-tabs__link">
+      Getting Started
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../api/" class="md-tabs__link">
+        API Reference
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contribution/contributing/" class="md-tabs__link">
+        Contribution
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../structure/" class="md-tabs__link">
+      Project Structure
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../transcription/" class="md-tabs__link">
+      Transcription Model Information
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ClassifAI Engine Documentation" class="md-nav__button md-logo" aria-label="ClassifAI Engine Documentation" data-md-component="logo">
+      
+  <img src="../../assets/gears.png" alt="logo">
+
+    </a>
+    ClassifAI Engine Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/TCU-Instructional-AI/classifAI-engine" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ClassifAI-engine
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" tabindex="0" aria-expanded="false">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../about/changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        Configuration
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" tabindex="0" aria-expanded="false">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        API Reference
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api_analyze/" class="md-nav__link">
+        Analysis
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" tabindex="0" aria-expanded="false">
+          Contribution
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Contribution" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Contribution
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/contributing/" class="md-nav__link">
+        Contribute
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/editing_docs/" class="md-nav__link">
+        Edit the Docs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/style_guide/" class="md-nav__link">
+        Style Guide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contribution/instructions_for_pre-commit/" class="md-nav__link">
+        Pre-Commit Hooks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../structure/" class="md-nav__link">
+        Project Structure
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../transcription/" class="md-nav__link">
+        Transcription Model Information
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#start-a-transcription" class="md-nav__link">
+    Start a Transcription
+  </a>
+  
+    <nav class="md-nav" aria-label="Start a Transcription">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http-method-and-url" class="md-nav__link">
+    HTTP Method and URL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-request" class="md-nav__link">
+    Example Request
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-response" class="md-nav__link">
+    Example Response
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-and-status-codes" class="md-nav__link">
+    Error and Status Codes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get-transcription" class="md-nav__link">
+    Get Transcription
+  </a>
+  
+    <nav class="md-nav" aria-label="Get Transcription">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http-method-and-url_1" class="md-nav__link">
+    HTTP Method and URL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_1" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-request_1" class="md-nav__link">
+    Example Request
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-response_1" class="md-nav__link">
+    Example Response
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-and-status-codes_1" class="md-nav__link">
+    Error and Status Codes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#remove-an-employee" class="md-nav__link">
+    [Remove an employee]
+  </a>
+  
+    <nav class="md-nav" aria-label="[Remove an employee]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http-method-and-url_2" class="md-nav__link">
+    HTTP Method and URL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters_2" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-request_2" class="md-nav__link">
+    Example Request
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-response_2" class="md-nav__link">
+    Example Response
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-and-status-codes_2" class="md-nav__link">
+    Error and Status Codes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="api-reference">API Reference</h1>
+<div class="admonition abstract">
+<p class="admonition-title">API KEY INSTRUCTIONS</p>
+<p>Ensure that you include your API key in all requests by using the following format: curl -H "X-API-KEY: MYAPIKEY" https://api.mydomain.com/v1/users. <a href="mailto:meow">Need an API key or instructions on how to obtain one?</a></p>
+</div>
+<h3 id="start-a-transcription">Start a Transcription</h3>
+<p>This endpoint kicks off a transcription job. It returns a job ID that can be used to check the status of the transcription job.</p>
+<h4 id="http-method-and-url">HTTP Method and URL</h4>
+<p><code>POST https://api.classifai.tcu.edu/start_transcription</code></p>
+<h4 id="parameters">Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>file</td>
+<td>file</td>
+<td>This is the audio file. It can be in mp3, wav, etc. <a href="https://ffmpeg.org/ffmpeg-formats.html">FFMpeg supports many file types</a></td>
+<td>Required</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>string</td>
+<td>This is the user ID. It is used to identify the user that made the reqeust</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>model_type</td>
+<td>string</td>
+<td>Model Type. Can be "large", "medium", "medium.en", "tiny.en", <a href="https://github.com/openai/whisper/blob/main/model-card.md">more here</a></td>
+<td>Optional</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-request">Example Request</h4>
+<p><img alt="localhost:5000/start_transcription" src="assets/example_start_transcription.png?raw=true" title="Example Request" /></p>
+<h4 id="example-response">Example Response</h4>
+<p>HTTP 200 OK</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tiny.en&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;in progress&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;loading model&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1698877559.0479097</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;duration&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>job_id</td>
+<td>string</td>
+<td>This is the job ID, generated using UUID. It can be used to check the status of the transcription job.</td>
+</tr>
+<tr>
+<td>model_type</td>
+<td>string</td>
+<td>This is the model type. It can be "large", "medium", "medium.en", "tiny.en", <a href="https://github.com/openai/whisper/blob/main/model-card.md">more here</a></td>
+</tr>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>This is the status of the transcription job. It can be "in progress", "completed", or "error"</td>
+</tr>
+<tr>
+<td>state</td>
+<td>string</td>
+<td>This is the state of the transcription job. It can be "loading model", "loading audio", "transcribing", "uploading", "completed", or "error"</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>float</td>
+<td>This is the start time of the transcription job. It is a Unix timestamp.</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>float</td>
+<td>This is the duration of the transcription job. It is a Unix timestamp.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="error-and-status-codes">Error and Status Codes</h4>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>No file provided</td>
+<td>The request did not include a file</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid file type</td>
+<td>The file type is not supported</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid model type</td>
+<td>The model type is not supported</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid user ID</td>
+<td>The user ID is not valid</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>Something went wrong on our end. Please try again later.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="get-transcription">Get Transcription</h3>
+<p>This endpoint returns the status of a transcription job. It can be used to check the status of a transcription job, or to get the transcription file.</p>
+<h4 id="http-method-and-url_1">HTTP Method and URL</h4>
+<p><code>GET https://api.classifai.tcu.edu/get_transcription</code></p>
+<h4 id="parameters_1">Parameters</h4>
+<p>[Table that lists all query and path parameters for the endpoint. If this endpoint has query and path parameters, consider listing them in separate tables---one for path parameters, one for query parameters. If there aren't any parameters for this endpoint, replace the table with "None"]</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>job_id</td>
+<td>string</td>
+<td>This is the job ID. It can be used to check the status of the transcription job, or to get the transcription file.</td>
+<td>Required</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-request_1">Example Request</h4>
+<p><img alt="localhost:5000/get_transcription?job_id=a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee" src="assets/example_get_transcription.png?raw=true" title="Example Request" /></p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>job_id</td>
+<td>string</td>
+<td>This is the job ID. It can be used to check the status of the transcription job, or to get the transcription file.</td>
+<td>Required</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-response_1">Example Response</h4>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tiny.en&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;in progress&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;loading model&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">1698877559.0479097</span><span class="p">,</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">&quot;duration&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">22.8137366771698</span>
+<span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>job_id</td>
+<td>string</td>
+<td>This is the job ID, generated using UUID. It can be used to check the status of the transcription job, or to get the transcription file.</td>
+</tr>
+<tr>
+<td>model_type</td>
+<td>string</td>
+<td>This is the model type.</td>
+</tr>
+<tr>
+<td>status</td>
+<td>string</td>
+<td>This is the status of the transcription job. It can be "in progress", "completed", "not found", or "error"</td>
+</tr>
+<tr>
+<td>state</td>
+<td>string</td>
+<td>This is the state of the transcription job. It can be "loading model", "loading audio", "transcribing", "uploading", "completed", or "error"</td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>float</td>
+<td>This is the start time of the transcription job. It is a Unix timestamp.</td>
+</tr>
+<tr>
+<td>duration</td>
+<td>float</td>
+<td>This is the duration of the transcription job. It is a Unix timestamp.</td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>float</td>
+<td>This is the end time of the transcription job (if it is completed). It is a Unix timestamp.</td>
+</tr>
+<tr>
+<td>transcription_link</td>
+<td>string</td>
+<td>This is the link to the transcription file (if it is completed). It can be used to download the transcription file. <a href="transcription.md">Looking for the transcription format?</a></td>
+</tr>
+</tbody>
+</table>
+<h4 id="error-and-status-codes_1">Error and Status Codes</h4>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>400</td>
+<td>No job ID provided</td>
+<td>The request did not include a job ID</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Job not found</td>
+<td>The job ID provided does not match any transcription jobs.</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>Something went wrong on our end. Please try again later.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="remove-an-employee">[Remove an employee]</h3>
+<p>[The heading above should be a very brief description of what the endpoint does.]</p>
+<h4 id="http-method-and-url_2">HTTP Method and URL</h4>
+<p>[<code>GET</code>, <code>PUT</code>, <code>POST</code>, or <code>DELETE</code> and URL---for example, <code>DELETE https://api.payrollrecord.com/employee/{employee_id}</code>]</p>
+<h4 id="parameters_2">Parameters</h4>
+<p>[Table that lists all query and path parameters for the endpoint. If this endpoint has query and path parameters, consider listing them in separate tables---one for path parameters, one for query parameters. If there aren't any parameters for this endpoint, replace the table with "None"]</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[Name or parameter]</td>
+<td>[Query or Path]</td>
+<td>[Brief description of parameter function. What does it do?]</td>
+<td>[Required or Optional]</td>
+</tr>
+<tr>
+<td>[Name or parameter]</td>
+<td>[Query or Path]</td>
+<td>[Brief description of parameter function. What does it do?]</td>
+<td>[Required or Optional]</td>
+</tr>
+<tr>
+<td>[Name or parameter]</td>
+<td>[Query or Path]</td>
+<td>[Brief description of parameter function. What does it do?]</td>
+<td>[Required or Optional]</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-request_2">Example Request</h4>
+<p>[Code or pseudocode sample of a complete request for this endpoint, including header and body, followed by a table that lists each element in the example request]</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Description</th>
+<th>Required?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[Element as it appears in request]</td>
+<td>[Array, Object, String, Integer, or Float]</td>
+<td>[Brief description of what information the element represents, including default and valid values]</td>
+<td>[Required or Optional]</td>
+</tr>
+<tr>
+<td>[Element as it appears in request]</td>
+<td>[Array, Object, String, Integer, or Float]</td>
+<td>[Brief description of what information the element represents, including default and valid values]</td>
+<td>[Required or Optional]</td>
+</tr>
+<tr>
+<td>[Element as it appears in request]</td>
+<td>[Array, Object, String, Integer, or Float]</td>
+<td>[Brief description of what information the element represents, including default and valid values]</td>
+<td>[Required or Optional]</td>
+</tr>
+</tbody>
+</table>
+<h4 id="example-response_2">Example Response</h4>
+<p>[Code or pseudocode sample of a complete response for this endpoint, followed by a table that lists each element in the example response]</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>`{"job_id": "a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee", "model_type": "tiny.en", "status": "in progress", "state": "loading</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>model", "start_time": 1698877559.0479097, "duration": 22.8137366771698}`</td>
+<td>Object</td>
+<td>[Brief description of what information the element represents]</td>
+</tr>
+<tr>
+<td>`{"job_id": "a3a8ed6e-f538-4a06-8fd2-4a3f3ff906ee", "model_type": "tiny.en", "status": "in progress", "state": "loading</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>[Element as it appears in response]</td>
+<td>[Array, Object, String, Integer, or Float]</td>
+<td>[Brief description of what information the element represents]</td>
+</tr>
+<tr>
+<td>[Element as it appears in response]</td>
+<td>[Array, Object, String, Integer, or Float]</td>
+<td>[Brief description of what information the element represents]</td>
+</tr>
+<tr>
+<td>[Element as it appears in response]</td>
+<td>[Array, Object, String, Integer, or Float]</td>
+<td>[Brief description of what information the element represents]</td>
+</tr>
+</tbody>
+</table>
+<h4 id="error-and-status-codes_2">Error and Status Codes</h4>
+<p>[Table that lists all possible error and status codes for this endpoint]</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[HTTP or error code]</td>
+<td>[Message for the code, such as "Not Found"]</td>
+<td>[Brief description of what the code means within your API, such as "We couldn't complete your request right now"]</td>
+</tr>
+<tr>
+<td>[HTTP or error code]</td>
+<td>[Message for the code, such as "Not Found"]</td>
+<td>[Brief description of what the code means within your API, such as "We couldn't complete your request right now"]</td>
+</tr>
+<tr>
+<td>[HTTP or error code]</td>
+<td>[Message for the code, such as "Not Found"]</td>
+<td>[Brief description of what the code means within your API, such as "We couldn't complete your request right now"]</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 ClassifAI
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/TCU-Instructional-AI/classifAI-engine" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
+</html>

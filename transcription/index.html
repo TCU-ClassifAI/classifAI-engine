@@ -1,0 +1,963 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://classifai.github.io/classifai-engine/transcription/">
+      
+      
+        <link rel="prev" href="../structure/">
+      
+      
+      <link rel="icon" href="../assets/gears.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+    
+    
+      
+        <title>Transcription Model Information - ClassifAI Engine Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#jobs-transcription" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ClassifAI Engine Documentation" class="md-header__button md-logo" aria-label="ClassifAI Engine Documentation" data-md-component="logo">
+      
+  <img src="../assets/gears.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ClassifAI Engine Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Transcription Model Information
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+            </label>
+          
+        
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/TCU-Instructional-AI/classifAI-engine" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ClassifAI-engine
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href=".." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../about/about/" class="md-tabs__link">
+        About
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../installation/" class="md-tabs__link">
+      Installation
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../developer/" class="md-tabs__link">
+      Getting Started
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../api/api/" class="md-tabs__link">
+        API Reference
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../contribution/contributing/" class="md-tabs__link">
+        Contribution
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../structure/" class="md-tabs__link">
+      Project Structure
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  <li class="md-tabs__item">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
+      Transcription Model Information
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ClassifAI Engine Documentation" class="md-nav__button md-logo" aria-label="ClassifAI Engine Documentation" data-md-component="logo">
+      
+  <img src="../assets/gears.png" alt="logo">
+
+    </a>
+    ClassifAI Engine Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/TCU-Instructional-AI/classifAI-engine" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    ClassifAI-engine
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" tabindex="0" aria-expanded="false">
+          About
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="About" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          About
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/changelog/" class="md-nav__link">
+        Changelog
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../configuration/" class="md-nav__link">
+        Configuration
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        Installation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../developer/" class="md-nav__link">
+        Getting Started
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5" tabindex="0" aria-expanded="false">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API Reference" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/api/" class="md-nav__link">
+        API Reference
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/api_analyze/" class="md-nav__link">
+        Analysis
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6" tabindex="0" aria-expanded="false">
+          Contribution
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Contribution" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          Contribution
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/contributing/" class="md-nav__link">
+        Contribute
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/editing_docs/" class="md-nav__link">
+        Edit the Docs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/style_guide/" class="md-nav__link">
+        Style Guide
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribution/instructions_for_pre-commit/" class="md-nav__link">
+        Pre-Commit Hooks
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../structure/" class="md-nav__link">
+        Project Structure
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Transcription Model Information
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Transcription Model Information
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#transcription-format" class="md-nav__link">
+    Transcription format
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status-messages-and-their-meanings" class="md-nav__link">
+    Status Messages and their meanings
+  </a>
+  
+    <nav class="md-nav" aria-label="Status Messages and their meanings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#once-a-job-is-started-the-status-will-be-started-the-meta-object-will-contain-the-job_id-job_type-message-and-status" class="md-nav__link">
+    Once a job is started, the status will be started. The meta object will contain the job_id, job_type, message, and status.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#once-a-job-is-completed-the-status-will-be-finished-the-meta-object-will-contain-the-job_id-job_type-message-and-status-and-the-result-object-will-contain-the-job_id-type-status-submit_time-duration-result-and-job_info" class="md-nav__link">
+    Once a job is completed, the status will be finished. The meta object will contain the job_id, job_type, message, and status, and the result object will contain the job_id, type, status, submit_time, duration, result, and job_info.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#transcription-format" class="md-nav__link">
+    Transcription format
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#status-messages-and-their-meanings" class="md-nav__link">
+    Status Messages and their meanings
+  </a>
+  
+    <nav class="md-nav" aria-label="Status Messages and their meanings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#once-a-job-is-started-the-status-will-be-started-the-meta-object-will-contain-the-job_id-job_type-message-and-status" class="md-nav__link">
+    Once a job is started, the status will be started. The meta object will contain the job_id, job_type, message, and status.
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#once-a-job-is-completed-the-status-will-be-finished-the-meta-object-will-contain-the-job_id-job_type-message-and-status-and-the-result-object-will-contain-the-job_id-type-status-submit_time-duration-result-and-job_info" class="md-nav__link">
+    Once a job is completed, the status will be finished. The meta object will contain the job_id, job_type, message, and status, and the result object will contain the job_id, type, status, submit_time, duration, result, and job_info.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+
+<h1 id="jobs-transcription">Jobs: Transcription</h1>
+<p>Transcription is done by the transcription worker. The worker uses the whisper library to transcribe audio files, and NeMo to diarize and align the transcription to the audio.</p>
+<h2 id="transcription-format">Transcription format</h2>
+<p>Recall that you can check the status of a job by sending a GET request to <code>get_transcription_status</code> with the <code>job_id</code> as a query parameter, like so:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>http://localhost:5000/transcription/get_transcription_status?job_id<span class="o">=</span>3c73dd07-66ff-48ab-9f4e-e6726987c06f
+</code></pre></div>
+<p>A job status will look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3c73dd07-66ff-48ab-9f4e-e6726987c06f&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;job_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;transcription&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Aligning audio&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;aligning&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;started&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>When the job is completed, the status will look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;meta&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3c73dd07-66ff-48ab-9f4e-e6726987c06f&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;job_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;transcription&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Transcription and diarization completed&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;completed&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{\&quot;job_id\&quot;: \&quot;3c73dd07-66ff-48ab-9f4e-e6726987c06f\&quot;, \&quot;type\&quot;: \&quot;transcription\&quot;, \&quot;status\&quot;: \&quot;completed\&quot;, \&quot;submit_time\&quot;: 1710546893.69, \&quot;duration\&quot;: 0, \&quot;result\&quot;: \&quot;[{&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 7900, &#39;end_time&#39;: 11700, &#39;text&#39;: \\\&quot;Our next guest is a true American hero, and he&#39;s only eight years old. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 2&#39;, &#39;start_time&#39;: 12181, &#39;end_time&#39;: 19684, &#39;text&#39;: \\\&quot;Last week, Lucas Armitage bravely defended his family and his home when he stopped an intruder all by himself just by using his daddy&#39;s gun. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 19704, &#39;end_time&#39;: 23125, &#39;text&#39;: \\\&quot;That&#39;s right, and Lucas and his dad, Jack, are with us in the studio this morning. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 23165, &#39;end_time&#39;: 24226, &#39;text&#39;: &#39;Good morning to both of you. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 24246, &#39;end_time&#39;: 25286, &#39;text&#39;: &#39;Hi, guys. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 25326, &#39;end_time&#39;: 27047, &#39;text&#39;: &#39;Now, Lucas, can you tell us what happened? &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 27592, &#39;end_time&#39;: 31094, &#39;text&#39;: &#39;I heard the noise, and I got up from bed and went into the kitchen door. &#39;}, {&#39;speaker&#39;: &#39;Speaker 2&#39;, &#39;start_time&#39;: 31114, &#39;end_time&#39;: 31915, &#39;text&#39;: &#39;Dad keeps the gun. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 32115, &#39;end_time&#39;: 34216, &#39;text&#39;: &#39;So you found it all by yourself, right? &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 34416, &#39;end_time&#39;: 35377, &#39;text&#39;: &#39;I take it out a lot. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 35577, &#39;end_time&#39;: 36658, &#39;text&#39;: &#39;Sometimes I just look at it. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 36758, &#39;end_time&#39;: 36938, &#39;text&#39;: &#39;Right. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 36978, &#39;end_time&#39;: 39640, &#39;text&#39;: \\\&quot;Now, it was a burglar, wasn&#39;t it, Lucas? \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 39660, &#39;end_time&#39;: 41041, &#39;text&#39;: &#39;He was trying to steal things. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 41201, &#39;end_time&#39;: 41901, &#39;text&#39;: &#39;He looked hungry. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 42121, &#39;end_time&#39;: 45784, &#39;text&#39;: \\\&quot;When he saw I had the gun, he put his hands up and said, please don&#39;t shoot. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 45924, &#39;end_time&#39;: 47885, &#39;text&#39;: \\\&quot;But you didn&#39;t listen to him, did you? \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 47905, &#39;end_time&#39;: 49606, &#39;text&#39;: &#39;I know it would be easy to shoot him. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 49646, &#39;end_time&#39;: 50907, &#39;text&#39;: &#39;Just aim and pull the trigger. &#39;}, {&#39;speaker&#39;: &#39;Speaker 2&#39;, &#39;start_time&#39;: 51407, &#39;end_time&#39;: 51767, &#39;text&#39;: \\\&quot;That&#39;s right. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 2&#39;, &#39;start_time&#39;: 51787, &#39;end_time&#39;: 53768, &#39;text&#39;: \\\&quot;Well, and that&#39;s exactly what you did, right? \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 53808, &#39;end_time&#39;: 54928, &#39;text&#39;: \\\&quot;You shot him in the leg, didn&#39;t you? \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 54948, &#39;end_time&#39;: 56688, &#39;text&#39;: &#39;You put one right through the kneecap, right? &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 56708, &#39;end_time&#39;: 61410, &#39;text&#39;: &#39;Yeah, it was like bang, really loud, and he fell down screaming, and there was lots of blood coming out. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 61430, &#39;end_time&#39;: 62470, &#39;text&#39;: &#39;Lucas, you really are a hero. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 62510, &#39;end_time&#39;: 65150, &#39;text&#39;: &#39;He started crawling away and crying, so I shot him in the back. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 65191, &#39;end_time&#39;: 67471, &#39;text&#39;: &#39;Yeah, you must be so proud of your son, Jack. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 67491, &#39;end_time&#39;: 70112, &#39;text&#39;: &#39;And then I stood over him and shot him like bang, bang. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 70891, &#39;end_time&#39;: 74593, &#39;text&#39;: \\\&quot;Well, that&#39;s one crook that&#39;s not gonna be breaking into anybody else&#39;s home, is he? \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 74613, &#39;end_time&#39;: 74853, &#39;text&#39;: &#39;Yeah. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 74973, &#39;end_time&#39;: 77134, &#39;text&#39;: \\\&quot;He wouldn&#39;t stop talking, so then I shut his jaw. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 77254, &#39;end_time&#39;: 78815, &#39;text&#39;: \\\&quot;Well, how&#39;d you manage to do that, Lucas? \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 78975, &#39;end_time&#39;: 82737, &#39;text&#39;: &#39;Either you shoot at the temples and pull down, or you shoot at the side of the skull wall. &#39;}, {&#39;speaker&#39;: &#39;Speaker 3&#39;, &#39;start_time&#39;: 82817, &#39;end_time&#39;: 84278, &#39;text&#39;: \\\&quot;It&#39;s the weakest part of the skull, he&#39;s right. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 84338, &#39;end_time&#39;: 86299, &#39;text&#39;: \\\&quot;That&#39;s very sophisticated knowledge there. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 86519, &#39;end_time&#39;: 88300, &#39;text&#39;: &#39;Yeah, but then he started screaming. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 88480, &#39;end_time&#39;: 89021, &#39;text&#39;: &#39;Yeah, right. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 89061, &#39;end_time&#39;: 92043, &#39;text&#39;: &#39;And then I showed off each one of his fingers, and then he stopped screaming. &#39;}, {&#39;speaker&#39;: &#39;Speaker 2&#39;, &#39;start_time&#39;: 92063, &#39;end_time&#39;: 95805, &#39;text&#39;: &#39;So, Jack, it was the screaming you heard that woke you up so you could call the police? &#39;}, {&#39;speaker&#39;: &#39;Speaker 3&#39;, &#39;start_time&#39;: 95825, &#39;end_time&#39;: 96185, &#39;text&#39;: &#39;No, no. &#39;}, {&#39;speaker&#39;: &#39;Speaker 3&#39;, &#39;start_time&#39;: 96265, &#39;end_time&#39;: 98807, &#39;text&#39;: &#39;Actually, it was Lucas laughing that woke me up. &#39;}, {&#39;speaker&#39;: &#39;Speaker 3&#39;, &#39;start_time&#39;: 98907, &#39;end_time&#39;: 100628, &#39;text&#39;: &#39;I had never heard the kid laugh so hard. &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 100668, &#39;end_time&#39;: 101889, &#39;text&#39;: &#39;There was blood all over me. &#39;}, {&#39;speaker&#39;: &#39;Speaker 3&#39;, &#39;start_time&#39;: 102089, &#39;end_time&#39;: 103970, &#39;text&#39;: &#39;Yeah, he smeared it all over himself. &#39;}, {&#39;speaker&#39;: &#39;Speaker 3&#39;, &#39;start_time&#39;: 104050, &#39;end_time&#39;: 104471, &#39;text&#39;: &#39;Really? &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 104511, &#39;end_time&#39;: 106632, &#39;text&#39;: &#39;I liked the way the blood made me feel. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 106672, &#39;end_time&#39;: 109674, &#39;text&#39;: &#39;Now, your school gave you a special award for courage, right? &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 109794, &#39;end_time&#39;: 111915, &#39;text&#39;: &#39;We have a photograph of that award ceremony. &#39;}, {&#39;speaker&#39;: &#39;Speaker 2&#39;, &#39;start_time&#39;: 111935, &#39;end_time&#39;: 112556, &#39;text&#39;: \\\&quot;Let&#39;s take a look. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 3&#39;, &#39;start_time&#39;: 112856, &#39;end_time&#39;: 116197, &#39;text&#39;: \\\&quot;Oh, Lucas, you didn&#39;t even change your shirt before you got your award. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 3&#39;, &#39;start_time&#39;: 116217, &#39;end_time&#39;: 117237, &#39;text&#39;: &#39;Well, why would he change his shirt? &#39;}, {&#39;speaker&#39;: &#39;Speaker 3&#39;, &#39;start_time&#39;: 117257, &#39;end_time&#39;: 118037, &#39;text&#39;: \\\&quot;That&#39;s his honor shirt. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 118137, &#39;end_time&#39;: 119017, &#39;text&#39;: &#39;I want the blood. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 119117, &#39;end_time&#39;: 122278, &#39;text&#39;: &#39;Yeah, it must have been fun getting that award at school, right? &#39;}, {&#39;speaker&#39;: &#39;Speaker 0&#39;, &#39;start_time&#39;: 122298, &#39;end_time&#39;: 123298, &#39;text&#39;: &#39;I want the blood. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 125038, &#39;end_time&#39;: 127999, &#39;text&#39;: \\\&quot;Well, he&#39;s gotten a little shy now. \\\&quot;}, {&#39;speaker&#39;: &#39;Speaker 2&#39;, &#39;start_time&#39;: 128318, &#39;end_time&#39;: 130439, &#39;text&#39;: &#39;Well, Jack Armitage, thanks so much for being here. &#39;}, {&#39;speaker&#39;: &#39;Speaker 2&#39;, &#39;start_time&#39;: 130499, &#39;end_time&#39;: 132160, &#39;text&#39;: &#39;Lucas, thank you for your heroic work. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 132320, &#39;end_time&#39;: 133040, &#39;text&#39;: &#39;Absolutely. &#39;}, {&#39;speaker&#39;: &#39;Speaker 1&#39;, &#39;start_time&#39;: 133080, &#39;end_time&#39;: 138221, &#39;text&#39;: &#39;Now you stick with us because after the break, some warning signs that your pet may be a CIA mole. &#39;}]\&quot;, \&quot;job_info\&quot;: \&quot;{\\\&quot;audio_path\\\&quot;: \\\&quot;output/test.mp3\\\&quot;, \\\&quot;model_id\\\&quot;: null}\&quot;}&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;finished&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="status-messages-and-their-meanings">Status Messages and their meanings</h2>
+<h3 id="once-a-job-is-started-the-status-will-be-started-the-meta-object-will-contain-the-job_id-job_type-message-and-status">Once a job is started, the status will be <code>started</code>. The <code>meta</code> object will contain the <code>job_id</code>, <code>job_type</code>, <code>message</code>, and <code>status</code>.</h3>
+<p>The different statuses, and their respective messages within the <code>meta</code> object are, in order:</p>
+<ol>
+<li>queued</li>
+<li>"Job is queued"</li>
+<li>downloading<ul>
+<li>"Downloading MP3 file from URL"</li>
+<li>Note: This status is only applicable if the audio file is being downloaded from a URL.</li>
+</ul>
+</li>
+<li>start_transcribing<ul>
+<li>"Transcribing audio"</li>
+</ul>
+</li>
+<li>splitting<ul>
+<li>"Splitting audio into vocals and accompaniment for faster processing"</li>
+</ul>
+</li>
+<li>loading_nemo<ul>
+<li>"Loading NeMo process for diarization"</li>
+</ul>
+</li>
+<li>transcribing<ul>
+<li>"Transcribing audio with Whisper"</li>
+</ul>
+</li>
+<li>loading_align_model<ul>
+<li>"Loading align model"</li>
+</ul>
+</li>
+<li>aligning<ul>
+<li>"Aligning audio"</li>
+</ul>
+</li>
+<li>diarizing<ul>
+<li>"Diarizing audio"</li>
+<li>Note: Diarization happens in parallel with transcription. This only shows if transcription is completed before diarization.</li>
+</ul>
+</li>
+<li>transcription_finished<ul>
+<li>"Transcription completed"</li>
+</ul>
+</li>
+<li>extracting_questions<ul>
+<li>"Extracting questions"</li>
+</ul>
+</li>
+<li>categorizing_questions<ul>
+<li>"Categorizing questions using LLaMA"</li>
+</ul>
+</li>
+<li>summarizing<ul>
+<li>"Summarizing the transcription"</li>
+</ul>
+</li>
+<li>combining_results<ul>
+<li>"Combining results"</li>
+</ul>
+</li>
+<li>completed<ul>
+<li>"Transcription and diarization completed"</li>
+</ul>
+</li>
+</ol>
+<p>Other possible statuses are:
+failed
+error</p>
+<h3 id="once-a-job-is-completed-the-status-will-be-finished-the-meta-object-will-contain-the-job_id-job_type-message-and-status-and-the-result-object-will-contain-the-job_id-type-status-submit_time-duration-result-and-job_info">Once a job is completed, the status will be <code>finished</code>. The <code>meta</code> object will contain the <code>job_id</code>, <code>job_type</code>, <code>message</code>, and <code>status</code>, and the <code>result</code> object will contain the <code>job_id</code>, <code>type</code>, <code>status</code>, <code>submit_time</code>, <code>duration</code>, <code>result</code>, and <code>job_info</code>.</h3>
+<hr />
+<p>If an error occurs, the status will be <code>error</code>, and the <code>message</code> will be:</p>
+<pre><code>"An error occured: {error message}"
+</code></pre>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 ClassifAI
+    </div>
+  
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://github.com/TCU-Instructional-AI/classifAI-engine" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.tabs.sticky"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
+</html>
